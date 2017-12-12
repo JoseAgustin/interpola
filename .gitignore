@@ -1,7 +1,8 @@
-wrfinput_d01
 *.o
 *.mod
 *.f
 .DS_Store
 .tmpfile
 wrfinput
+interpola.exe
+wrfinput_d01
