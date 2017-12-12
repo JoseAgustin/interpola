@@ -1,0 +1,7 @@
+wrfinput_d01
+*.o
+*.mod
+*.f
+.DS_Store
+.tmpfile
+wrfinput
