@@ -3,6 +3,6 @@
 *.f
 .DS_Store
 .tmpfile
-wrfinput
+wrfinp*
 interpola.exe
-wrfinput_d01
+wrfc*i

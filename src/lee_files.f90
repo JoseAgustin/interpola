@@ -165,6 +165,7 @@ character (len = *), parameter :: REC_NAME = "Times"
     call check( nf90_get_att(ncid, nf90_global, "JULYR",julyr))
     call check( nf90_get_att(ncid, nf90_global, "JULDAY",julday))
     call check( nf90_get_att(ncid, nf90_global, "MAP_PROJ",mapproj))
+    call check( nf90_get_att(ncid, nf90_global, "MAP_PROJ_CHAR",map_proj_char))
     call check( nf90_get_att(ncid, nf90_global, "MMINLU",mminlu))
     call check( nf90_get_att(ncid, nf90_global, "ISWATER",iswater))
     call check( nf90_get_att(ncid, nf90_global, "ISLAKE",islake))
@@ -172,6 +173,8 @@ character (len = *), parameter :: REC_NAME = "Times"
     call check( nf90_get_att(ncid, nf90_global, "ISURBAN",isurban))
     call check( nf90_get_att(ncid, nf90_global,"ISOILWATER",isoilwater))
     call check( nf90_get_att(ncid, nf90_global,"GRID_ID",grid_id))
+    call check( nf90_get_att(ncid, nf90_global, "NUM_LAND_CAT",num_land_cat))
+    call check( nf90_get_att(ncid, nf90_global, "START_DATE",current_date))
 !print *,XLAT(1,1,1),XLAT(1,2,1),XLAT(1,3,1)
 !print *,XLON(1,1,1),XLON(2,1,1),XLON(3,1,1)
 

@@ -28,9 +28,9 @@ integer:: dix,djx,eix,ejx,grid_id
 integer:: julyr,julday,mapproj,iswater,islake,isice,isurban,isoilwater
 real :: cenlat,cenlon, dx,dy,dxe,dye
 real :: trulat1, trulat2,moadcenlat,stdlon,pollat,pollon
-real :: gmt
+real :: gmt,num_land_cat
 character(len=3) :: cday
-character(len=19)::mminlu
+character(len=19)::mminlu,map_proj_char
 character(len=19):: iTime
 character(len=38):: Title
 character(len=19),dimension(1,1)::Times
