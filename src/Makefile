@@ -7,17 +7,17 @@ FIX01 =
 
 .IGNORE:
 
-.SUFFIXES:      .f90 .f .i .o
+.SUFFIXES:      .F90 .f .i .o
 
-.f90.o:
+.F90.o:
 		$(RM) $@ 
-		$(CPP) $(CPPFLAGS) -D$(MACH) $(FIX01) $*.f90 > $*.f
+		$(CPP) $(CPPFLAGS) -D$(MACH) $(FIX01) $*.F90 > $*.f
 		$(FC) -c $(FCFLAGS) $*.f
 		
 
-.f90.f:
+.F90.f:
 		$(RM) $@
-		$(CPP) $(CPPFLAGS) -D$(MACH) $(FIX01) $*.f90 > $*.f
+		$(CPP) $(CPPFLAGS) -D$(MACH) $(FIX01) $*.F90 > $*.f
 
 .f.o:
 		$(RM) $@

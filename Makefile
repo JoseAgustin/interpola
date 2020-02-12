@@ -107,7 +107,7 @@ default:
 		"FC		= ifort"	"FCFLAGS	= -I. -I$(NETCDF)/include -convert big_endian -FR -align commons"\
 		"LDOPTIONS	= -L$(NETCDF)/lib  -convert big_endian -align commons "\
 		"CFLAGS		= -I."		\
-		"LOCAL_LIBRARIES= -lnetcdff -lnetcdf -lhdf5 -lhdf5_hl -lz -lcurl " ) ; \
+		"LOCAL_LIBRARIES= -lnetcdff -lnetcdf " ) ; \
 	else echo "Do not know how to compile for the `cat .tmpfile` machine." \
 		fi ; \
 		fi ; \
