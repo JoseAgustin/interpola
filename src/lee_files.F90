@@ -27,15 +27,15 @@ subroutine file_reading
 ! This is the name of the data file to read
 character (len = *), parameter :: FILE_NAME = "wrfchemin.nc" !Inventory
 integer :: i,j,l,it,ikk
-integer :: ncid
+integer :: ncid,nvars,xtype
 integer :: lat_varid,lon_varid,btDimID
 integer :: latVarId, lonVarId
 integer :: land_catID
 integer :: dimlon,dimlat,dimtime
-integer,dimension(NDIMS):: dim,id_dim
-integer,dimension(radm+1):: id_var
+integer :: nglobalatts,ndimsv=0,dimids(NF90_MAX_VAR_DIMS)
+integer,ALLOCATABLE:: id_var(:),dim(:),id_dim(:)
 real,ALLOCATABLE :: ea(:,:,:,:)
-character (len=20 ) :: name
+character (len= NF90_MAX_NAME ) :: name
 character (len = *), parameter :: LAT_NAME = "XLAT"
 character (len = *), parameter :: LON_NAME = "XLONG"
 character (len = *), parameter :: REC_NAME = "Times"
@@ -51,21 +51,30 @@ character (len = *), parameter :: REC_NAME = "Times"
 ! Get the vars ID of the latitude and longitude coordinate variables.
     call check( nf90_inq_varid(ncid, LAT_NAME, lat_varid) )
     call check( nf90_inq_varid(ncid, LON_NAME, lon_varid) )
-    call check( nf90_inq_varid(ncid, REC_NAME, id_var(radm+1)) )
 !  Get dims ID and dimension values
+    call check(nf90_inquire(ncid, ndims, nvars, nglobalatts, unlimdimid))
+   ! call check( nf90_inq_varid(ncid, REC_NAME, unlimdimid) )
+    if(.not.ALLOCATED(id_var)) allocate (id_var(nvars))
+    if(.not.ALLOCATED(tvar))   allocate (tvar(nvars))
+    if(.not.ALLOCATED(dim))    allocate (dim(ndims))
+    if(.not.ALLOCATED(id_dim)) allocate (id_dim(ndims))
+    if(.not.ALLOCATED(sdim))   allocate (sdim(ndims))
+    tvar=.false.
+    call check(nf90_inq_varids(ncid, nvars, id_var))
+   ! nf90_inquire_variable(ncid, varid, name=sdim(i))
+!  Get dimension values from id_dim
     do i=1,NDIMS
-        call check(nf90_inq_dimid(ncid, sdim(i), id_dim(i)))
-        call check(nf90_inquire_dimension(ncid,id_dim(i),len=dim(i)))
+         id_dim(i)=i
+        call check(nf90_inquire_dimension(ncid,id_dim(i),name=sdim(i),len=dim(i)))
     end do
     if(.not.ALLOCATED(XLON)) allocate (XLON(dim(3),dim(4),dim(1)))
     if(.not.ALLOCATED(XLAT)) allocate (XLAT(dim(3),dim(4),dim(1)))
     if(.not.ALLOCATED(elat)) allocate (elat(dim(3),dim(4)))
     if(.not.ALLOCATED(elon)) allocate (elon(dim(3),dim(4)))
-    if(.not.ALLOCATED(ea)) allocate (ea(dim(3),dim(4),dim(6),dim(1)))
-    if(.not.ALLOCATED(ei)) allocate(ei(dim(3),dim(4),dim(6),dim(1),radm))
+    if(.not.ALLOCATED(ea))   allocate (ea(dim(3),dim(4),dim(6),dim(1)))
 !
 !   Retrive initial Time
-    call check(nf90_get_var(ncid, id_var(radm+1), Times,start = (/ 1, 1 /)))
+    call check(nf90_get_var(ncid, unlimdimid, Times,start = (/ 1, 1 /)))
     current_date(1:19)=Times(1,1)
     print *,current_date!,lat_varid,lon_varid
 
@@ -84,11 +93,28 @@ character (len = *), parameter :: REC_NAME = "Times"
     end do
 !print *,elat(1,1),elat(1,2)
 !print *,elon(1,1),elon(2,1)
-!
+    if(.not.ALLOCATED(ei)) allocate(ei(dim(3),dim(4),dim(6),dim(1),nvars))
+    if(.not.ALLOCATED(ename)) allocate(ename(nvars))
+    if(.not.ALLOCATED(cname)) allocate(cname(nvars),cunits(nvars))
+
+!     Get emissions names
+    print *,"* Get emissions names "
+    do ikk=1,nvars
+    call check(nf90_inquire_variable(ncid,ikk,name))
+    ename(ikk)=trim(name)
+    if(name(1:2).eq."E_".or.name(1:2).eq."e_") then
+        call check( nf90_get_att(ncid, ikk, "description", name))
+        cname(ikk)=trim(name)
+        call check( nf90_get_att(ncid, ikk, "units", name))
+        cunits(ikk)=trim(name)
+        tvar(ikk)=.true.
+        !print *,cname(ikk)
+    end if
+    end do
 !     Get emissions values
-    print *,"* Get emissions values"
-    do ikk=1,radm
-      if(nf90_inq_varid(ncid,ename(ikk), id_var(ikk)).eq.nf90_noerr)  then
+    print *,"* Get emissions values "
+    do ikk=1,nvars
+      if(tvar(ikk)) then
        ! print *,ikk,ename(ikk),id_var(ikk)
       call check(nf90_get_var(ncid, id_var(ikk),ea,start = (/1,1,1,1/)))
       do i=1, dim(3)
@@ -190,7 +216,7 @@ character (len = *), parameter :: REC_NAME = "Times"
     end do
     dix=dimlon
     djx=dimlat
-    allocate(ed(dix,djx,dim(6),dim(1),radm))
+    allocate(ed(dix,djx,dim(6),dim(1),nvars))
     ed=0
     print * ,'* Done reading wrfinput file'
 !    deallocate (XLAT,XLON)

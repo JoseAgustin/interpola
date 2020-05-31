@@ -22,17 +22,19 @@ subroutine File_out
     use vars_dat
     implicit none
     integer :: i,j,l
-    integer :: ncid
+    integer :: ncid,nvars
     integer :: id_varlong,id_varlat
     integer :: periodo,it,ikk,id,iu,iit,eit
     integer,dimension(NDIMS):: dim,id_dim
-    integer,dimension(radm+1):: id_var
+    integer,ALLOCATABLE:: id_var(:)
     integer :: dimids2(2),dimids3(3),dimids4(4)
     real,ALLOCATABLE :: ea(:,:,:,:)
     character (len=20) :: FILE_NAME
     character(8)  :: date
     character(10) :: time
     character(19) :: hoy
+    nvars=size(ename)
+    allocate (id_var(nvars))
     print *,"Guarda Archivo"
     ! ******************************************************************
     call date_and_time(date,time)
@@ -57,7 +59,7 @@ write(FILE_NAME(16:16),'(I1)')grid_id
 !     Define dimensiones
     dim(1)=1
     dim(2)=19
-    dim(3)=SIZE(ed,DIM=1)
+    dim(3)=SIZE(ED,DIM=1)
     dim(4)=SIZE(ED,DIM=2)
     dim(5)=1!mkx
     dim(6)=SIZE(ED,DIM=3) ! VERTICAL DATA
@@ -105,7 +107,7 @@ write(FILE_NAME(16:16),'(I1)')grid_id
     call check( nf90_put_att(ncid, NF90_GLOBAL, "MECHANISM",mecha))
     call check( nf90_put_att(ncid, NF90_GLOBAL, "CREATION_DATE",hoy))
 !  Define las variables
-    call check( nf90_def_var(ncid, "Times", NF90_CHAR, dimids2,id_var(radm+1) ) )
+    call check( nf90_def_var(ncid, "Times", NF90_CHAR, dimids2,unlimdimid ) )
 !  Attributos para cada variable
     call check( nf90_def_var(ncid, "XLONG", NF90_REAL,(/id_dim(3),id_dim(4),id_dim(1)/),id_varlong ) )
 ! Assign  attributes
@@ -121,12 +123,12 @@ write(FILE_NAME(16:16),'(I1)')grid_id
     call check( nf90_put_att(ncid, id_varlat, "description", "LATITUDE, SOUTH IS NEGATIVE") )
     call check( nf90_put_att(ncid, id_varlat, "units", "degree_north"))
     call check( nf90_put_att(ncid, id_varlat, "axis", "Y") )
-    do i=1,radm
-        if(i.lt.26 .or.i.gt.37) then
-            call crea_attr(ncid,4,dimids4,ename(i),cname(i),id_var(i))
-        else
-            call crea_attr2(ncid,4,dimids4,ename(i),cname(i),id_var(i))
-        end if
+  print *,"Atributos"
+    do i=1,nvars
+    if(tvar(i)) then
+    !print *,ename(i)," ",cname(i),cunits(i)
+    call crea_attr(ncid,4,dimids4,ename(i),cname(i),cunits(i),id_var(i))
+    end if
     end do
 !
 !   Terminan definiciones
@@ -134,7 +136,7 @@ call check( nf90_enddef(ncid) )
 !    Inicia loop de tiempo
 tiempo: do it=iit,eit
     write(6,'(A,x,I3)')'TIEMPO: ', it
-        gases: do ikk=1,radm
+        gases: do ikk=1,nvars
             ea=0.0
             if(ikk.eq.1) then
                 if (it.lt.10) then
@@ -147,15 +149,16 @@ tiempo: do it=iit,eit
                 write(current_date(1:4),'(I4)') julyr
                 Times(1,1)=current_date(1:19)
                 if (periodo.eq. 1) then
-                    call check( nf90_put_var(ncid,id_var(radm+1),Times,start=(/1,it+1/)) )
+                    call check( nf90_put_var(ncid,unlimdimid,Times,start=(/1,it+1/)) )
                     call check( nf90_put_var(ncid, id_varlong,xlon,start=(/1,1,it+1/)) )
                     call check( nf90_put_var(ncid, id_varlat,xlat,start=(/1,1,it+1/)) )
                 else
-                    call check( nf90_put_var(ncid,id_var(radm+1),Times,start=(/1,it-11/)) )
+                    call check( nf90_put_var(ncid,unlimdimid,Times,start=(/1,it-11/)) )
                     call check( nf90_put_var(ncid, id_varlong,xlon,start=(/1,1,it-11/)) )
                     call check( nf90_put_var(ncid, id_varlat,xlat,start=(/1,1,it-11/)) )
                 endif
              end if   ! for kk == 1
+         if(tvar(ikk)) then
             do i=1, dim(3)
                 do j=1, dim(4)
                     do l=1,dim(6)
@@ -171,7 +174,8 @@ tiempo: do it=iit,eit
                 call check( nf90_put_var(ncid, id_var(ikk),ea,start=(/1,1,1,it+1/)) )
             else
                 call check( nf90_put_var(ncid, id_var(ikk),ea,start=(/1,1,1,it-11/)) )        !******
-            endif
+            end if 
+          end if ! tvar
         end do gases
 end do tiempo
 call check( nf90_close(ncid) )
@@ -183,48 +187,22 @@ contains
 ! C     RRRR  EEEE  AAAAA    AAAAA   T     T   RRRR
 ! CC    R  R  E     A   A    A   A   T     T   R  R
 !  CCCC R   R EEEEE A   A____A   A   T     T   R   R
-subroutine crea_attr(ncid,idm,dimids,svar,cname,id_var)
+subroutine crea_attr(ncid,idm,dimids,svar,cname,cunits,id_var)
     implicit none
     integer , INTENT(IN) ::ncid,idm
     integer, INTENT(out) :: id_var
     integer, INTENT(IN),dimension(idm):: dimids
-    character(len=*), INTENT(IN)::svar,cname
-    character(len=50) :: cvar
-    cvar="Emissions rate of "//trim(cname)
+    character(len=*), INTENT(IN)::svar,cname,cunits
 
     call check( nf90_def_var(ncid, svar, NF90_REAL, dimids,id_var ) )
     ! Assign  attributes
     call check( nf90_put_att(ncid, id_var, "FieldType", 104 ) )
     call check( nf90_put_att(ncid, id_var, "MemoryOrder", "XYZ") )
-    call check( nf90_put_att(ncid, id_var, "description", Cvar) )
-    call check( nf90_put_att(ncid, id_var, "units", "mol km^-2 hr^-1"))
+    call check( nf90_put_att(ncid, id_var, "description", cname) )
+    call check( nf90_put_att(ncid, id_var, "units", cunits))
     call check( nf90_put_att(ncid, id_var, "stagger", "Z") )
     call check( nf90_put_att(ncid, id_var, "coordinates", "XLONG XLAT") )
     ! print *,"Entro a Attributos de variable",dimids,id,jd
     return
 end subroutine crea_attr
-!  CCCC RRRR  EEEEE  AAA      AAA  TTTTT TTTTT RRRR   222
-! CC    R  RR E     A   A    A   A   T     T   R  RR 2   2
-! C     RRRR  EEEE  AAAAA    AAAAA   T     T   RRRR     2
-! CC    R  R  E     A   A    A   A   T     T   R  R   2
-!  CCCC R   R EEEEE A   A____A   A   T     T   R   R 22222
-subroutine crea_attr2(ncid,idm,dimids,svar,cname,id_var)
-    implicit none
-    integer, INTENT(IN) ::ncid,idm
-    integer, INTENT(out) :: id_var
-    integer,INTENT(IN) ,dimension(idm):: dimids
-    character(len=*),INTENT(IN) ::svar,cname
-    character(len=50) :: cvar
-    cvar="EMISSIONS RATE OF "//trim(cname)
-    call check( nf90_def_var(ncid, svar, NF90_REAL, dimids,id_var ) )
-    ! Assign  attributes
-    call check( nf90_put_att(ncid, id_var, "FieldType", 104 ) )
-    call check( nf90_put_att(ncid, id_var, "MemoryOrder", "XYZ") )
-    call check( nf90_put_att(ncid, id_var, "description",cvar) )
-    call check( nf90_put_att(ncid, id_var, "units", "ug m-2 s-1"))
-    call check( nf90_put_att(ncid, id_var, "stagger", "Z") )
-    call check( nf90_put_att(ncid, id_var, "coordinates", "XLONG XLAT") )
-    ! print *,"Entro a Attributos de variable",dimids,id,jd
-    return
-    end subroutine crea_attr2
 end subroutine File_out
