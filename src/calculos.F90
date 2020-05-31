@@ -18,6 +18,7 @@
 !
 !****************************************************************************
 subroutine conversion
+!$ use omp_lib  
 use vars_dat
 implicit none
 integer :: i,j,ii,jj,kl,l
@@ -28,6 +29,7 @@ real*8   :: alat,alon,area,tot
 real*8  ::  xmas,xemis
 
 print *, "*****  Doing interpolations ****"
+!$omp parallel do private(i,ii,jj,area,ih,l,kl) shared(xmas)
     do j= 2,djx-1
     do i=2,dix-1
         ylat1=.5*(dlat(i,j-1)+dlat(i,j))
@@ -62,7 +64,7 @@ print *, "*****  Doing interpolations ****"
         xmas=xmas+ed(i,j,1,1,1)*dx*dy/1000000
     end do     ! i
 end do    !  j
-!
+!$omp end parallel do
     do i=1,eix
         do j=1,ejx
             xemis=xemis+ei(i,j,1,1,1) *dxe*dye/1000000

@@ -1,3 +1,4 @@
+
 !
 !    lee_files.f90
 !
@@ -13,11 +14,12 @@
 !  PROGRAM: Interpola
 !
 !  PURPOSE:  Reads emissions inventory from wrfchemin.nc and wrfinput_d01
-!            
+!
 !   version 0.1  27 agosto 2012
 !
 !***************************************************************************
 subroutine file_reading
+!$  use omp_lib
     use vars_dat
     use netcdf
     implicit none
@@ -37,9 +39,10 @@ character (len=20 ) :: name
 character (len = *), parameter :: LAT_NAME = "XLAT"
 character (len = *), parameter :: LON_NAME = "XLONG"
 character (len = *), parameter :: REC_NAME = "Times"
-
+!$omp parallel sections num_threads (2) private(ncid,i,j,ikk,l,it,lat_varid,lon_varid,XLAT,XLON,dimlon,dimlat,dimtime)
+!$omp section
 ! Open the file.
-    print *,"Reading file:",FILE_NAME
+    print *,"Reading Emissions file:",FILE_NAME
     call check( nf90_open(FILE_NAME, nf90_nowrite, ncid) )
     call check( nf90_get_att(ncid, nf90_GLOBAL, "TITLE", TITLE))
     call check( nf90_get_att(ncid, NF90_GLOBAL, "START_DATE",iTime))
@@ -81,7 +84,6 @@ character (len = *), parameter :: REC_NAME = "Times"
     end do
 !print *,elat(1,1),elat(1,2)
 !print *,elon(1,1),elon(2,1)
-
 !
 !     Get emissions values
     print *,"* Get emissions values"
@@ -108,7 +110,7 @@ character (len = *), parameter :: REC_NAME = "Times"
     deallocate (XLAT,XLON,ea)
     call check( nf90_close(ncid) )
     print * ,'** Done reading Emissions file'
-
+!$omp section
     print *," "
     print *,'* Start reading wrfinput file'
     call check(nf90_open("wrfinput", NF90_NOWRITE, ncid))
@@ -177,8 +179,9 @@ character (len = *), parameter :: REC_NAME = "Times"
 !    call check( nf90_get_att(ncid, nf90_global, "START_DATE",current_date))
 !print *,XLAT(1,1,1),XLAT(1,2,1),XLAT(1,3,1)
 !print *,XLON(1,1,1),XLON(2,1,1),XLON(3,1,1)
-
     call check( nf90_close(ncid) )
+!$omp end parallel sections
+
     do i=1,dimlon
         do j=1,dimlat
             dlat(i,j)=xlat(i,j,1)
