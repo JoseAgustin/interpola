@@ -45,29 +45,3 @@ common /wrf/ julyr,julday,mapproj,iswater,islake,isice,isurban,isoilwater,&
             cenlat,cenlon,trulat1, trulat2,moadcenlat,stdlon,pollat,pollon,&
             gmt,mminlu
 end module vars_dat
-
-!character (len=19),dimension(NDIMS) ::sdim=(/"Time               ",&
-!& "DateStrLen         ","west_east          ","south_north        ",&
-!&"bottom_top         ","emissions_zdim_stag"/)
-
-!character(len=11),dimension(radm):: ename=(/'E_CO       ','E_NH3      ',&
-!  'E_NO       ','E_SO2      ','E_ALD      ','E_CH4      ','E_CSL      ',&
-!  'E_ETH      ','E_GLY      ','E_HC3      ','E_HC5      ','E_HC8      ',&
-!  'E_HCHO     ','E_ISO      ','E_KET      ','E_MACR     ','E_MGLY     ',&
-!  'E_MVK      ','E_OL2      ','E_OLI      ','E_OLT      ','E_ORA1     ',&
-!  'E_ORA2     ','E_TOL      ','E_XYL      ','E_PM_10    ','E_PM25     ',&
-!  'E_SO4I     ','E_NO3I     ','E_PM25I    ','E_ORGI     ','E_ECI      ',&
-!  'E_SO4J     ','E_NO3J     ','E_PM25J    ','E_ORGJ     ','E_ECJ      ',&
-!  'EBIO_ISO   ','EBIO_C10H16','EBIO_NO    ','EBIO_NOx   ','EBIO_OTHER '/)
-!character(len= 16),dimension(radm):: cname=(/'Carbon Monoxide ',&
-!'NH3             ','NO              ','SO2             ',&
-!'ALDEHYDES       ','METHANE         ','CRESOL          ','Ethane          ',&
-!'Glyoxal         ','HC3             ','HC5             ','HC8             ',&
-!'HCHO            ','ISOPRENE        ','Acetone         ','Acrolein        ',&
-!'MGLY            ','Methyl Vinil Ket','Alkenes         ','alkenes         ',&
-!'Terminal Alkynes','Formic Acid     ','Acetic Acid     ','TOLUENE         ',&
-!'XYLENE          ','PM_10           ','PM_25           ',&
-!'Sulfates        ','Nitrates        ','PM25I           ','Organic         ',&
-!'Elemental Carbon','SulfatesJ       ','NitratesJ       ','PM25J           ',&
-!'Organic         ','Elemental Carbon','biog isoprene   ','biog monoterpene',&
-!'biog NO         ','biog NOx        ','biog other VOCs '/)
