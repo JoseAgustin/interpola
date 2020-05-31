@@ -1,12 +1,12 @@
-#  
+#
 #	Lower level Makefile for 10_storage
 #
 #
 #
-objec1 = vars_dat_mod.o Interpola.o calculos.o lee_files.o salidas.o 
+objec1 = vars_dat_mod.o Interpola.o calculos.o lee_files.o salidas.o
 
 RM_LIST = *.mod *.o core .tmpfile *.exe wrfchemi.*
-RM	=	/bin/rm -f 
+RM	=	/bin/rm -f
 #NETCDF = /usr/local
 
 # Ejecuta
@@ -71,8 +71,8 @@ pgi:
 	fi ; \
 	fi ; \
 	$(RM) .tmpfile
-	
-gnu:	
+
+gnu:
 	uname -a >  .tmpfile
 	grep Linux .tmpfile ; \
 	if [ $$? = 0 ]; then echo "Compiling for Linux GNU" ;               \
@@ -119,4 +119,3 @@ clean:
 	-$(RM) $(RM_LIST)
 
 .PHONY:	clean
-

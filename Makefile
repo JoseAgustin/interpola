@@ -13,10 +13,14 @@ RM_LIST =	*.log
 default:
 	@echo " "
 	@echo "Type one of the following:"
+	@echo "make gnu                for gfortran"
 	@echo "make intel              for compiling with ifort"
 	@echo "make pgi                for PGI fortran"
 	@echo "make clean                to remove all .o files, the core file and the executable"
 	@echo " "
+
+gnu:
+	( $(CD) src   ; $(MAKE) gnu );\
 
 intel:
 	( $(CD) src   ; $(MAKE) intel );\
