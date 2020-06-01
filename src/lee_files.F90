@@ -30,6 +30,7 @@ integer :: i,j,l,it,ikk
 integer :: ncid,nvars,xtype
 integer :: lat_varid,lon_varid,btDimID
 integer :: latVarId, lonVarId
+integer :: pobId
 integer :: land_catID
 integer :: dimlon,dimlat,dimtime
 integer :: nglobalatts,ndimsv=0,dimids(NF90_MAX_VAR_DIMS)
@@ -39,18 +40,25 @@ character (len= NF90_MAX_NAME ) :: name
 character (len = *), parameter :: LAT_NAME = "XLAT"
 character (len = *), parameter :: LON_NAME = "XLONG"
 character (len = *), parameter :: REC_NAME = "Times"
+character (len = *), parameter :: POB_NAME = "POB"
+tpob=.false.
 !$omp parallel sections num_threads (2) private(ncid,i,j,ikk,l,it,lat_varid,lon_varid,XLAT,XLON,dimlon,dimlat,dimtime)
 !$omp section
 ! Open the file.
-    print *,"Reading Emissions file:",FILE_NAME
+    print *," *** Reading Emissions file:",FILE_NAME
     call check( nf90_open(FILE_NAME, nf90_nowrite, ncid) )
     call check( nf90_get_att(ncid, nf90_GLOBAL, "TITLE", TITLE))
     call check( nf90_get_att(ncid, NF90_GLOBAL, "START_DATE",iTime))
     call check( nf90_get_att(ncid, NF90_GLOBAL, "DAY",cday))
-    call check( nf90_get_att(ncid, NF90_GLOBAL, "MECHANISM",mecha))
+    if(nf90_get_att(ncid, NF90_GLOBAL, "MECHANISM",mecha).ne.nf90_noerr)mecha="UNKNOW"
+    print *, "  * Mechanism: ",mecha
 ! Get the vars ID of the latitude and longitude coordinate variables.
     call check( nf90_inq_varid(ncid, LAT_NAME, lat_varid) )
     call check( nf90_inq_varid(ncid, LON_NAME, lon_varid) )
+    if( nf90_inq_varid(ncid, POB_NAME, pobId).eq.nf90_noerr) then
+       print *,"  * Contains Population vars"
+       tpob=.true.
+    end if
 !  Get dims ID and dimension values
     call check(nf90_inquire(ncid, ndims, nvars, nglobalatts, unlimdimid))
    ! call check( nf90_inq_varid(ncid, REC_NAME, unlimdimid) )
@@ -64,8 +72,8 @@ character (len = *), parameter :: REC_NAME = "Times"
    ! nf90_inquire_variable(ncid, varid, name=sdim(i))
 !  Get dimension values from id_dim
     do i=1,NDIMS
-         id_dim(i)=i
-        call check(nf90_inquire_dimension(ncid,id_dim(i),name=sdim(i),len=dim(i)))
+      id_dim(i)=i
+      call check(nf90_inquire_dimension(ncid,id_dim(i),name=sdim(i),len=dim(i)))
     end do
     if(.not.ALLOCATED(XLON)) allocate (XLON(dim(3),dim(4),dim(1)))
     if(.not.ALLOCATED(XLAT)) allocate (XLAT(dim(3),dim(4),dim(1)))
@@ -77,7 +85,11 @@ character (len = *), parameter :: REC_NAME = "Times"
     call check(nf90_get_var(ncid, unlimdimid, Times,start = (/ 1, 1 /)))
     current_date(1:19)=Times(1,1)
     print *,current_date!,lat_varid,lon_varid
-
+    if (tpob) then
+      print *,"* Get Population values"
+      if(.not.ALLOCATED(epob)) allocate(epob(dim(3),dim(4)))
+      call check(nf90_get_var(ncid, pobId, epob))
+    end if
 !
 !   Get lat and lon values.
     print *,"* Get lat and lon values"
@@ -163,6 +175,7 @@ character (len = *), parameter :: REC_NAME = "Times"
     if(.not.ALLOCATED(XLAT)) allocate (XLAT(dimlon ,dimlat,1))
     if(.not.ALLOCATED(dlon)) allocate (dlon(dimlon ,dimlat))
     if(.not.ALLOCATED(dlat)) allocate (dlat(dimlon ,dimlat))
+    if(.not.ALLOCATED(dpob)) allocate (dpob(dimlon, dimlat))
 
     if(nf90_inq_varid(ncid, "XLAT_M", latVarId).eq. nf90_noerr) then
         print *,"XLAT_M"

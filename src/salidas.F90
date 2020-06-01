@@ -8,7 +8,7 @@
 !    crea_attr - creates attributes for gas variables
 !    crea_attr2 -creates attributes for aerosol variables
 !
-!   
+!
 !	Created by Agustin Garcia on 28/08/2012.
 !
 !****************************************************************************
@@ -23,7 +23,7 @@ subroutine File_out
     implicit none
     integer :: i,j,l
     integer :: ncid,nvars
-    integer :: id_varlong,id_varlat
+    integer :: id_varlong,id_varlat,id_pob
     integer :: periodo,it,ikk,id,iu,iit,eit
     integer,dimension(NDIMS):: dim,id_dim
     integer,ALLOCATABLE:: id_var(:)
@@ -116,6 +116,7 @@ write(FILE_NAME(16:16),'(I1)')grid_id
     call check( nf90_put_att(ncid, id_varlong, "description", "LONGITUDE, WEST IS NEGATIVE") )
     call check( nf90_put_att(ncid, id_varlong, "units", "degree_east"))
     call check( nf90_put_att(ncid, id_varlong, "axis", "X") )
+!
     call check( nf90_def_var(ncid, "XLAT", NF90_REAL,(/id_dim(3),id_dim(4),id_dim(1)/),id_varlat ) )
 ! Assign  attributes
     call check( nf90_put_att(ncid, id_varlat, "FieldType", 104 ) )
@@ -123,6 +124,13 @@ write(FILE_NAME(16:16),'(I1)')grid_id
     call check( nf90_put_att(ncid, id_varlat, "description", "LATITUDE, SOUTH IS NEGATIVE") )
     call check( nf90_put_att(ncid, id_varlat, "units", "degree_north"))
     call check( nf90_put_att(ncid, id_varlat, "axis", "Y") )
+!
+    call check( nf90_def_var(ncid, "POB", NF90_REAL,(/id_dim(3),id_dim(4),id_dim(1)/),id_pob ) )
+    call check( nf90_put_att(ncid, id_pob, "FieldType", 104 ) )
+    call check( nf90_put_att(ncid, id_pob, "MemoryOrder", "XYZ") )
+    call check( nf90_put_att(ncid, id_pob, "description", "Population in the domain") )
+    call check( nf90_put_att(ncid, id_pob, "units", "number"))
+
   print *,"Atributos"
     do i=1,nvars
     if(tvar(i)) then
@@ -152,10 +160,12 @@ tiempo: do it=iit,eit
                     call check( nf90_put_var(ncid,unlimdimid,Times,start=(/1,it+1/)) )
                     call check( nf90_put_var(ncid, id_varlong,xlon,start=(/1,1,it+1/)) )
                     call check( nf90_put_var(ncid, id_varlat,xlat,start=(/1,1,it+1/)) )
+                    call check( nf90_put_var(ncid, id_pob,dpob,start=(/1,1,it+1/)) )
                 else
                     call check( nf90_put_var(ncid,unlimdimid,Times,start=(/1,it-11/)) )
                     call check( nf90_put_var(ncid, id_varlong,xlon,start=(/1,1,it-11/)) )
                     call check( nf90_put_var(ncid, id_varlat,xlat,start=(/1,1,it-11/)) )
+                    call check( nf90_put_var(ncid, id_pob,dpob,start=(/1,1,it-11/)) )
                 endif
              end if   ! for kk == 1
          if(tvar(ikk)) then
@@ -174,7 +184,7 @@ tiempo: do it=iit,eit
                 call check( nf90_put_var(ncid, id_var(ikk),ea,start=(/1,1,1,it+1/)) )
             else
                 call check( nf90_put_var(ncid, id_var(ikk),ea,start=(/1,1,1,it-11/)) )        !******
-            end if 
+            end if
           end if ! tvar
         end do gases
 end do tiempo

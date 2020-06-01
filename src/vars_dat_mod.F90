@@ -19,8 +19,8 @@ integer :: zlev   ! Layer of emission (1 to 8)
 integer :: radm=0   ! number of emissions classes
 real,allocatable:: ei(:,:,:,:,:)  ! emissions by nx,ny,level,nh,radm
 real,allocatable:: ed(:,:,:,:,:)  ! emissions by nx,ny,level,nh,radm from NEW DOMAIN
-real,allocatable:: elat(:,:),elon(:,:)     ! by nx,ny from emissions domain
-real,allocatable:: dlat(:,:),dlon(:,:)     ! by nx,ny from NEW DOMAIN
+real,allocatable:: elat(:,:),elon(:,:),epob(:,:)! by nx,ny from emissions domain
+real,allocatable:: dlat(:,:),dlon(:,:),dpob(:,:)! by nx,ny from NEW DOMAIN
 real,allocatable ::xlon(:,:,:),xlat(:,:,:)! by nx,ny,nh emissions
 integer:: dix,djx,eix,ejx,grid_id
 integer:: julyr,julday,mapproj,iswater,islake,isice,isurban,isoilwater
@@ -38,9 +38,10 @@ character (len=19),allocatable::sdim(:)
 character(len=11),allocatable ::ename(:)
 character(len=50),allocatable ::cname(:),cunits(:)
 logical,allocatable :: tvar(:)
+logical :: tpob
 ! Domain Variables
 common /domain/ zlev, dix,djx,eix,ejx,dx,dy,dxe,dye,rama,Title
-common /date/ id_grid,unlimdimid,Times,current_date,cday,mecha
+common /date/ id_grid,unlimdimid,Times,current_date,cday,mecha,tpob
 common /wrf/ julyr,julday,mapproj,iswater,islake,isice,isurban,isoilwater,&
             cenlat,cenlon,trulat1, trulat2,moadcenlat,stdlon,pollat,pollon,&
             gmt,mminlu

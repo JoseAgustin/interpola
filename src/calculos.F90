@@ -52,12 +52,13 @@ print *, "*****  Doing interpolations ****"
             area=max(0.,alat*alon)* tot!
             if( area.gt.0.) then
             do  ih=1,size(ed,dim=4)
-                do l=1,size(ed,dim=3)
+              do l=1,size(ed,dim=3)
                 do  kl=1,size(ed,dim=5)
                 if (tvar(kl)) ed(i,j,l,ih,kl)=ed(i,j,l,ih,kl)+ei(ii,jj,l,ih,kl)*area
                 end do ! kl
-                end do ! l
+              end do ! l
             end do  ! ih
+            if(tpob)dpob(i,j)=dpob(i,j)+epob(ii,jj)*area
             end if
             end do  ! jj
         end do  ! ii
