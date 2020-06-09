@@ -110,7 +110,7 @@ tpob=.false.
     if(.not.ALLOCATED(cname)) allocate(cname(nvars),cunits(nvars))
 
 !     Get emissions names
-    print *,"* Get emissions names "
+    print *,"* Get emissions names and attributes"
     do ikk=1,nvars
     call check(nf90_inquire_variable(ncid,ikk,name))
     ename(ikk)=trim(name)
