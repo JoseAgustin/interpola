@@ -9,9 +9,9 @@ input files:
 
 wrfchem  file contain emissions starting with "E_" 
 
-![Area to interpolate emissions](/assets/images/iwrfinput_d02.png "Terrain and domain to interpolate")
+![Area to interpolate emissions](/assets/images/domain2int.png "Terrain and domain to interpolate")
 
-![Source emissions](/assets/images/wrfchemi_nput.png "Emissions domain")
+![Source emissions](/assets/images/input_wrfchem.png "Emissions domain")
 
-
-
+![Emissions result](/assets/images/output.png "Emissions in new domain")
+U
