@@ -589,6 +589,9 @@ am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
 OPENMP_FCFLAGS
+NETCDF_LIB
+NETCDF_INC
+NETCDF_ROOT
 OBJEXT
 EXEEXT
 ac_ct_FC
@@ -673,7 +676,10 @@ target_alias
 FC
 FCFLAGS
 LDFLAGS
-LIBS'
+LIBS
+NETCDF_ROOT
+NETCDF_INC
+NETCDF_LIB'
 
 
 # Initialize some variables set by options.
@@ -1298,6 +1304,9 @@ Some influential environment variables:
   LDFLAGS     linker flags, e.g. -L<lib dir> if you have libraries in a
               nonstandard directory <lib dir>
   LIBS        libraries to pass to the linker, e.g. -l<library>
+  NETCDF_ROOT Root of netCDF installation or (compile-time)
+  NETCDF_INC  Location of netCDF headers (compile-time)
+  NETCDF_LIB  Location of netCDF library (compile-time)
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -2423,6 +2432,10 @@ END
   fi
 fi
 
+
+# Define our M4 macro directory
+
+
 # Checks for programs.
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ln -s works" >&5
 $as_echo_n "checking whether ln -s works... " >&6; }
@@ -2909,10 +2922,8 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-ac_ext=${ac_fc_srcext-f}
-ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
-ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_fc_compiler_gnu
+# Make precious variables for ./configure --help
+
 
 
 # Checks for libraries.
@@ -2920,6 +2931,58 @@ ac_compiler_gnu=$ac_cv_fc_compiler_gnu
 # Checks for header files.
 
 # Checks for typedefs, structures, and compiler characteristics.
+ac_ext=${ac_fc_srcext-f}
+ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
+ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_fc_compiler_gnu
+
+
+ac_ext=${ac_fc_srcext-f}
+ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
+ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_fc_compiler_gnu
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for Fortran flag needed to accept free-form source" >&5
+$as_echo_n "checking for Fortran flag needed to accept free-form source... " >&6; }
+if ${ac_cv_fc_freeform+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_cv_fc_freeform=unknown
+ac_fc_freeform_FCFLAGS_save=$FCFLAGS
+for ac_flag in none -ffree-form -FR -free -qfree -Mfree -Mfreeform \
+	       -freeform "-f free" -8 +source=free -nfix --nfix -Free
+do
+  test "x$ac_flag" != xnone && FCFLAGS="$ac_fc_freeform_FCFLAGS_save $ac_flag"
+  cat > conftest.$ac_ext <<_ACEOF
+
+  program freeform
+       ! FIXME: how to best confuse non-freeform compilers?
+       print *, 'Hello ', &
+          'world.'
+       end
+_ACEOF
+if ac_fn_fc_try_compile "$LINENO"; then :
+  ac_cv_fc_freeform=$ac_flag; break
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+done
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+FCFLAGS=$ac_fc_freeform_FCFLAGS_save
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_fc_freeform" >&5
+$as_echo "$ac_cv_fc_freeform" >&6; }
+if test "x$ac_cv_fc_freeform" = xunknown; then
+  as_fn_error 77 "Fortran does not accept free-form source" "$LINENO" 5
+else
+  if test "x$ac_cv_fc_freeform" != xnone; then
+    FCFLAGS="$FCFLAGS $ac_cv_fc_freeform"
+  fi
+
+fi
+ac_ext=${ac_fc_srcext-f}
+ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
+ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_fc_compiler_gnu
 
 
   OPENMP_FCFLAGS=
@@ -2987,15 +3050,151 @@ $as_echo "$ac_cv_prog_fc_openmp" >&6; }
   fi
 
 
+# Check for newunit option to open()
 
+
+
+ac_ext=${ac_fc_srcext-f}
+ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
+ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_fc_compiler_gnu
+
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for NEWUNIT support" >&5
+$as_echo_n "checking for NEWUNIT support... " >&6; }
+cat > conftest.$ac_ext <<_ACEOF
+
+       program conftest
+       integer :: i
+       open(newunit=i,file='test')
+       end program conftest
+_ACEOF
+if ac_fn_fc_try_compile "$LINENO"; then :
+  ax_f08_newunit=yes
+else
+  ax_f08_newunit=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
+ac_ext=${ac_fc_srcext-f}
+ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
+ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_fc_compiler_gnu
+
+
+if test "x$ax_f08_newunit" = "xyes"; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+$as_echo "#define HAVE_NEWUNIT 1" >>confdefs.h
+
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+if test -z "${NETCDF_ROOT}"; then
+	NETCDF_CONFIG='nf-config'
+	NETCDF_ROOT="`nf-config --prefix`"
+	if test -z "${NETCDF_ROOT}"; then
+	echo "WARNING: nf-config --prefix  empty location trying nc-config"
+		  NETCDF_ROOT="`nc-config --prefix`"
+  fi
+        LDFLAGS="`${NETCDF_CONFIG} --flibs` ${LDFLAGS}";
+        FCFLAGS="-I`${NETCDF_CONFIG} --fflags` ${FCFLAGS}";
+    else
+	NETCDF_CONFIG="${NETCDF_ROOT}/bin/nf-config"
+        LDFLAGS="`${NETCDF_CONFIG} --flibs` ${LDFLAGS}";
+        FCFLAGS="-I`${NETCDF_CONFIG} --fflags` ${FCFLAGS}";
+    fi
+
+if test "${NETCDF_INC}"; then
+    if test -d "${NETCDF_INC}"; then
+	FCFLAGS="-I${NETCDF_INC} ${FCFLAGS} "
+	as_ac_File=`$as_echo "ac_cv_file_${NETCDF_INC}/netcdf.mod" | $as_tr_sh`
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for ${NETCDF_INC}/netcdf.mod" >&5
+$as_echo_n "checking for ${NETCDF_INC}/netcdf.mod... " >&6; }
+if eval \${$as_ac_File+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  as_fn_error $? "cannot check for file existence when cross compiling" "$LINENO" 5
+if test -r "${NETCDF_INC}/netcdf.mod"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+eval ac_res=\$$as_ac_File
+	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+if eval test \"x\$"$as_ac_File"\" = x"yes"; then :
+  FCFLAGS="$FCFLAGS -I${NETCDF_INC}"
+fi
+
+    else
+	echo "WARNING: NETCDF_INC location \"${NETCDF_INC}\" does not exist!"
+    fi
+fi # !NETCDF_INC
 # Checks for library functions.
+if test "${NETCDF_LIB}"; then
+    if test -d "${NETCDF_LIB}"; then
+	LDFLAGS="-L${NETCDF_LIB} ${LDFLAGS} "
+	as_ac_File=`$as_echo "ac_cv_file_${NETCDF_LIB}/libnetcdff.a" | $as_tr_sh`
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for ${NETCDF_LIB}/libnetcdff.a" >&5
+$as_echo_n "checking for ${NETCDF_LIB}/libnetcdff.a... " >&6; }
+if eval \${$as_ac_File+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  as_fn_error $? "cannot check for file existence when cross compiling" "$LINENO" 5
+if test -r "${NETCDF_LIB}/libnetcdff.a"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+eval ac_res=\$$as_ac_File
+	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+if eval test \"x\$"$as_ac_File"\" = x"yes"; then :
+  LDFLAGS="$LDFLAGS -lnetcdff"
+fi
+
+    else
+	echo "WARNING: NETCDF_LIB location \"${NETCDF_LIB}\" does not exist!"
+   fi
+fi # !NETCDF_LIB
+as_ac_File=`$as_echo "ac_cv_file_${NETCDF_ROOT}/lib/libnetcdff.a" | $as_tr_sh`
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for ${NETCDF_ROOT}/lib/libnetcdff.a" >&5
+$as_echo_n "checking for ${NETCDF_ROOT}/lib/libnetcdff.a... " >&6; }
+if eval \${$as_ac_File+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  test "$cross_compiling" = yes &&
+  as_fn_error $? "cannot check for file existence when cross compiling" "$LINENO" 5
+if test -r "${NETCDF_ROOT}/lib/libnetcdff.a"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+eval ac_res=\$$as_ac_File
+	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+$as_echo "$ac_res" >&6; }
+if eval test \"x\$"$as_ac_File"\" = x"yes"; then :
+  LDFLAGS="$LDFLAGS -lnetcdff"
+fi
+
+
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the Fortran 90 compiler ($FC $FCFLAGS $LDFLAGS) works" >&5
 $as_echo_n "checking whether the Fortran 90 compiler ($FC $FCFLAGS $LDFLAGS) works... " >&6; }
 cat > conftest.$ac_ext <<_ACEOF
 
 
         program conftest
-        integer, dimension(10) :: n
+        integer, dimension(9) :: n
         end
 
 
@@ -3045,6 +3244,8 @@ $as_echo "$as_me: WARNING: installation or configuration problem: lnetcdff not u
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
+
+FCFLAGS="$OPENMP_FCFLAGS $FCFLAGS "
 
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
