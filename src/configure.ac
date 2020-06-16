@@ -97,6 +97,5 @@ FCFLAGS="$OPENMP_FCFLAGS $FCFLAGS "
 
 AC_LANG_POP(Fortran)
 
-AC_CONFIG_FILES([Makefile
-                 src/Makefile])
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
