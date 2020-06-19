@@ -89,7 +89,7 @@ POST_UNINSTALL = :
 bin_PROGRAMS = interpola$(EXEEXT)
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/ax_f08_newunit.m4 \
+am__aclocal_m4_deps = $(top_srcdir)/autoconf/ax_f08_newunit.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
@@ -102,8 +102,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_interpola_OBJECTS = vars_dat_mod.$(OBJEXT) salidas.$(OBJEXT) \
-	calculos.$(OBJEXT) lee_files.$(OBJEXT) Interpola.$(OBJEXT)
+am_interpola_OBJECTS = vars_dat_mod.$(OBJEXT) Interpola.$(OBJEXT) \
+	calculos.$(OBJEXT) lee_files.$(OBJEXT) salidas.$(OBJEXT)
 interpola_OBJECTS = $(am_interpola_OBJECTS)
 interpola_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -160,8 +160,11 @@ ETAGS = etags
 CTAGS = ctags
 CSCOPE = cscope
 AM_RECURSIVE_TARGETS = cscope
-am__DIST_COMMON = $(srcdir)/Makefile.in AUTHORS COPYING ChangeLog \
-	INSTALL NEWS README depcomp install-sh missing
+am__DIST_COMMON = $(srcdir)/Makefile.in \
+	$(top_srcdir)/autoconf/install-sh \
+	$(top_srcdir)/autoconf/missing AUTHORS COPYING ChangeLog \
+	INSTALL NEWS README autoconf/install-sh autoconf/missing \
+	depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -206,6 +209,9 @@ LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
+NC_INC = @NC_INC@
+NC_LIB = @NC_LIB@
+NETCDF_CONFIG = @NETCDF_CONFIG@
 NETCDF_INC = @NETCDF_INC@
 NETCDF_LIB = @NETCDF_LIB@
 NETCDF_ROOT = @NETCDF_ROOT@
@@ -263,7 +269,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-interpola_SOURCES = vars_dat_mod.F90 salidas.F90 calculos.F90 lee_files.F90 Interpola.F90
+interpola_SOURCES = vars_dat_mod.F90 Interpola.F90 calculos.F90 lee_files.F90 salidas.F90 
 all: all-am
 
 .SUFFIXES:
@@ -274,15 +280,15 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
-	      echo ' cd $(srcdir) && $(AUTOMAKE) --gnu'; \
-	      $(am__cd) $(srcdir) && $(AUTOMAKE) --gnu \
+	      echo ' cd $(srcdir) && $(AUTOMAKE) --foreign'; \
+	      $(am__cd) $(srcdir) && $(AUTOMAKE) --foreign \
 		&& exit 0; \
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu Makefile
+	  $(AUTOMAKE) --foreign Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \

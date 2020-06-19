@@ -1,16 +1,29 @@
+#
 #                                               -*- Autoconf -*-
+# This is the autoconf configuration file for interpola
+# Process this file with autoconf to produce a configure script.
+#
+# To produce files: configure, Makefiles and Scripts
+#    $ automake
+#    $ autoconf
+#
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
 AC_INIT([interpola], [2.0], [agustin@atmosfera.unam.mx], , [https://github.com/JoseAgustin/interpola])
-AM_INIT_AUTOMAKE([1.11])
-
 # Define our M4 macro directory
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_AUX_DIR([autoconf])
+AM_INIT_AUTOMAKE([1.11 foreign])
 
+
+# Set default prefix (where directory bin is created)
+# This is the default top directory of the installation
+AC_PREFIX_DEFAULT(`pwd`)
 # Checks for programs.
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
+# Set language for configuration checks
+AC_LANG(Fortran)
 AC_PROG_FC
 # Make precious variables for ./configure --help
 AC_ARG_VAR(NETCDF_ROOT,[Root of netCDF installation or] (compile-time))
@@ -26,76 +39,107 @@ AC_FC_FREEFORM
 AC_OPENMP
 # Check for newunit option to open()
 AX_F08_NEWUNIT
+
 if test -z "${NETCDF_ROOT}"; then
-	NETCDF_CONFIG='nf-config'
-	NETCDF_ROOT="`nf-config --prefix`"
-	if test -z "${NETCDF_ROOT}"; then
-	echo "WARNING: nf-config --prefix  empty location trying nc-config"
-		  NETCDF_ROOT="`nc-config --prefix`"
-  fi
+  AC_CHECK_PROG([NETCDF_CONFIG],[nf-config],[nf-config])
+	# If not found, check for nc-config
+  AS_IF([test -z "${NETCDF_CONFIG}"],
+     [AC_CHECK_PROG([NETCDF_CONFIG],[nc-config],[nc-config])])
         LDFLAGS="`${NETCDF_CONFIG} --flibs` ${LDFLAGS}";
         FCFLAGS="-I`${NETCDF_CONFIG} --fflags` ${FCFLAGS}";
+				AC_PATH_PROG([NETCDF_ROOT], [ncdump])
+    		NETCDF_ROOT=`dirname $NETCDF_ROOT`   # Strip /ncdump
+    		NETCDF_ROOT=`dirname $NETCDF_ROOT`;  # Strip /bin
     else
 	NETCDF_CONFIG="${NETCDF_ROOT}/bin/nf-config"
         LDFLAGS="`${NETCDF_CONFIG} --flibs` ${LDFLAGS}";
         FCFLAGS="-I`${NETCDF_CONFIG} --fflags` ${FCFLAGS}";
     fi
+AC_MSG_NOTICE([setting netcdf root directory NETCDF_ROOT=$NETCDF_ROOT])
+AC_MSG_CHECKING([for the existence of the netcdf root directory])
+AS_IF([test -d $NETCDF_ROOT],[AC_MSG_RESULT([$NETCDF_ROOT])],
+    [AC_MSG_ERROR([directory $NETCDF_ROOT not found])])
+    
+# Set the netcdf compiler flags
+AC_MSG_CHECKING([for netCDF include directory])
+AS_IF([test -z "$NETCDF_INC"],[NETCDF_INC=$NETCDF_ROOT/include])
+AC_MSG_RESULT($NETCDF_INC)
+AC_MSG_CHECKING([for the existence of the netcdf include directory])
+AS_IF([test -d $NETCDF_INC],[AC_MSG_RESULT([ok])],
+    [AC_MSG_ERROR([directory $NETCDF_INC not found])])
+AC_MSG_CHECKING([for file netcdf.mod in the include directory])
+AS_IF([test -f $NETCDF_INC/netcdf.mod],
+   [AC_MSG_RESULT(ok)],
+   [AC_MSG_ERROR([File: netcdf.mod was not found in $NETCDF_INC
+   Probably the Fortran version of NetCDF is not correctly installed])])
+AS_IF([ test -z "{$NC_INC}"],[NC_INC=-I$NETCDF_INC])
 
-if test "${NETCDF_INC}"; then
-    if test -d "${NETCDF_INC}"; then
-	FCFLAGS="-I${NETCDF_INC} ${FCFLAGS} "
-	AC_CHECK_FILE([${NETCDF_INC}/netcdf.mod], [FCFLAGS="$FCFLAGS -I${NETCDF_INC}"], [])
-    else
-	echo "WARNING: NETCDF_INC location \"${NETCDF_INC}\" does not exist!"
+# Set the netcdf linker flags
+AC_MSG_CHECKING([for netCDF library directory])
+AS_IF([test "X$NETCDF_LIB" = "X"],[NETCDF_LIB=$NETCDF_ROOT/lib])
+AC_MSG_RESULT([$NETCDF_LIB])
+AS_IF([test ! -d $NETCDF_LIB],[AC_MSG_ERROR([No such directory: $NETCDF_LIB])])
+AS_IF([test "x$NC_LIB" = "x"],[AC_MSG_CHECKING([for -lnetcdff]);
+   AS_IF([test -f $NETCDF_LIB/libnetcdff.a],
+           [NC_LIB="-L$NETCDF_LIB -lnetcdff -lnetcdf";AC_MSG_RESULT([yes])],
+           [NC_LIB="-L$NETCDF_LIB -lnetcdf";AC_MSG_RESULT([no])
+   ])
+])
+#
+# NC_INC and NC_LIB contain the flags for compilation and linking and are
+# exported to Makefiles
+AC_SUBST(NC_INC)
+AC_SUBST(NC_LIB)
+#
+ax_netcdf_ok=yes
+
+# Check option "--enable-parallel"
+MSG_PARALLEL="(serial)"
+AC_ARG_ENABLE([parallel],
+  [AS_HELP_STRING([--enable-parallel],[turn on parallel execution (with OPENMP)])],
+  [case "${enableval}" in
+    yes) parallel=true ;;
+     no) parallel=false ;;
+      *) AC_MSG_ERROR([bad value ${enableval} for --enable-parallel]) ;;
+   esac], [parallel=true])
+   if test "${parallel}" = "true"; then
+    FCFLAGS="${OPENMP_FCFLAGS} ${FCFLAGS}";
+   else
+    FCFLAGS="${FCFLAGS}";
     fi
-fi # !NETCDF_INC
-# Checks for library functions.
-if test "${NETCDF_LIB}"; then
-    if test -d "${NETCDF_LIB}"; then
-	LDFLAGS="-L${NETCDF_LIB} ${LDFLAGS} "
-	AC_CHECK_FILE([${NETCDF_LIB}/libnetcdff.a], [LDFLAGS="$LDFLAGS -lnetcdff"], [])
-    else
-	echo "WARNING: NETCDF_LIB location \"${NETCDF_LIB}\" does not exist!"
-   fi
-fi # !NETCDF_LIB
-AC_CHECK_FILE([${NETCDF_ROOT}/lib/libnetcdff.a], [LDFLAGS="$LDFLAGS -lnetcdff"], [])
+#
 
-AC_MSG_CHECKING([whether the Fortran 90 compiler ($FC $FCFLAGS $LDFLAGS) works])
-AC_LINK_IFELSE([
-    AC_LANG_SOURCE([
-        program conftest
-        integer, dimension(9) :: n
-        end
-    ])
-],[
-    ax_cv_prog_fc_works="yes"
-    AC_MSG_RESULT([$ax_cv_prog_fc_works])
-],[
-    ax_cv_prog_fc_works="no"
-    AC_MSG_WARN([installation or configuration problem: Fortran 90 compiler cannot create executables.])
-])
-# The intel compiler sometimes generates these work.pc and .pcl files
-rm -f work.pc work.pcl
-AC_MSG_CHECKING([for -lnetcdff usage in $FC ])
-AC_LINK_IFELSE([
-    AC_LANG_SOURCE([
-        program conftest
-        use netcdf
-        integer :: ncid, status
-        !status=nf90_open(path="foo.nc",mode=nf90_nowrite,ncid)
-        end program
-    ])
-],[
-    ax_cv_prog_fc_works="yes"
-    AC_MSG_RESULT([$ax_cv_prog_fc_works])
-],[
-    ax_cv_prog_fc_works="no"
-    AC_MSG_WARN([installation or configuration problem: lnetcdff not useful.])
-])
-
-FCFLAGS="$OPENMP_FCFLAGS $FCFLAGS "
+AC_MSG_RESULT([FCFLAGS = ${FCFLAGS}])
 
 AC_LANG_POP(Fortran)
 
+# Set single precision (default r8)
+AC_ARG_WITH([r4],
+  [AS_HELP_STRING([--with-r4],[Compile in single precision (R4)])],
+  [with_r4=yes],[with_r4=no])
+AM_CONDITIONAL([WITH_R4], [test $with_r4 = yes])
+#
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
+# Write configuration on the screen
+AC_MSG_NOTICE([---------------------------------------------------------])
+AC_MSG_NOTICE([Configuration complete - $PACKAGE_NAME-$PACKAGE_VERSION $MSG_PARALLEL])
+AC_MSG_NOTICE([])
+AS_IF([test "x$NC_VERSION" != "x"],AC_MSG_NOTICE([Using $NC_VERSION]))
+#
+AC_MSG_NOTICE([Single precision:           --with-r4=$with_r4])
+AC_MSG_NOTICE([Fortran compiler:           FC=$FC])
+#
+AS_IF([test "$parallel" = "true"],
+AC_MSG_NOTICE([Enable parallel version:    --enable-parallel=yes]),
+AC_MSG_NOTICE([Enable parallel version:    --enable-parallel=no]))
+AC_MSG_NOTICE([Fortran flags:              FCFLAGS=$FCFLAGS])
+AC_MSG_NOTICE([Root directory of netcdf:   NETCDF=$NETCDF_ROOT])
+AC_MSG_NOTICE([Compiler flags for netcdf:  NC_INC=$NETCDF_INC])
+AC_MSG_NOTICE([Linker flags for netcdf:    NC_LIB=$NETCDF_LIB])
+AC_MSG_NOTICE([Install prefix:             --prefix=$prefix])
+AC_MSG_NOTICE([Executables install prefix: --exec_prefix=$exec_prefix])
+AC_MSG_NOTICE([Binary directory:           --bindir=$bindir])
+#
+AC_MSG_NOTICE([---------------------------------------------------------])
