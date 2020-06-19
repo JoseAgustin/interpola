@@ -79,7 +79,7 @@ AC_MSG_CHECKING([for netCDF library directory])
 AS_IF([test "X$NETCDF_LIB" = "X"],[NETCDF_LIB=$NETCDF_ROOT/lib])
 AC_MSG_RESULT([$NETCDF_LIB])
 AS_IF([test ! -d $NETCDF_LIB],[AC_MSG_ERROR([No such directory: $NETCDF_LIB])])
-AS_IF([test "x$NC_LIB" = "x"],[AC_MSG_CHECKING([for -lnetcdff]);
+AS_IF([test -z "$NC_LIB" ],[AC_MSG_CHECKING([for -lnetcdff]);
    AS_IF([test -f $NETCDF_LIB/libnetcdff.a],
            [NC_LIB="-L$NETCDF_LIB -lnetcdff -lnetcdf";AC_MSG_RESULT([yes])],
            [NC_LIB="-L$NETCDF_LIB -lnetcdf";AC_MSG_RESULT([no])
@@ -103,9 +103,9 @@ AC_ARG_ENABLE([parallel],
       *) AC_MSG_ERROR([bad value ${enableval} for --enable-parallel]) ;;
    esac], [parallel=true])
    if test "${parallel}" = "true"; then
-    FCFLAGS="${OPENMP_FCFLAGS} ${FCFLAGS}";
+    FCFLAGS="${OPENMP_FCFLAGS} ${FCFLAGS} ${NC_LIB}";
    else
-    FCFLAGS="${FCFLAGS}";
+    FCFLAGS="${FCFLAGS} ${NC_LIB}";
     fi
 #
 

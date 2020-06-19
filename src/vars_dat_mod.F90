@@ -5,39 +5,124 @@
 !
 !****************************************************************************
 !
-!  FUNCTIONS:
-!	Set up variables used during the process.
-!
-!
+!>	@brief
+!>	Set up variables used during the process.
+!>   @author  Jose Agustin Garcia Reynoso
+!>  @date  28-08-2012
 !****************************************************************************
-
+!> @par Emissions Inventories Variables
 module vars_dat
-! Emissions Inventories Variables
+!> Number of hours during the day
 integer,parameter :: nh =24
+!> Number of dimension input file
 integer:: NDIMS!=6
-integer :: zlev   ! Layer of emission (1 to 8)
-integer :: radm=0   ! number of emissions classes
-real,allocatable:: ei(:,:,:,:,:)  ! emissions by nx,ny,level,nh,radm
-real,allocatable:: ed(:,:,:,:,:)  ! emissions by nx,ny,level,nh,radm from NEW DOMAIN
-real,allocatable:: elat(:,:),elon(:,:),epob(:,:)! by nx,ny from emissions domain
-real,allocatable:: dlat(:,:),dlon(:,:),dpob(:,:)! by nx,ny from NEW DOMAIN
-real,allocatable ::xlon(:,:,:),xlat(:,:,:)! by nx,ny,nh emissions
-integer:: dix,djx,eix,ejx,grid_id
-integer:: julyr,julday,mapproj,iswater,islake,isice,isurban,isoilwater
+!> Number of emissions layers  (1 to 8)
+integer :: zlev
+!> number of emissions classes
+integer :: radm=0
+!> emissions input file dimensions @c nx, @c ny,@c level, @c nh, @c radm
+real,allocatable:: ei(:,:,:,:,:)
+!> emissions in new DOMAIN file dimensions @c nx, @c ny,@c level, @c nh, @c radm
+real,allocatable:: ed(:,:,:,:,:)
+!> Latitudes from input file emissions
+real,allocatable:: elat(:,:)
+!> Longitudes from input file emissions
+real,allocatable:: elon(:,:)
+!> Density population from input file emissions
+real,allocatable:: epob(:,:)
+!> Latitudes in new domain @c nx, @c ny from new domain @c ed
+real,allocatable:: dlat(:,:)
+!> Longitudes in new domain @c nx, @c ny from new domain @c ed
+real,allocatable:: dlon(:,:)
+!> Density population in new domain @c nx, @c ny from new domain @c ed
+real,allocatable:: dpob(:,:)
+!> Longitudes in emissions domain @c nx, @c ny
+real,allocatable ::xlon(:,:,:)
+!> Latitudes in emissions domain @c nx, @c ny
+real,allocatable :: xlat(:,:,:)
+!> Number of values in longitude in new file
+integer :: dix
+!> Number of values in latitude in new file
+integer :: djx
+!> Number of values in longitude in emissions file
+integer :: eix
+!> Number of values in latitude in emissions file
+integer :: ejx
+!> Domain number (d01, d02, etc.)
+integer :: grid_id
+!> Julian year in emissions file
+integer:: julyr
+!> Julian day in emissions file
+integer:: julday
+!> Map projection type
+integer:: mapproj
+!> Value for land use water
+integer:: iswater
+!> Value for land use lake
+integer:: islake
+!> Value for land use ice
+integer:: isice
+!> Value for land use urban
+integer :: isurban
+!> Value for land use ice
+integer:: isoilwater
+!> ID unlimit variable (time)
 integer:: unlimdimid
-real :: cenlat,cenlon, dx,dy,dxe,dye
-real :: trulat1, trulat2,moadcenlat,stdlon,pollat,pollon
-real :: gmt,num_land_cat
+!> Central latitude
+real :: cenlat
+!> Central longitude
+real :: cenlon
+!> Grid dimension in m output file @a x
+real :: dx
+!> Grid dimension in m output file @a y
+real :: dy
+!> Grid dimension in m emissions file @a x
+real :: dxe
+!> Grid dimension in m emissions file @a y
+real :: dye
+!> True latitud lower
+real :: trulat1
+!> True latitud higer
+real :: trulat2
+!> Mother of all domains center latitude
+real :: moadcenlat
+!>  Standard longitude
+real :: stdlon
+!> The pole latitude.
+real :: pollat
+!> The pole longitude.
+real :: pollon
+!> GMT time
+real :: gmt
+!> Number of land categories
+real:: num_land_cat
+!> Day type (lun, mar, mie, jue, vie, sab, dom)
 character(len=3) :: cday
-character(len=19)::mminlu,map_proj_char
+!> Land use input description
+character(len=19)::mminlu
+!> Map projection description
+character(len=19):: map_proj_char
+!> Counter for time in file
 character(len=19):: iTime
+!> Title description input/output files for V4 should have V4.0
 character(len=38):: Title
+!> Start date in input emissions file
 character(len=19),dimension(1,1)::Times
-character (len=19) :: current_date,mecha
+!> Current date in input emissions file
+character (len=19) :: current_date
+!> Chemical mechanism name
+character (len=19) :: mecha
+!> Vector of dimensions descriptions
 character (len=19),allocatable::sdim(:)
+!> Emissions description long
 character(len=11),allocatable ::ename(:)
-character(len=50),allocatable ::cname(:),cunits(:)
+!> Emissions name variable short
+character(len=50),allocatable ::cname(:)
+!> Units in emissions vars
+character(len=50),allocatable ::cunits(:)
+!> true if input var is an emissions variable
 logical,allocatable :: tvar(:)
+!> true if input emissions files contains density population
 logical :: tpob
 ! Domain Variables
 common /domain/ zlev, dix,djx,eix,ejx,dx,dy,dxe,dye,rama,Title

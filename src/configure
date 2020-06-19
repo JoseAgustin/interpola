@@ -3072,49 +3072,7 @@ $as_echo "$ac_cv_prog_fc_openmp" >&6; }
 
 
 # Check for newunit option to open()
-
-
-
-ac_ext=${ac_fc_srcext-f}
-ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
-ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_fc_compiler_gnu
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for NEWUNIT support" >&5
-$as_echo_n "checking for NEWUNIT support... " >&6; }
-cat > conftest.$ac_ext <<_ACEOF
-
-       program conftest
-       integer :: i
-       open(newunit=i,file='test')
-       end program conftest
-_ACEOF
-if ac_fn_fc_try_compile "$LINENO"; then :
-  ax_f08_newunit=yes
-else
-  ax_f08_newunit=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-
-ac_ext=${ac_fc_srcext-f}
-ac_compile='$FC -c $FCFLAGS $ac_fcflags_srcext conftest.$ac_ext >&5'
-ac_link='$FC -o conftest$ac_exeext $FCFLAGS $LDFLAGS $ac_fcflags_srcext conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_fc_compiler_gnu
-
-
-if test "x$ax_f08_newunit" = "xyes"; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-
-$as_echo "#define HAVE_NEWUNIT 1" >>confdefs.h
-
-else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
+AX_F08_NEWUNIT
 
 if test -z "${NETCDF_ROOT}"; then
   # Extract the first word of "nf-config", so it can be a program name with args.
@@ -3294,7 +3252,7 @@ $as_echo "$NETCDF_LIB" >&6; }
 if test ! -d $NETCDF_LIB; then :
   as_fn_error $? "No such directory: $NETCDF_LIB" "$LINENO" 5
 fi
-if test "x$NC_LIB" = "x"; then :
+if test -z "$NC_LIB" ; then :
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for -lnetcdff" >&5
 $as_echo_n "checking for -lnetcdff... " >&6; };
    if test -f $NETCDF_LIB/libnetcdff.a; then :
@@ -3329,9 +3287,9 @@ else
 fi
 
    if test "${parallel}" = "true"; then
-    FCFLAGS="${OPENMP_FCFLAGS} ${FCFLAGS}";
+    FCFLAGS="${OPENMP_FCFLAGS} ${FCFLAGS} ${NC_LIB}";
    else
-    FCFLAGS="${FCFLAGS}";
+    FCFLAGS="${FCFLAGS} ${NC_LIB}";
     fi
 #
 

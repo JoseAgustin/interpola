@@ -1,22 +1,16 @@
-!
-!        salidas.f90
-!
-!  FUNCTIONS:
-!
-!    File_out  - Writes Emission inventory in a new mesh to interpolate
-!
-!    crea_attr - creates attributes for gas variables
-!    crea_attr2 -creates attributes for aerosol variables
-!
-!
-!	Created by Agustin Garcia on 28/08/2012.
-!
+!> @brief
+!>    file_out creates the output file and writes the interpolated emissions from the new mesh
+!>@details
+!>  Uses the attributes from wrfinput file
+!>
+!>  Uses current_date from wrfchemin file
+!>	@author Agustin Garcia
+!>  @date 28/08/2012
 !****************************************************************************
 !  Proposito:
 !            Guarda los datos del inventario interpolado para el
 !            mecanismo RADM2 en formato netcdf
 !***************************************************************************
-
 subroutine File_out
     use netcdf
     use vars_dat
@@ -197,12 +191,25 @@ contains
 ! C     RRRR  EEEE  AAAAA    AAAAA   T     T   RRRR
 ! CC    R  R  E     A   A    A   A   T     T   R  R
 !  CCCC R   R EEEEE A   A____A   A   T     T   R   R
+!> @brief creates attributes for gas variables and aerosol variables
+!>	@author Agustin Garcia
+!>  @date 28/08/2012
 subroutine crea_attr(ncid,idm,dimids,svar,cname,cunits,id_var)
     implicit none
-    integer , INTENT(IN) ::ncid,idm
+    !> netcdf file unit id
+    integer , INTENT(IN) ::ncid
+    !> Number of dimensions in @c dimids
+    integer, INTENT(IN)  ::idm
+    !> ID from variable to store
     integer, INTENT(out) :: id_var
+    !> Array with ID for each dimension
     integer, INTENT(IN),dimension(idm):: dimids
-    character(len=*), INTENT(IN)::svar,cname,cunits
+    !> Short name of variable to store
+    character(len=*), INTENT(IN):: svar
+    !> Description of variable to store
+    character(len=*), INTENT(IN):: cname
+    !> Units for vatiable to store
+    character(len=*), INTENT(IN):: cunits
 
     call check( nf90_def_var(ncid, svar, NF90_REAL, dimids,id_var ) )
     ! Assign  attributes

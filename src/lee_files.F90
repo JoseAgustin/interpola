@@ -1,21 +1,17 @@
-
+!***************************************************************************
 !
 !    lee_files.f90
 !
-!  FUNCTIONS:
-!
-!    File_reading  - Reads Emission inventory and Mesh to interpolate
-!       check      - in case of error prints error messages
-!
-!	Created by Agustin Garcia on 28/08/2012.
-!
-!****************************************************************************
-!
-!  PROGRAM: Interpola
-!
-!  PURPOSE:  Reads emissions inventory from wrfchemin.nc and wrfinput_d01
-!
-!   version 0.1  27 agosto 2012
+!> @brief Reads Emission inventory and Mesh to interpolate
+!> @details Reads from the emission wrfchemin file the variables and attributes
+!> put emissions in @c ei array and coordinates in @c xlat, @c xlon.
+!>
+!> reads the new mesh from wrfinput, stores the new coordinates @c dlat, @c dlon
+!>
+!> @author Agustin Garcia
+!> @date 28/08/2012.
+!>   @version  2.0
+!>   @copyright Universidad Nacional Autonoma de Mexico.
 !
 !***************************************************************************
 subroutine file_reading
@@ -243,6 +239,9 @@ end subroutine file_reading
 !  CCCC  H   H  EEEEE   CCCC  K   K
 
 subroutine check(status)
+!> @brief Evaluation of netcdf status
+!> @details In case of error prints error message description
+!> @date 28/08/2012.
     USE netcdf
     integer, intent ( in) :: status
     if(status /= nf90_noerr) then

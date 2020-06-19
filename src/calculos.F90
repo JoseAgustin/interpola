@@ -7,18 +7,19 @@
 !
 !  FUNCTIONS:
 !
-!    conversion  -  Do interpolation in a new Mesh
-!
-!
-!****************************************************************************
-!
-!
-!  PURPOSE:  Interpolates the emissions into new mesh using areas
-!            
-!
+!> @brief  It does the interpolation into the new Mesh
+!> @details   Interpolates the emissions into new mesh conserving mass
+!> uses emission area and thte fractional area between the original
+!> and new grid to set the emissions.
+!>
+!> Computes the mass in the original mesh and compares against the new mesh,
+!> if both domains cover the same area the ratio @c xemis/ @c xmas should be 1
+!>   @author  Jose Agustin Garcia Reynoso
+!>   @date  28/08/2012.
+!>   @version  2.0
 !****************************************************************************
 subroutine conversion
-!$ use omp_lib  
+!$ use omp_lib
 use vars_dat
 implicit none
 integer :: i,j,ii,jj,kl,l
