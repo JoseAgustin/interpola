@@ -103,10 +103,11 @@ AC_ARG_ENABLE([parallel],
       *) AC_MSG_ERROR([bad value ${enableval} for --enable-parallel]) ;;
    esac], [parallel=true])
    if test "${parallel}" = "true"; then
-    FCFLAGS="${OPENMP_FCFLAGS} ${FCFLAGS} ${NC_LIB}";
+    FCFLAGS="${FCFLAGS} ${NC_LIB}";
    else
     FCFLAGS="${FCFLAGS} ${NC_LIB}";
     fi
+AM_CONDITIONAL([WITH_OMPI], [test "x$parallel" = "xtrue"])
 #
 
 AC_MSG_RESULT([FCFLAGS = ${FCFLAGS}])
@@ -135,6 +136,7 @@ AS_IF([test "$parallel" = "true"],
 AC_MSG_NOTICE([Enable parallel version:    --enable-parallel=yes]),
 AC_MSG_NOTICE([Enable parallel version:    --enable-parallel=no]))
 AC_MSG_NOTICE([Fortran flags:              FCFLAGS=$FCFLAGS])
+AC_MSG_NOTICE([Fortran OPENMPI:            OPENMP_FCFLAGS=$OPENMP_FCFLAGS])
 AC_MSG_NOTICE([Root directory of netcdf:   NETCDF=$NETCDF_ROOT])
 AC_MSG_NOTICE([Compiler flags for netcdf:  NC_INC=$NETCDF_INC])
 AC_MSG_NOTICE([Linker flags for netcdf:    NC_LIB=$NETCDF_LIB])

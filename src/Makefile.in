@@ -87,6 +87,9 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = interpola$(EXEEXT)
+
+# Parallel version
+@WITH_OMPI_TRUE@am__append_1 = $(OPENMP_FCFLAGS)
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -268,7 +271,13 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-interpola_SOURCES = vars_dat_mod.F90 Interpola.F90 calculos.F90 lee_files.F90 salidas.F90 
+#
+# Compiler flags
+AM_FCFLAGS = $(NC_INC) $(am__append_1)
+
+# Additional files to be cleaned with 'make clean'
+CLEANFILES = *.o *.mod *~
+interpola_SOURCES = vars_dat_mod.F90 Interpola.F90 calculos.F90 lee_files.F90 salidas.F90
 all: all-am
 
 .SUFFIXES:
@@ -625,6 +634,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)

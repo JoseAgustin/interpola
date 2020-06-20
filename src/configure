@@ -591,6 +591,8 @@ LTLIBOBJS
 LIBOBJS
 WITH_R4_FALSE
 WITH_R4_TRUE
+WITH_OMPI_FALSE
+WITH_OMPI_TRUE
 NC_LIB
 NC_INC
 NETCDF_CONFIG
@@ -3287,10 +3289,18 @@ else
 fi
 
    if test "${parallel}" = "true"; then
-    FCFLAGS="${OPENMP_FCFLAGS} ${FCFLAGS} ${NC_LIB}";
+    FCFLAGS="${FCFLAGS} ${NC_LIB}";
    else
     FCFLAGS="${FCFLAGS} ${NC_LIB}";
     fi
+ if test "x$parallel" = "xtrue"; then
+  WITH_OMPI_TRUE=
+  WITH_OMPI_FALSE='#'
+else
+  WITH_OMPI_TRUE='#'
+  WITH_OMPI_FALSE=
+fi
+
 #
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: FCFLAGS = ${FCFLAGS}" >&5
@@ -3484,6 +3494,10 @@ else
   am__EXEEXT_FALSE=
 fi
 
+if test -z "${WITH_OMPI_TRUE}" && test -z "${WITH_OMPI_FALSE}"; then
+  as_fn_error $? "conditional \"WITH_OMPI\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
 if test -z "${WITH_R4_TRUE}" && test -z "${WITH_R4_FALSE}"; then
   as_fn_error $? "conditional \"WITH_R4\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
@@ -4539,6 +4553,8 @@ $as_echo "$as_me: Enable parallel version:    --enable-parallel=no" >&6;}
 fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: Fortran flags:              FCFLAGS=$FCFLAGS" >&5
 $as_echo "$as_me: Fortran flags:              FCFLAGS=$FCFLAGS" >&6;}
+{ $as_echo "$as_me:${as_lineno-$LINENO}: Fortran OPENMPI:            OPENMP_FCFLAGS=$OPENMP_FCFLAGS" >&5
+$as_echo "$as_me: Fortran OPENMPI:            OPENMP_FCFLAGS=$OPENMP_FCFLAGS" >&6;}
 { $as_echo "$as_me:${as_lineno-$LINENO}: Root directory of netcdf:   NETCDF=$NETCDF_ROOT" >&5
 $as_echo "$as_me: Root directory of netcdf:   NETCDF=$NETCDF_ROOT" >&6;}
 { $as_echo "$as_me:${as_lineno-$LINENO}: Compiler flags for netcdf:  NC_INC=$NETCDF_INC" >&5

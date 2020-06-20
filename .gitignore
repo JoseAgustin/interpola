@@ -3,6 +3,7 @@
 *.f
 .DS_Store
 .tmpfile
+*.log
 wrfinp*
 interpola.exe
 wrfchemi*
