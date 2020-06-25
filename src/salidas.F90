@@ -193,10 +193,10 @@ contains
 !  CCCC R   R EEEEE A   A____A   A   T     T   R   R
 !> @brief creates attributes for gas variables and aerosol variables
 !>	@author Agustin Garcia
-!>  @date 28/08/2012
+!> @date 28/08/2012
 subroutine crea_attr(ncid,idm,dimids,svar,cname,cunits,id_var)
     implicit none
-    !> netcdf file unit id
+    !> netCDF ID, from a previous call to NF90_OPEN or NF90_CREATE
     integer , INTENT(IN) ::ncid
     !> Number of dimensions in @c dimids
     integer, INTENT(IN)  ::idm
@@ -208,7 +208,7 @@ subroutine crea_attr(ncid,idm,dimids,svar,cname,cunits,id_var)
     character(len=*), INTENT(IN):: svar
     !> Description of variable to store
     character(len=*), INTENT(IN):: cname
-    !> Units for vatiable to store
+    !> Units for variable to store
     character(len=*), INTENT(IN):: cunits
 
     call check( nf90_def_var(ncid, svar, NF90_REAL, dimids,id_var ) )

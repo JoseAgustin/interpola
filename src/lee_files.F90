@@ -1,8 +1,8 @@
-!***************************************************************************
+!**********************************************************************
 !
 !    lee_files.f90
 !
-!> @brief Reads Emission inventory and Mesh to interpolate
+!> @brief Reads Emission inventory and the new Mesh to interpolate emissions
 !> @details Reads from the emission wrfchemin file the variables and attributes
 !> put emissions in @c ei array and coordinates in @c xlat, @c xlon.
 !>
@@ -237,11 +237,12 @@ end subroutine file_reading
 ! C      HHHHH  EEE   C       KK
 ! CC     H   H  E      CC     K K
 !  CCCC  H   H  EEEEE   CCCC  K   K
-
-subroutine check(status)
 !> @brief Evaluation of netcdf status
 !> @details In case of error prints error message description
+!> @param status An error status that might have been returned from a previous call to some netCDF function
 !> @date 28/08/2012.
+subroutine check(status)
+
     USE netcdf
     integer, intent ( in) :: status
     if(status /= nf90_noerr) then
