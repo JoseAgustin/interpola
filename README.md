@@ -1,11 +1,11 @@
 ## Interpola
-Emission Interpolation to a new mesh.
+Emission Interpolation to a new mesh by using a conservative flux method
 
 Based on the wrfinput and wrfchem emissions inventory
 
 input files:
 
-            wrfchemin.nc  ! 12 H emission file to be interpolated (0 to 11 H or 12 to 23 H)
+            wrfchemin.nc  ! A 12 hours emission file to be interpolated (0 to 11 hour or 12 to 23 hour)
             wrfinput      ! Domain where emissions will be interpolated
 
 output file:

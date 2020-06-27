@@ -1,37 +1,40 @@
-05de88b2728c3208273aec6b4b7428305a79ad8c Autotools update
-729689a8872d94c34cd7e4eba8328fddd0b03836 Documentation update
-d9d803bdebe7cd5441639b7722f978298b795d7e Update autotools
-d6b29cb045b0158f5eb15cc556b2130ed84aa089 Update log
-6c35f9989929fff7821b51765bcfc1ea6565d225 Cleaning directory
-29bdd15aeffcc939f765bea382f1c07f81cca3ec Update Auto configuration
-838fd0625ea84b100277745189541b7b74974cbb log update
-b93e94ed6df4d9402f6c0662b620685b8e6afcf1 Auto configuration
-c1cbf1c81083fbd29f1cfa2bebbc4670e0b890db Merge branch 'master' of github.com:JoseAgustin/interpola
-fecf7f5b2bc7448c08d1a285f7fd05b70e071377 file copy
-bfb51f37118e2fda64506567c877d6fa70ba8326 Auto configuration
-f2920f52b40177a53c20679ac6603705384acff4 Update README.md
-73d90225f6c5ce0da86c1542d224e9e89ede9713 Update 2 README.md
-3b40a7f824b90c4fa92dd7bf3902a3c5bdd41c4b output figure update
-52f1f3b866b094bcd2333ceb0f850bcece2f1756 Update README.md
-78a04cec9aae57af36ba6068671a11f7a585d7b3 output figure
-91449171454183b7836a471e85e717064236ca52 images
-2fd041c46b68061e84ad80e1b614e262a8b64df1 README.md update
-27c6d1bef86fbc125e7e203a71ade1e89c4eafed Readme update
-122e361a2dd93482caf0e566b902c830dec12b79 includes population
-2cfcdf40d9f4883503d7a699895b2b02889e46a8 Clean
-d9bab24fe8ade0b4da4882715a075345097c8948 For any mechanism
-007a11c5e5b106e85e40989e270438cb7f7d91d1 For GNU
-e0c1cd9e625a81955b0b692ac3d9774ef1a08c37 Parallel OMP
-b6223e8b24cf4f60e6d1c1d068211081734cf3d7 Make fil update
-e2c205d53ddea5388eb3cc534e2e5bc77eac75ad Makefiles update
-c6edae8f332168fed02fe5b06989fcce99a4b688 Make update
-3a915ff0b1dbf686e1a543c258c92e406862e9c5 Update in files
-bf26b1e03b3f1bb748f034d60c642f63f25796f5 for golfo
-c95bb16a34d92a6b87ef78457bafc1e7b3e102fc Merge branch 'master' of github.com:JoseAgustin/interpola
-e23e923a6b817f56a2e0eaf68a6cc71b3aeb659b actualiza
-ef2071144678ce839c46c54415e84d02cd8bd089 license
-a30c77e30012285bb517e3a9e80eed0d98231160 Update ignore files
-c0ad6ea94a086d1ecd164f2d3398cdc5bb7cb0e3 Reading and storing additional vars
-66b3b928b1ef42a8f90eae79caf4f798a98315ee Documentation
-aeb749ef45fee1dab6b22ba88331de495718847f Update gitignore
-39e0c6cf66c9e159e13f353b1067df061bd544b3 first commit
+d9cee95 (HEAD -> master, origin/master, origin/HEAD) Update configuration file
+1562101 Update in documentation
+1fcf791 Log update
+05de88b Autotools update
+729689a Documentation update
+d9d803b Update autotools
+d6b29cb Update log
+6c35f99 Cleaning directory
+29bdd15 Update Auto configuration
+838fd06 log update
+b93e94e Auto configuration
+c1cbf1c Merge branch 'master' of github.com:JoseAgustin/interpola
+fecf7f5 file copy
+bfb51f3 Auto configuration
+f2920f5 Update README.md
+73d9022 Update 2 README.md
+3b40a7f output figure update
+52f1f3b Update README.md
+78a04ce output figure
+9144917 images
+2fd041c README.md update
+27c6d1b Readme update
+122e361 includes population
+2cfcdf4 (tag: log, tag: V2.0) Clean
+d9bab24 For any mechanism
+007a11c For GNU
+e0c1cd9 Parallel OMP
+b6223e8 (tag: v1.0) Make fil update
+e2c205d Makefiles update
+c6edae8 Make update
+3a915ff Update in files
+bf26b1e for golfo
+c95bb16 Merge branch 'master' of github.com:JoseAgustin/interpola
+e23e923 actualiza
+ef20711 license
+a30c77e Update ignore files
+c0ad6ea Reading and storing additional vars
+66b3b92 Documentation
+aeb749e Update gitignore
+39e0c6c first commit

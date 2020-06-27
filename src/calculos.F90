@@ -9,7 +9,7 @@
 !
 !> @brief  It does the interpolation into the new Mesh
 !> @details   Interpolates the emissions into new mesh conserving mass
-!> uses emission area and thte fractional area between the original
+!> uses emission area and the fractional area between the original
 !> and new grid to set the emissions.
 !>
 !> Computes the mass in the original mesh and compares against the new mesh,
@@ -17,13 +17,14 @@
 !>   @author  Jose Agustin Garcia Reynoso
 !>   @date  28/08/2012.
 !>   @version  2.0
+
 !****************************************************************************
 subroutine conversion
 !$ use omp_lib
 use vars_dat
 implicit none
 integer :: i,j,ii,jj,kl,l
-integer :: ih
+integer :: ih !>  horus in day
 real*8   :: ylat1,ylat2,xlon1,xlon2
 real*8   :: elat1,elat2,elon1,elon2
 real*8   :: alat,alon,area,tot
@@ -52,13 +53,13 @@ print *, "*****  Doing interpolations ****"
             &      (min(xlon2,elon2)-max(xlon1,elon1))/(elon2-elon1)
             area=max(0.,alat*alon)* tot!
             if( area.gt.0.) then
-            do  ih=1,size(ed,dim=4)
-              do l=1,size(ed,dim=3)
-                do  kl=1,size(ed,dim=5)
+            do l=1,size(ed,dim=3) ! compuesto
+              do  ih=1,size(ed,dim=4) !hora
+                do  kl=1,size(ed,dim=5) ! altura
                 if (tvar(kl)) ed(i,j,l,ih,kl)=ed(i,j,l,ih,kl)+ei(ii,jj,l,ih,kl)*area
                 end do ! kl
-              end do ! l
-            end do  ! ih
+              end do ! ih
+            end do  ! l
             if(tpob)dpob(i,j)=dpob(i,j)+epob(ii,jj)*area
             end if
             end do  ! jj

@@ -11,10 +11,10 @@
 !>  @date  28-08-2012
 !****************************************************************************
 !> @par Emissions Inventories Variables
+!> @param nh Number of hours during the day
 module vars_dat
-!> Number of hours during the day
 integer,parameter :: nh =24
-!> Number of dimension input file
+!> Number of dimension in wrfinput file
 integer:: NDIMS!=6
 !> Number of emissions layers  (1 to 8)
 integer :: zlev
@@ -48,7 +48,7 @@ integer :: djx
 integer :: eix
 !> Number of values in latitude in emissions file
 integer :: ejx
-!> Domain number (d01, d02, etc.)
+!> Domain number (d01, d02, etc.) from wrfinput
 integer :: grid_id
 !> Julian year in emissions file
 integer:: julyr

@@ -1,4 +1,0 @@
-
-Se requiere el archivo de emisiones wrfchemi_00z_d01
-y el archivo de entrada wrfinput_d01
-

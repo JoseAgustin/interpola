@@ -4,6 +4,13 @@
 .DS_Store
 .tmpfile
 *.log
+*.tex
+*.idx
+*.lig
+*.ind
+*.out
+*.toc
+*.sty
 wrfinp*
 interpola.exe
 wrfchemi*
