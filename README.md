@@ -30,7 +30,7 @@ Grid with letters represents the new domain (it has coordinates dlat,dlon) and g
 
 For the new domain to interpolate the emissions the following variables are set:
  
- |  New domain   |   Emissions dimain     |
+ |  New domain   |   Emissions domain     |
  |--- | ---|
  | `ylat1=.5*(dlat(i,j-1)+dlat(i,j))` | `elat1= 0.5*(elat(ii,jj)+elat(ii,jj-1))` |
  | `ylat2=.5*(dlat(i,j+1)+dlat(i,j))` | `elat2= 0.5*(elat(ii,jj)+elat(ii,jj+1))` |
@@ -45,7 +45,7 @@ The following procedure is followed for obtainig the new emissions in the new gr
             alon=(min(xlon2,elon2)-max(xlon1,elon1))
             area=max(0.,alat*alon)
 
-![Computation](/assets/images/mallado.gif "Emissions domain asignationn")
+![Computation](/assets/images/mallado.gif "Emissions domain asignation")
 
 
 Emissions in cell **A** are a flux emission fraction from 1, for **B** a flux  fractions from 1 and 2, and for **C** fluxes from 2 and 3, **F** fluxes from 1 and 6, **G** from 1, 2, 6 and 7 and **H** from 2, 3, 4, 7, 8 and 9, and so on.
