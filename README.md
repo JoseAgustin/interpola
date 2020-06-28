@@ -21,3 +21,8 @@ wrfchemin.nc - file contain emissions starting with "E_"
 
 ![Emissions result](/assets/images/output.png "Emissions in new domain")
 
+## Mass conservative interpolation in ovelaping grids
+Emissions Inventories are generatred for represent global, reional or local emissions, air quality models are dislayed
+in a different grid than the emissions because emissions are a flux it is necesary to use a mass conservative interpolation
+in order to avoid  inconsistencies in the emissions.
+
