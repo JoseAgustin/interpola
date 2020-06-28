@@ -26,7 +26,9 @@ Emissions Inventories are generatred for represent global, regional or local emi
 
 ![Grids overlaped](/assets/images/malla1.png "Modeling domain and emissions domain")
 
-Grid with letters represents the new domain (it has coordinates dlat,dlon) and grid with numbers is the emissions (it has coordinates elat,elon). For N emission there are N+1 coordinates in each axis.
+Grid with letters represents the new domain (it has coordinates dlat,dlon) and grid with numbers is the emissions (it has coordinates elat,elon). For N emission there are N+1 coordinates in each axis. The following figure presents the locations of the coordinates in each mesh.
+
+![Grids overlaped with coordinates](/assets/images/malla2.png "Modeling domain (dlat,dlon) and emissions domain (elat,elon)")
 
 For the new domain to interpolate the emissions the following variables are set:
  
@@ -37,7 +39,7 @@ For the new domain to interpolate the emissions the following variables are set:
  | `xlon1=.5*(dlon(i-1,j)+dlon(i,j))` | `elon1= 0.5*(elon(ii,jj)+elon(ii-1,jj))` |
  | `xlon2=.5*(dlon(i+1,j)+dlon(i,j))` | `elon2= 0.5*(elon(ii,jj)+elon(ii+1,jj))` |
 
-![Grids overlaped with coordinates](/assets/images/malla2.png "Modeling domain (dlat,dlon) and emissions domain (elat,elon)")
+ the following figure presents the locations of the coordinates in each mesh.
 
 The following procedure is followed for obtainig the new emissions in the new grid:
 
