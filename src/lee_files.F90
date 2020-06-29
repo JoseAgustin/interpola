@@ -25,16 +25,20 @@ character (len = *), parameter :: FILE_NAME = "wrfchemin.nc" !Inventory
 integer :: i,j,l,it,ikk
 integer :: ncid,nvars,xtype
 integer :: lat_varid,lon_varid,btDimID
+integer :: lat_varid_stag,lon_varid_stag
 integer :: latVarId, lonVarId
 integer :: pobId
 integer :: land_catID
 integer :: dimlon,dimlat,dimtime
+integer :: dimlos,dimlas !stagged variables
 integer :: nglobalatts,ndimsv=0,dimids(NF90_MAX_VAR_DIMS)
 integer,ALLOCATABLE:: id_var(:),dim(:),id_dim(:)
 real,ALLOCATABLE :: ea(:,:,:,:)
 character (len= NF90_MAX_NAME ) :: name
 character (len = *), parameter :: LAT_NAME = "XLAT"
 character (len = *), parameter :: LON_NAME = "XLONG"
+character (len = *), parameter :: LAT_STAG = "XLAT_V"
+character (len = *), parameter :: LON_STAG = "XLONG_U"
 character (len = *), parameter :: REC_NAME = "Times"
 character (len = *), parameter :: POB_NAME = "POB"
 tpob=.false.
@@ -51,6 +55,7 @@ tpob=.false.
 ! Get the vars ID of the latitude and longitude coordinate variables.
     call check( nf90_inq_varid(ncid, LAT_NAME, lat_varid) )
     call check( nf90_inq_varid(ncid, LON_NAME, lon_varid) )
+
     if( nf90_inq_varid(ncid, POB_NAME, pobId).eq.nf90_noerr) then
        print *,"  * Contains Population vars"
        tpob=.true.
@@ -150,6 +155,8 @@ tpob=.false.
     call check(nf90_open("wrfinput", NF90_NOWRITE, ncid))
     call check(nf90_inq_dimid(ncid, "south_north", lat_varid))
     call check(nf90_inq_dimid(ncid, "west_east", lon_varid))
+    call check( nf90_inq_dimid(ncid, "south_north_stag", lat_varid_stag) )
+    call check( nf90_inq_dimid(ncid, "west_east_stag", lon_varid_stag) )
     if (nf90_inq_dimid(ncid, "bottom_top",btDimID).eq.nf90_noerr)then
         print *,'   Dimension bottom_top'
     else
@@ -163,30 +170,36 @@ tpob=.false.
     end if
     ! Dimensiones
     call check(nf90_inquire_dimension(ncid, lon_varid,name,dimlon))
+    print *,"LON_STAG"
+    call check(nf90_inquire_dimension(ncid, lon_varid_stag,name,dimlos))
     !print *,dimlon,name
     call check(nf90_inquire_dimension(ncid, lat_varid,name,dimlat))
+    print *,"LAT_STAG"
+    call check(nf90_inquire_dimension(ncid, lat_varid_stag,name,dimlas))
+
+
     !print *,dimlat,name
 
-    if(.not.ALLOCATED(XLON)) allocate (XLON(dimlon ,dimlat,1))
-    if(.not.ALLOCATED(XLAT)) allocate (XLAT(dimlon ,dimlat,1))
-    if(.not.ALLOCATED(dlon)) allocate (dlon(dimlon ,dimlat))
-    if(.not.ALLOCATED(dlat)) allocate (dlat(dimlon ,dimlat))
+    if(.not.ALLOCATED(XLON)) allocate (XLON(dimlos ,dimlat,1))
+    if(.not.ALLOCATED(XLAT)) allocate (XLAT(dimlon ,dimlas,1))
+    if(.not.ALLOCATED(dlon)) allocate (dlon(dimlos ,dimlat))
+    if(.not.ALLOCATED(dlat)) allocate (dlat(dimlon ,dimlas))
     if(.not.ALLOCATED(dpob)) allocate (dpob(dimlon, dimlat))
 
-    if(nf90_inq_varid(ncid, "XLAT_M", latVarId).eq. nf90_noerr) then
-        print *,"XLAT_M"
+    if(nf90_inq_varid(ncid, "XLAT_V", latVarId).eq. nf90_noerr) then
+        print *,"XLAT_V"
     else
         call check(nf90_inq_varid(ncid, "XLAT", latVarId))
         print *,"XLAT"
     end if
-    if(nf90_inq_varid(ncid, "XLONG_M", lonVarId).eq. nf90_noerr) then
-        print *,"XLONG_M"
+    if(nf90_inq_varid(ncid, "XLONG_U", lonVarId).eq. nf90_noerr) then
+        print *,"XLONG_U"
     else
         call check(nf90_inq_varid(ncid, "XLONG", lonVarId))
         print *,"XLONG"
     end if
-    call check(nf90_get_var(ncid, latVarId,xlat,start=(/1,1,1/),count=(/dimlon,dimlat,1/)))
-    call check(nf90_get_var(ncid, lonVarId,xlon,start=(/1,1,1/),count=(/dimlon,dimlat,1/)))
+    call check(nf90_get_var(ncid, latVarId,xlat,start=(/1,1,1/),count=(/dimlon,dimlas,1/)))
+    call check(nf90_get_var(ncid, lonVarId,xlon,start=(/1,1,1/),count=(/dimlos,dimlat,1/)))
     print *,'  Reading Global Attribiutes'
     call check( nf90_get_att(ncid, nf90_global, "DX", dx))
     call check( nf90_get_att(ncid, nf90_global, "DY", dy))
@@ -218,11 +231,16 @@ tpob=.false.
 !$omp end parallel sections
 
     do i=1,dimlon
-        do j=1,dimlat
+        do j=1,dimlas
             dlat(i,j)=xlat(i,j,1)
+        end do
+    end do
+    do i=1,dimlos
+        do j=1,dimlat
             dlon(i,j)=xlon(i,j,1)
         end do
     end do
+
     dix=dimlon
     djx=dimlat
     allocate(ed(dix,djx,dim(6),dim(1),nvars))
