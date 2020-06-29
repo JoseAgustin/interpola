@@ -31,7 +31,7 @@ real*8   :: alat,alon,area,tot
 real*8  ::  xmas,xemis
 
 print *, "*****  Doing interpolations ****"
-    do j= 2,djx!-1
+    do j=2,djx!-1
     do i=2,dix!-1
         ylat1=.5*(dlat(i,j-1)+dlat(i,j))
         ylat2=.5*(dlat(i,j+1)+dlat(i,j))
