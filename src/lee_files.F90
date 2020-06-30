@@ -33,6 +33,7 @@ integer :: dimlon,dimlat,dimtime
 integer :: dimlos,dimlas !stagged variables
 integer :: nglobalatts,ndimsv=0,dimids(NF90_MAX_VAR_DIMS)
 integer,ALLOCATABLE:: id_var(:),dim(:),id_dim(:)
+real :: rdx
 real,ALLOCATABLE :: ea(:,:,:,:)
 character (len= NF90_MAX_NAME ) :: name
 character (len = *), parameter :: LAT_NAME = "XLAT"
@@ -81,8 +82,8 @@ tpob=.false.
     end do
     if(.not.ALLOCATED(XLON)) allocate (XLON(dim(3),dim(4),dim(1)))
     if(.not.ALLOCATED(XLAT)) allocate (XLAT(dim(3),dim(4),dim(1)))
-    if(.not.ALLOCATED(elat)) allocate (elat(dim(3),dim(4)))
-    if(.not.ALLOCATED(elon)) allocate (elon(dim(3),dim(4)))
+    if(.not.ALLOCATED(elat)) allocate (elat(dim(3),dim(4)+1)) !stagged y
+    if(.not.ALLOCATED(elon)) allocate (elon(dim(3)+1,dim(4))) !stagged x
     if(.not.ALLOCATED(ea))   allocate (ea(dim(3),dim(4),dim(6),dim(1)))
 !
 !   Retrive initial Time
@@ -102,11 +103,26 @@ tpob=.false.
 !    print *,XLAT(1,1,1),XLAT(1,2,dim(1))
 !    print *,XLON(1,1,1),XLON(2,1,1)
     do i=1,dim(3)
-        do j=1,dim(4)
-        elat(i,j)=XLAT(i,j,1)
-        elon(i,j)=XLON(i,j,1)
+        do j=1,dim(4)-1
+          rdx=0.5*(XLAT(i,j+1,1)-XLAT(i,j,1))
+          elat(i,j)=XLAT(i,j,1)-rdx
+          if(j.eq.dim(4)-1) then
+            elat(i,j+1)=XLAT(i,j+1,1)-rdx
+            elat(i,j+2)=XLAT(i,j+1,1)+rdx
+          end if
         end do
     end do
+    do j=1,dim(4)
+      do i=1,dim(3)-1
+          rdx=0.5*(XLON(i+1,j,1)-XLON(i,j,1))
+          elon(i,j)=XLON(i,j,1)-rdx
+          if(j.eq.dim(4)-1) then
+            elon(i+1,j)=XLON(i+1,j,1)-rdx
+            elon(i+2,j)=XLON(i+1,j,1)+rdx
+          end if
+        end do
+    end do
+
 !print *,elat(1,1),elat(1,2)
 !print *,elon(1,1),elon(2,1)
     if(.not.ALLOCATED(ei)) allocate(ei(dim(3),dim(4),dim(6),dim(1),nvars))

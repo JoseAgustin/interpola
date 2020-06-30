@@ -38,14 +38,14 @@ print *, "*****  Doing interpolations ****"
         xlon1=dlon(i  ,j)
         xlon2=dlon(i+1,j) !staged long
         !$omp parallel do private(jj,area,ih,l,kl)
-        do ii=1,eix-1
-            do jj=1,ejx-1!2,ejx-1
+        do ii=1,eix
+            do jj=1,ejx!2,ejx-1
             alat=0.0
             alon=0.0
             elat1= elat(ii,jj)
-            elat2= elat(ii,jj+1)
+            elat2= elat(ii,jj+1) !staged lat
             elon1= elon(ii,jj)
-            elon2= elon(ii+1,jj)
+            elon2= elon(ii+1,jj)!staged long 
             tot=(elat2-elat1)*(elon2-elon1)/((ylat2-ylat1)*(xlon2-xlon1))
             if(ylat1.le.elat2.and. ylat2.ge.elat1)alat=&
             &(min(ylat2,elat2)-max(ylat1,elat1))/(elat2-elat1)
