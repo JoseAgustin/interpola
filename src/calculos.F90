@@ -33,19 +33,19 @@ real*8  ::  xmas,xemis
 print *, "*****  Doing interpolations ****"
     do j=1,djx!-1
     do i=1,dix!-1
-        ylat1=dlat(i,j)!0.5*(dlat(i,j-1)+dlat(i,j))
-        ylat2=dlat(i,j+1)!0.5*(dlat(i,j+1)+dlat(i,j))
-        xlon1=dlon(i,j)!0.5*(dlon(i-1,j)+dlon(i,j))
-        xlon2=dlon(i+1,j)!0.5*(dlon(i+1,j)+dlon(i,j))
+        ylat1=dlat(i ,j )
+        ylat2=dlat(i,j+1) !staged lat
+        xlon1=dlon(i  ,j)
+        xlon2=dlon(i+1,j) !staged long
         !$omp parallel do private(jj,area,ih,l,kl)
-        do ii=1,eix-1 !2,eix-1
+        do ii=1,eix-1
             do jj=1,ejx-1!2,ejx-1
             alat=0.0
             alon=0.0
-            elat1= elat(ii,jj)!0.5*(elat(ii,jj)+elat(ii,jj-1))
-            elat2= elat(ii,jj+1)!0.5*(elat(ii,jj)+elat(ii,jj+1))
-            elon1= elon(ii,jj)!0.5*(elon(ii,jj)+elon(ii-1,jj))
-            elon2= elon(ii+1,jj)!0.5*(elon(ii,jj)+elon(ii+1,jj))
+            elat1= elat(ii,jj)
+            elat2= elat(ii,jj+1)
+            elon1= elon(ii,jj)
+            elon2= elon(ii+1,jj)
             tot=(elat2-elat1)*(elon2-elon1)/((ylat2-ylat1)*(xlon2-xlon1))
             if(ylat1.le.elat2.and. ylat2.ge.elat1)alat=&
             &(min(ylat2,elat2)-max(ylat1,elat1))/(elat2-elat1)
