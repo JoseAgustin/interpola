@@ -69,9 +69,9 @@ write(FILE_NAME(16:16),'(I1)')grid_id
 
 !Attributos Globales NF90_GLOBAL
     call check( nf90_put_att(ncid, NF90_GLOBAL, "TITLE",TITLE))
-    call check( nf90_put_att(ncid, NF90_GLOBAL, "START_DATE",iTime))
+    call check( nf90_put_att(ncid, NF90_GLOBAL, "START_DATE",current_date))
     call check( nf90_put_att(ncid, NF90_GLOBAL, "DAY ",cday))
-    call check( nf90_put_att(ncid, NF90_GLOBAL, "SIMULATION_START_DATE",iTime))
+    call check( nf90_put_att(ncid, NF90_GLOBAL, "SIMULATION_START_DATE",current_date))
     call check( nf90_put_att(ncid, NF90_GLOBAL, "WEST-EAST_GRID_DIMENSION",dim(3)))
     call check( nf90_put_att(ncid, NF90_GLOBAL, "SOUTH-NORTH_GRID_DIMENSION",dim(4)))
     call check( nf90_put_att(ncid, NF90_GLOBAL, "BOTTOM-TOP_GRID_DIMENSION",1))

@@ -48,7 +48,7 @@ tpob=.false.
     print *," *** Reading Emissions file:",FILE_NAME
     call check( nf90_open(FILE_NAME, nf90_nowrite, ncid) )
     call check( nf90_get_att(ncid, nf90_GLOBAL, "TITLE", TITLE))
-    call check( nf90_get_att(ncid, NF90_GLOBAL, "START_DATE",iTime))
+    call check( nf90_get_att(ncid, NF90_GLOBAL, "START_DATE",current_date))
     call check( nf90_get_att(ncid, NF90_GLOBAL, "DAY",cday))
     call check( nf90_get_att(ncid, nf90_global, "GMT",gmt))
     call check( nf90_get_att(ncid, nf90_global, "JULYR",julyr))
@@ -86,8 +86,8 @@ tpob=.false.
     if(.not.ALLOCATED(ea))   allocate (ea(dim(3),dim(4),dim(6),dim(1)))
 !
 !   Retrive initial Time
-    call check(nf90_get_var(ncid, unlimdimid, Times,start = (/ 1, 1 /)))
-    current_date(1:19)=Times(1,1)
+  !  call check(nf90_get_var(ncid, unlimdimid, Times,start = (/ 1, 1 /)))
+  !  current_date(1:19)=Times(1,1)
     print *,current_date!,lat_varid,lon_varid
     if (tpob) then
       print *,"* Get Population values"
@@ -252,6 +252,8 @@ print *,"date info"
    &    print *," Using wrfchemin JULYR"
     if (nf90_get_att(ncid, nf90_global, "JULDAY",julday).ne.nf90_noerr)&
    &    print *," Using wrfchemin JULDAY"
+   if (nf90_get_att(ncid, nf90_global, "START_DATE",current_date).ne.nf90_noerr)&
+  &    print *," Using wrfchemin START_DATE"
 !print *,XLAT(1,1,1),XLAT(1,2,1),XLAT(1,3,1)
 !print *,XLON(1,1,1),XLON(2,1,1),XLON(3,1,1)
     call check( nf90_close(ncid) )
@@ -272,7 +274,7 @@ print *,"date info"
     djx=dimlat
     allocate(ed(dix,djx,dim(6),dim(1),nvars))
     ed=0
-    print * ,'* Done reading wrfinput file',dimlos,dimlon
+    print * ,'* Done reading wrfinput file'!,dimlos,dimlon
     deallocate (XLATS,XLONS)
 
 end subroutine file_reading
