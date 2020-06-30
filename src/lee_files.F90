@@ -60,7 +60,7 @@ tpob=.false.
     call check( nf90_inq_varid(ncid, LON_NAME, lon_varid) )
 
     if( nf90_inq_varid(ncid, POB_NAME, pobId).eq.nf90_noerr) then
-       print *,"  * Contains Population vars"
+       print *,"  * Contains Population density variable"
        tpob=.true.
     end if
 !  Get dims ID and dimension values
@@ -114,7 +114,7 @@ tpob=.false.
     if(.not.ALLOCATED(cname)) allocate(cname(nvars),cunits(nvars))
 
 !     Get emissions names
-    print *,"* Get emissions names and attributes"
+    print *,"* Get emissions names and attributes "
     do ikk=1,nvars
     call check(nf90_inquire_variable(ncid,ikk,name))
     ename(ikk)=trim(name)
@@ -179,10 +179,7 @@ tpob=.false.
     call check(nf90_inquire_dimension(ncid, lat_varid,name,dimlat))
     !print *,"LAT_STAG"
     call check(nf90_inquire_dimension(ncid, lat_varid_stag,name,dimlas))
-
-
     !print *,dimlat,name
-
     if(.not.ALLOCATED(XLONS)) allocate(XLONS(dimlos ,dimlat,1))
     if(.not.ALLOCATED(XLATS)) allocate(XLATS(dimlon ,dimlas,1))
     if(.not.ALLOCATED(XLON)) allocate (XLON(dimlon ,dimlat,1))
@@ -192,7 +189,7 @@ tpob=.false.
     if(.not.ALLOCATED(dpob)) allocate (dpob(dimlon, dimlat))
     if(nf90_inq_varid(ncid, "XLAT", latVarId).eq. nf90_noerr) then
      call check(nf90_get_var(ncid, latVarId,xlat,start=(/1,1,1/),count=(/dimlon,dimlat,1/)))
-     print *,"XLAT"
+     !print *,"XLAT"
     else
      call check(nf90_inq_varid(ncid, "XLAT_M", latVarId))
      call check(nf90_get_var(ncid, latVarId,xlat,start=(/1,1,1/),count=(/dimlon,dimlat,1/)))
@@ -201,7 +198,7 @@ tpob=.false.
 
     if(nf90_inq_varid(ncid, "XLONG", lonVarId).eq. nf90_noerr) then
      call check(nf90_get_var(ncid, lonVarId,xlon,start=(/1,1,1/),count=(/dimlon,dimlat,1/)))
-     print *,"XLONG"
+     !print *,"XLONG"
     else
      call check(nf90_inq_varid(ncid, "XLONG_M", lonVarId))
      call check(nf90_get_var(ncid, lonVarId,xlon,start=(/1,1,1/),count=(/dimlon,dimlat,1/)))
@@ -217,7 +214,7 @@ tpob=.false.
         print *,"XLONG_U"
     end if
 
-    print *,'  Reading Global Attribiutes'
+    print *,'*  Reading Global Attribiutes'
     call check( nf90_get_att(ncid, nf90_global, "DX", dx))
     call check( nf90_get_att(ncid, nf90_global, "DY", dy))
     call check( nf90_get_att(ncid, nf90_global, "CEN_LAT",cenlat))
@@ -232,7 +229,7 @@ tpob=.false.
     if(nf90_get_att(ncid, nf90_global, "MAP_PROJ_CHAR",map_proj_char).eq. nf90_noerr) then
      print *,map_proj_char
      else
-     map_proj_char="lambert"
+     map_proj_char="Lambert Conformal"
      end if
     call check( nf90_get_att(ncid, nf90_global, "MMINLU",mminlu))
     call check( nf90_get_att(ncid, nf90_global, "ISWATER",iswater))
@@ -244,8 +241,6 @@ tpob=.false.
     call check(nf90_get_att(ncid, nf90_global,"grid_id",grid_id))
     end if
     call check( nf90_get_att(ncid, nf90_global, "NUM_LAND_CAT",num_land_cat))
-
-print *,"date info"
     if (nf90_get_att(ncid, nf90_global, "GMT",gmt).ne.nf90_noerr)&
    &    print *," Using wrfchemin GMT"
     if (nf90_get_att(ncid, nf90_global, "JULYR",julyr).ne.nf90_noerr)&
