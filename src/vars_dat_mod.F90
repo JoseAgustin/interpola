@@ -38,8 +38,12 @@ real,allocatable:: dlon(:,:)
 real,allocatable:: dpob(:,:)
 !> Longitudes in emissions domain @c nx, @c ny
 real,allocatable ::xlon(:,:,:)
+!> Longitudes staged in emissions domain @c nxs, @c ny
+real,allocatable ::xlons(:,:,:)
 !> Latitudes in emissions domain @c nx, @c ny
 real,allocatable :: xlat(:,:,:)
+!> Latitudes staged in emissions domain @c nx, @c nys
+real,allocatable :: xlats(:,:,:)
 !> Number of values in longitude in new file
 integer :: dix
 !> Number of values in latitude in new file
