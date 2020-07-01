@@ -35,6 +35,7 @@ integer :: nglobalatts,ndimsv=0,dimids(NF90_MAX_VAR_DIMS)
 integer,ALLOCATABLE:: id_var(:),dim(:),id_dim(:)
 real :: rdx
 real,ALLOCATABLE :: ea(:,:,:,:)
+real,ALLOCATABLE :: EXLON(:,:,:),EXLAT(:,:,:)
 character (len= NF90_MAX_NAME ) :: name
 character (len = *), parameter :: LAT_NAME = "XLAT"
 character (len = *), parameter :: LON_NAME = "XLONG"
@@ -43,7 +44,7 @@ character (len = *), parameter :: LON_STAG = "XLONG_U"
 character (len = *), parameter :: REC_NAME = "Times"
 character (len = *), parameter :: POB_NAME = "POB"
 tpob=.false.
-!$omp parallel sections num_threads (2) private(ncid,i,j,ikk,l,it,lat_varid,lon_varid,nvars,XLAT,XLON,dimlon,dimlat,dimtime)
+!$omp parallel sections num_threads (2) private(ncid,i,j,ikk,l,it,lat_varid,lon_varid,dimlon,dimlat,dimlos,dimlas,dimtime)
 !$omp section
 ! Open the file.
     print *," *** Reading Emissions file:",FILE_NAME
@@ -80,15 +81,12 @@ tpob=.false.
       id_dim(i)=i
       call check(nf90_inquire_dimension(ncid,id_dim(i),name=sdim(i),len=dim(i)))
     end do
-    if(.not.ALLOCATED(XLON)) allocate (XLON(dim(3),dim(4),dim(1)))
-    if(.not.ALLOCATED(XLAT)) allocate (XLAT(dim(3),dim(4),dim(1)))
+    if(.not.ALLOCATED(EXLON)) allocate (EXLON(dim(3),dim(4),dim(1)))
+    if(.not.ALLOCATED(EXLAT)) allocate (EXLAT(dim(3),dim(4),dim(1)))
     if(.not.ALLOCATED(elat)) allocate (elat(dim(3),dim(4)+1)) !stagged y
     if(.not.ALLOCATED(elon)) allocate (elon(dim(3)+1,dim(4))) !stagged x
     if(.not.ALLOCATED(ea))   allocate (ea(dim(3),dim(4),dim(6),dim(1)))
 !
-!   Retrive initial Time
-  !  call check(nf90_get_var(ncid, unlimdimid, Times,start = (/ 1, 1 /)))
-  !  current_date(1:19)=Times(1,1)
     print *,current_date!,lat_varid,lon_varid
     if (tpob) then
       print *,"* Get Population values"
@@ -98,32 +96,31 @@ tpob=.false.
 !
 !   Get lat and lon values.
     print *,"* Get lat and lon values"
-    call check(nf90_get_var(ncid, lat_varid, XLAT))
-    call check(nf90_get_var(ncid, lon_varid, XLON,start = (/ 1, 1,1 /)))
-!    print *,XLAT(1,1,1),XLAT(1,2,dim(1))
-!    print *,XLON(1,1,1),XLON(2,1,1)
+    call check(nf90_get_var(ncid, lat_varid, EXLAT))
+    call check(nf90_get_var(ncid, lon_varid, EXLON,start = (/ 1, 1,1 /)))
+!    print *,EXLAT(1,1,1),EXLAT(1,2,dim(1))
+!    print *,EXLON(1,1,1),EXLON(2,1,1)
     do i=1,dim(3)
         do j=1,dim(4)-1
-          rdx=0.5*(XLAT(i,j+1,1)-XLAT(i,j,1))
-          elat(i,j)=XLAT(i,j,1)-rdx
+          rdx=0.5*(EXLAT(i,j+1,1)-EXLAT(i,j,1))
+          elat(i,j)=EXLAT(i,j,1)-rdx
           if(j.eq.dim(4)-1) then
-            elat(i,j+1)=XLAT(i,j+1,1)-rdx
-            elat(i,j+2)=XLAT(i,j+1,1)+rdx
+            elat(i,j+1)=EXLAT(i,j+1,1)-rdx
+            elat(i,j+2)=EXLAT(i,j+1,1)+rdx
           end if
         end do
     end do
     do j=1,dim(4)
       do i=1,dim(3)-1
-          rdx=0.5*(XLON(i+1,j,1)-XLON(i,j,1))
-          elon(i,j)=XLON(i,j,1)-rdx
+          rdx=0.5*(EXLON(i+1,j,1)-EXLON(i,j,1))
+          elon(i,j)=EXLON(i,j,1)-rdx
           if(i.eq.dim(3)-1) then
-            elon(i+1,j)=XLON(i+1,j,1)-rdx
-            elon(i+2,j)=XLON(i+1,j,1)+rdx
+            elon(i+1,j)=EXLON(i+1,j,1)-rdx
+            elon(i+2,j)=EXLON(i+1,j,1)+rdx
           end if
         end do
     end do
-!print *,elat(1,1),elat(1,2)
-!print *,elon(dim(3),dim(4)),elon(dim(3)+1,dim(4)),XLON(dim(3),dim(4),1)
+!
     if(.not.ALLOCATED(ei)) allocate(ei(dim(3),dim(4),dim(6),dim(1),nvars))
     if(.not.ALLOCATED(ename)) allocate(ename(nvars))
     if(.not.ALLOCATED(cname)) allocate(cname(nvars),cunits(nvars))
@@ -164,7 +161,7 @@ tpob=.false.
     call check( nf90_get_att(ncid, nf90_global, "DY", dye))
     eix= dim(3)
     ejx= dim(4)
-    deallocate (XLAT,XLON,ea)
+    deallocate (ea,EXLAT,EXLON)
     call check( nf90_close(ncid) )
     print * ,'** Done reading Emissions file'
 !$omp section
@@ -208,7 +205,7 @@ tpob=.false.
     else
      call check(nf90_inq_varid(ncid, "XLAT_M", latVarId))
      call check(nf90_get_var(ncid, latVarId,xlat,start=(/1,1,1/),count=(/dimlon,dimlat,1/)))
-     print *,"XLAT_M"
+     print *,"* New mesh lat var XLAT_M"
     end if
 
     if(nf90_inq_varid(ncid, "XLONG", lonVarId).eq. nf90_noerr) then
@@ -217,16 +214,16 @@ tpob=.false.
     else
      call check(nf90_inq_varid(ncid, "XLONG_M", lonVarId))
      call check(nf90_get_var(ncid, lonVarId,xlon,start=(/1,1,1/),count=(/dimlon,dimlat,1/)))
-     print *,"XLONG_M"
+     print *,"* New mesh lon var XLONG_M"
     end if
 
     if(nf90_inq_varid(ncid, "XLAT_V", latVarId).eq. nf90_noerr) then
     call check(nf90_get_var(ncid, latVarId,xlats,start=(/1,1,1/),count=(/dimlon,dimlas,1/)))
-        print *,"XLAT_V"
+        print *,"* New mesh lat var XLAT_V"
     end if
     if(nf90_inq_varid(ncid, "XLONG_U", lonVarId).eq. nf90_noerr) then
     call check(nf90_get_var(ncid, lonVarId,xlons,start=(/1,1,1/),count=(/dimlos,dimlat,1/)))
-        print *,"XLONG_U"
+        print *,"* New mesh lon var XLONG_U"
     end if
 
     print *,'*  Reading Global Attribiutes'
@@ -264,10 +261,9 @@ tpob=.false.
    &    print *," Using wrfchemin JULDAY"
    if (nf90_get_att(ncid, nf90_global, "START_DATE",current_date).ne.nf90_noerr)&
   &    print *," Using wrfchemin START_DATE"
-!print *,XLAT(1,1,1),XLAT(1,2,1),XLAT(1,3,1)
-!print *,XLON(1,1,1),XLON(2,1,1),XLON(3,1,1)
+!   print *,XLAT(1,1,1),XLAT(dimlon,dimlat,1)
+!   print *,XLON(1,1,1),XLON(dimlon,dimlat,1)
     call check( nf90_close(ncid) )
-!$omp end parallel sections
 
     do i=1,dimlon
         do j=1,dimlas
@@ -283,8 +279,9 @@ tpob=.false.
     dix=dimlon
     djx=dimlat
     allocate(ed(dix,djx,dim(6),dim(1),nvars))
+!$omp end parallel sections
     ed=0
-    print * ,'* Done reading wrfinput file'!,dimlos,dimlon
+    print * ,'* Done reading wrfinput file'
     deallocate (XLATS,XLONS)
 
 end subroutine file_reading

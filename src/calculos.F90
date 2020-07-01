@@ -38,7 +38,7 @@ print *, "*****  Doing interpolations ****"
         ylat2=dlat(i,j+1) !staged lat
         xlon1=dlon(i  ,j)
         xlon2=dlon(i+1,j) !staged long
-        !$omp parallel do private(jj,area,ih,l,kl)
+!$omp parallel do private(area,tot,elat1,elat2,elon1,elon2,jj,ih,l,kl)
         do ii=1,eix
             do jj=1,ejx!2,ejx-1
             alat=0.0
@@ -54,18 +54,18 @@ print *, "*****  Doing interpolations ****"
             & (min(xlon2,elon2)-max(xlon1,elon1))/(elon2-elon1)
             area=max(0.,alat*alon)* tot!
             if( area.gt.0.) then
-            do l=1,size(ed,dim=3) ! compuesto
-              do  ih=1,size(ed,dim=4) !hora
-                do  kl=1,size(ed,dim=5) ! altura
-                if (tvar(kl)) ed(i,j,l,ih,kl)=ed(i,j,l,ih,kl)+ei(ii,jj,l,ih,kl)*area
-                end do ! kl
-              end do ! ih
-            end do  ! l
-            if(tpob)dpob(i,j)=dpob(i,j)+epob(ii,jj)*area
-            end if
+             do l=1,size(ed,dim=3) ! altura
+               do  ih=1,size(ed,dim=4) !hora
+                 do  kl=1,size(ed,dim=5) ! compuesto
+                 if (tvar(kl)) ed(i,j,l,ih,kl)=ed(i,j,l,ih,kl)+ei(ii,jj,l,ih,kl)*area
+                 end do ! kl
+               end do ! ih
+             end do  ! l
+             if(tpob)dpob(i,j)=dpob(i,j)+epob(ii,jj)*area
+            end if  ! area
             end do  ! jj
         end do  ! ii
-        !$omp end parallel do
+!$omp end parallel do
         xmas=xmas+ed(i,j,1,1,8)*dx*dy/1000000
     end do     ! i
 end do    !  j

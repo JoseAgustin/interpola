@@ -186,8 +186,9 @@ tiempo: do it=iit,eit
         end do gases
 end do tiempo
 call check( nf90_close(ncid) )
-deallocate(ea,ed,xlon,xlat)
-
+    deallocate(ea,ed,xlat,xlon)
+    if(allocated(xlon)) deallocate(xlon)
+    if(allocated(xlat)) deallocate(xlat)
 contains
 !  CCCC RRRR  EEEEE  AAA      AAA  TTTTT TTTTT RRRR
 ! CC    R  RR E     A   A    A   A   T     T   R  RR
