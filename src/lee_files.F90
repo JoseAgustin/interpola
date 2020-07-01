@@ -43,7 +43,7 @@ character (len = *), parameter :: LON_STAG = "XLONG_U"
 character (len = *), parameter :: REC_NAME = "Times"
 character (len = *), parameter :: POB_NAME = "POB"
 tpob=.false.
-!$omp parallel sections num_threads (2) private(ncid,i,j,ikk,l,it,lat_varid,lon_varid,XLAT,XLON,dimlon,dimlat,dimtime)
+!$omp parallel sections num_threads (2) private(ncid,i,j,ikk,l,it,lat_varid,lon_varid,nvars,XLAT,XLON,dimlon,dimlat,dimtime)
 !$omp section
 ! Open the file.
     print *," *** Reading Emissions file:",FILE_NAME
