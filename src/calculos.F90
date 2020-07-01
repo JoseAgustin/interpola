@@ -24,13 +24,15 @@ subroutine conversion
 use vars_dat
 implicit none
 integer :: i,j,ii,jj,kl,l
-integer :: ih !>  horus in day
+!>  hours in a day
+integer :: ih
 real*8   :: ylat1,ylat2,xlon1,xlon2
 real*8   :: elat1,elat2,elon1,elon2
 real*8   :: alat,alon,area,tot
 real*8  ::  xmas,xemis
 
 print *, "*****  Doing interpolations ****"
+    print *,elon(eix+1,1),elon(eix,ejx)
     do j=1,djx!-1
     do i=1,dix!-1
         ylat1=dlat(i ,j )
@@ -45,12 +47,12 @@ print *, "*****  Doing interpolations ****"
             elat1= elat(ii,jj)
             elat2= elat(ii,jj+1) !staged lat
             elon1= elon(ii,jj)
-            elon2= elon(ii+1,jj)!staged long 
+            elon2= elon(ii+1,jj)!staged long
             tot=(elat2-elat1)*(elon2-elon1)/((ylat2-ylat1)*(xlon2-xlon1))
             if(ylat1.le.elat2.and. ylat2.ge.elat1)alat=&
-            &(min(ylat2,elat2)-max(ylat1,elat1))/(elat2-elat1)
-            if(xlon1.le.elon2.and. xlon2.ge.elon1)  alon=&
-            &      (min(xlon2,elon2)-max(xlon1,elon1))/(elon2-elon1)
+            & (min(ylat2,elat2)-max(ylat1,elat1))/(elat2-elat1)
+            if(xlon1.le.elon2 .and. xlon2.ge.elon1)  alon=&
+            & (min(xlon2,elon2)-max(xlon1,elon1))/(elon2-elon1)
             area=max(0.,alat*alon)* tot!
             if( area.gt.0.) then
             do l=1,size(ed,dim=3) ! compuesto
@@ -68,11 +70,12 @@ print *, "*****  Doing interpolations ****"
         xmas=xmas+ed(i,j,1,1,8)*dx*dy/1000000
     end do     ! i
 end do    !  j
-    do i=1,eix
-        do j=1,ejx
-            xemis=xemis+ei(i,j,1,1,8) *dxe*dye/1000000
-        end do
-    end do
+!  Emissions inventory mass computation
+    do ii=1,eix
+        do jj=1,ejx
+        xemis=xemis+ei(ii,jj,1,1,8) *dxe*dye/1000000
+        end do  ! jj
+    end do  ! ii
 !
 print *,'Mass balance'
 print '(A20,F10.0,x,f7.0,x,f7.0)','Emissions Inventory:',xemis, dxe,dye
@@ -81,5 +84,4 @@ print '(A20,x,f10.4,x,f10.4,"%")','Ratio EI/EDx100:', xemis/xmas,(xemis/xmas-1)*
 print '(A)','******   Done interpolation'
 print *,"      ++++++++++++"
 deallocate(elat,elon,dlon,dlat,ei)
-
 end subroutine conversion

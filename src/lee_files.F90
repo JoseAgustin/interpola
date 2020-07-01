@@ -116,15 +116,14 @@ tpob=.false.
       do i=1,dim(3)-1
           rdx=0.5*(XLON(i+1,j,1)-XLON(i,j,1))
           elon(i,j)=XLON(i,j,1)-rdx
-          if(j.eq.dim(4)-1) then
+          if(i.eq.dim(3)-1) then
             elon(i+1,j)=XLON(i+1,j,1)-rdx
             elon(i+2,j)=XLON(i+1,j,1)+rdx
           end if
         end do
     end do
-
 !print *,elat(1,1),elat(1,2)
-!print *,elon(1,1),elon(2,1)
+!print *,elon(dim(3),dim(4)),elon(dim(3)+1,dim(4)),XLON(dim(3),dim(4),1)
     if(.not.ALLOCATED(ei)) allocate(ei(dim(3),dim(4),dim(6),dim(1),nvars))
     if(.not.ALLOCATED(ename)) allocate(ename(nvars))
     if(.not.ALLOCATED(cname)) allocate(cname(nvars),cunits(nvars))
