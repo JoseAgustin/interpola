@@ -32,7 +32,6 @@ real*8   :: alat,alon,area,tot
 real*8  ::  xmas,xemis
 
 print *, "*****  Doing interpolations ****"
-    print *,elon(eix+1,1),elon(eix,ejx)
     do j=1,djx!-1
     do i=1,dix!-1
         ylat1=dlat(i ,j )
