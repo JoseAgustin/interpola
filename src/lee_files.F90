@@ -9,8 +9,8 @@
 !> reads the new mesh from wrfinput, stores the new coordinates @c dlat, @c dlon
 !>
 !> @author Agustin Garcia
-!> @date 28/08/2012.
-!>   @version  2.0
+!> @date 07/01/2020, 08/28/2012.
+!>   @version  3.0
 !>   @copyright Universidad Nacional Autonoma de Mexico.
 !
 !***************************************************************************
@@ -297,7 +297,8 @@ end subroutine file_reading
 !> @brief Evaluation of netcdf status
 !> @details In case of error prints error message description
 !> @param status An error status that might have been returned from a previous call to some netCDF function
-!> @date 28/08/2012.
+!> @date 08/28/2012
+!> @version 1.0
 subroutine check(status)
 
     USE netcdf

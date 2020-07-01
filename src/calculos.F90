@@ -15,8 +15,8 @@
 !> Computes the mass in the original mesh and compares against the new mesh,
 !> if both domains cover the same area the ratio @c xemis/ @c xmas should be 1
 !>   @author  Jose Agustin Garcia Reynoso
-!>   @date  28/08/2012.
-!>   @version  2.0
+!>   @date  07/01/2020, 08/28/2012.
+!>   @version  3.0
 
 !****************************************************************************
 subroutine conversion

@@ -1,11 +1,14 @@
 !> @brief
 !>    file_out creates the output file and writes the interpolated emissions from the new mesh
-!>@details
 !>  Uses the attributes from wrfinput file
 !>
-!>  Uses current_date from wrfchemin file
-!>	@author Agustin Garcia
-!>  @date 28/08/2012
+!>  Uses current_date from wrfinput file
+!>
+!>  if geo_em_d0?.nc file is used the date comes from wrfchemin.nc
+!>	  @author Agustin Garcia
+!>   @date 07/01/2020, 08/28/2012.
+!>   @version  3.0
+!>   @copyright Universidad Nacional Autonoma de Mexico.
 !****************************************************************************
 !  Proposito:
 !            Guarda los datos del inventario interpolado para el

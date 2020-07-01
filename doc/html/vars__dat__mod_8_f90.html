@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo2.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Interpola
-   &#160;<span id="projectnumber">v2.0</span>
+   &#160;<span id="projectnumber">v3.0</span>
    </div>
    <div id="projectbrief">Emissions interpolation</div>
   </td>
@@ -75,12 +75,13 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Modules</h2></td></tr>
 <tr class="memitem:namespacevars__dat"><td class="memItemLeft" align="right" valign="top">module &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevars__dat.html">vars_dat</a></td></tr>
-<tr class="memdesc:namespacevars__dat"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up variables used during the process. <br /></td></tr>
+<tr class="memdesc:namespacevars__dat"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up variables for the mass conservative interpolation process. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:aa6b2bb9cf77f297ccd81e2d8c8f0085b"><td class="memItemLeft" align="right" valign="top">integer, parameter&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevars__dat.html#aa6b2bb9cf77f297ccd81e2d8c8f0085b">vars_dat::nh</a> =24</td></tr>
+<tr class="memdesc:aa6b2bb9cf77f297ccd81e2d8c8f0085b"><td class="mdescLeft">&#160;</td><td class="mdescRight">nh Number of hours during the day  <a href="namespacevars__dat.html#aa6b2bb9cf77f297ccd81e2d8c8f0085b">More...</a><br /></td></tr>
 <tr class="separator:aa6b2bb9cf77f297ccd81e2d8c8f0085b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e24250f62688413e1175fb9fb6a9078"><td class="memItemLeft" align="right" valign="top">integer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevars__dat.html#a3e24250f62688413e1175fb9fb6a9078">vars_dat::ndims</a></td></tr>
 <tr class="memdesc:a3e24250f62688413e1175fb9fb6a9078"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of dimension in wrfinput file.  <a href="namespacevars__dat.html#a3e24250f62688413e1175fb9fb6a9078">More...</a><br /></td></tr>
@@ -118,9 +119,15 @@ Variables</h2></td></tr>
 <tr class="memitem:a0cd6d92ef4130d7a6bad020c6a3261b8"><td class="memItemLeft" align="right" valign="top">real, dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevars__dat.html#a0cd6d92ef4130d7a6bad020c6a3261b8">vars_dat::xlon</a></td></tr>
 <tr class="memdesc:a0cd6d92ef4130d7a6bad020c6a3261b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longitudes in emissions domain <code>nx</code>, <code>ny</code>.  <a href="namespacevars__dat.html#a0cd6d92ef4130d7a6bad020c6a3261b8">More...</a><br /></td></tr>
 <tr class="separator:a0cd6d92ef4130d7a6bad020c6a3261b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e13b4be525070e5bf11ea4b3e01844d"><td class="memItemLeft" align="right" valign="top">real, dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevars__dat.html#a2e13b4be525070e5bf11ea4b3e01844d">vars_dat::xlons</a></td></tr>
+<tr class="memdesc:a2e13b4be525070e5bf11ea4b3e01844d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longitudes staged in emissions domain <code>nxs</code>, <code>ny</code>.  <a href="namespacevars__dat.html#a2e13b4be525070e5bf11ea4b3e01844d">More...</a><br /></td></tr>
+<tr class="separator:a2e13b4be525070e5bf11ea4b3e01844d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e74d850795e7553f0902a8ba517f864"><td class="memItemLeft" align="right" valign="top">real, dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevars__dat.html#a8e74d850795e7553f0902a8ba517f864">vars_dat::xlat</a></td></tr>
 <tr class="memdesc:a8e74d850795e7553f0902a8ba517f864"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latitudes in emissions domain <code>nx</code>, <code>ny</code>.  <a href="namespacevars__dat.html#a8e74d850795e7553f0902a8ba517f864">More...</a><br /></td></tr>
 <tr class="separator:a8e74d850795e7553f0902a8ba517f864"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a9dcfbdfc24bb8a789b621bdf49af78"><td class="memItemLeft" align="right" valign="top">real, dimension(:,:,:), allocatable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevars__dat.html#a4a9dcfbdfc24bb8a789b621bdf49af78">vars_dat::xlats</a></td></tr>
+<tr class="memdesc:a4a9dcfbdfc24bb8a789b621bdf49af78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latitudes staged in emissions domain <code>nx</code>, <code>nys</code>.  <a href="namespacevars__dat.html#a4a9dcfbdfc24bb8a789b621bdf49af78">More...</a><br /></td></tr>
+<tr class="separator:a4a9dcfbdfc24bb8a789b621bdf49af78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92c8e0d45f7a33204baf57f3088adec9"><td class="memItemLeft" align="right" valign="top">integer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevars__dat.html#a92c8e0d45f7a33204baf57f3088adec9">vars_dat::dix</a></td></tr>
 <tr class="memdesc:a92c8e0d45f7a33204baf57f3088adec9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of values in longitude in new file.  <a href="namespacevars__dat.html#a92c8e0d45f7a33204baf57f3088adec9">More...</a><br /></td></tr>
 <tr class="separator:a92c8e0d45f7a33204baf57f3088adec9"><td class="memSeparator" colspan="2">&#160;</td></tr>

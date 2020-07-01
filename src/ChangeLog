@@ -1,40 +1,63 @@
-d9cee95 (HEAD -> master, origin/master, origin/HEAD) Update configuration file
-1562101 Update in documentation
-1fcf791 Log update
-05de88b Autotools update
-729689a Documentation update
-d9d803b Update autotools
-d6b29cb Update log
-6c35f99 Cleaning directory
-29bdd15 Update Auto configuration
-838fd06 log update
-b93e94e Auto configuration
-c1cbf1c Merge branch 'master' of github.com:JoseAgustin/interpola
-fecf7f5 file copy
-bfb51f3 Auto configuration
-f2920f5 Update README.md
-73d9022 Update 2 README.md
-3b40a7f output figure update
-52f1f3b Update README.md
-78a04ce output figure
-9144917 images
-2fd041c README.md update
-27c6d1b Readme update
-122e361 includes population
-2cfcdf4 (tag: log, tag: V2.0) Clean
-d9bab24 For any mechanism
-007a11c For GNU
-e0c1cd9 Parallel OMP
-b6223e8 (tag: v1.0) Make fil update
-e2c205d Makefiles update
-c6edae8 Make update
-3a915ff Update in files
-bf26b1e for golfo
-c95bb16 Merge branch 'master' of github.com:JoseAgustin/interpola
-e23e923 actualiza
-ef20711 license
-a30c77e Update ignore files
-c0ad6ea Reading and storing additional vars
-66b3b92 Documentation
-aeb749e Update gitignore
-39e0c6c first commit
+* 7d18aed Cleaning code
+* b3283d3 Fix in elon stagged array
+* 88954e2 Documentation update
+*   66203b3 Merge branch 'master' of github.com:JoseAgustin/interpola
+|\  
+| * d78d971 stagged emissions lon,lat
+| * 52ec791 Documentation update
+| * 1fcf0b9 for using geo_em.d0?.nc
+| * c30c7a2 START_DATE update in output file
+| * cd6d356 Update for lat,long stagged
+| * fe97c88 Using XLAT_M or XLAT
+| * dc188f5 update in lat_stag,long_stag wrfinput read
+* | 2711d4e change in figure location
+|/  
+* 99e31ac Update documentation
+* a042b24 Readme update
+* a1b22d1 update README.md
+* 8a3adb1 Update README.md
+* 76a1bbc Doxigen update
+* d9cee95 Update configuration file
+* 1562101 Update in documentation
+* 1fcf791 Log update
+* 05de88b Autotools update
+* 729689a Documentation update
+* d9d803b Update autotools
+* d6b29cb Update log
+* 6c35f99 Cleaning directory
+* 29bdd15 Update Auto configuration
+* 838fd06 log update
+* b93e94e Auto configuration
+*   c1cbf1c Merge branch 'master' of github.com:JoseAgustin/interpola
+|\  
+| * f2920f5 Update README.md
+| * 73d9022 Update 2 README.md
+* | fecf7f5 file copy
+* | bfb51f3 Auto configuration
+|/  
+* 3b40a7f output figure update
+* 52f1f3b Update README.md
+* 78a04ce output figure
+* 9144917 images
+* 2fd041c README.md update
+* 27c6d1b Readme update
+* 122e361 includes population
+* 2cfcdf4 Clean
+* d9bab24 For any mechanism
+* 007a11c For GNU
+* e0c1cd9 Parallel OMP
+* b6223e8 Make fil update
+* e2c205d Makefiles update
+* c6edae8 Make update
+* 3a915ff Update in files
+* bf26b1e for golfo
+*   c95bb16 Merge branch 'master' of github.com:JoseAgustin/interpola
+|\  
+| * ef20711 license
+* | e23e923 actualiza
+|/  
+* a30c77e Update ignore files
+* c0ad6ea Reading and storing additional vars
+* 66b3b92 Documentation
+* aeb749e Update gitignore
+* 39e0c6c first commit

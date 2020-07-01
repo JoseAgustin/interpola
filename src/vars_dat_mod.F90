@@ -5,14 +5,16 @@
 !
 !****************************************************************************
 !
-!>	@brief
-!>	Set up variables used during the process.
+!>   @brief
+!>	Set up variables for the mass conservative interpolation process.
 !>   @author  Jose Agustin Garcia Reynoso
-!>  @date  28-08-2012
+!>   @date 07/01/2020, 08/28/2012.
+!>   @version  3.0
+!>   @copyright Universidad Nacional Autonoma de Mexico.
 !****************************************************************************
 !> @par Emissions Inventories Variables
-!> @param nh Number of hours during the day
 module vars_dat
+!> nh Number of hours during the day
 integer,parameter :: nh =24
 !> Number of dimension in wrfinput file
 integer:: NDIMS!=6
