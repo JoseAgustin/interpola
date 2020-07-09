@@ -1,7 +1,7 @@
 #
 # This file is processed by automake (produces file Makefile.in)
 #
-bin_PROGRAMS = interpola
+bin_PROGRAMS = interpola.exe
 #
 # Compiler flags
 AM_FCFLAGS = $(NC_INC)
@@ -15,4 +15,4 @@ endif
 CLEANFILES = *.o *.mod *~
 
 
-interpola_SOURCES = vars_dat_mod.F90 Interpola.F90 calculos.F90 lee_files.F90 salidas.F90
+interpola_exe_SOURCES = vars_dat_mod.F90 Interpola.F90 calculos.F90 lee_files.F90 salidas.F90

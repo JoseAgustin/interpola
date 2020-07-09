@@ -86,7 +86,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = interpola$(EXEEXT)
+bin_PROGRAMS = interpola.exe$(EXEEXT)
 
 # Parallel version
 @WITH_OMPI_TRUE@am__append_1 = $(OPENMP_FCFLAGS)
@@ -104,10 +104,10 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_interpola_OBJECTS = vars_dat_mod.$(OBJEXT) Interpola.$(OBJEXT) \
+am_interpola_exe_OBJECTS = vars_dat_mod.$(OBJEXT) Interpola.$(OBJEXT) \
 	calculos.$(OBJEXT) lee_files.$(OBJEXT) salidas.$(OBJEXT)
-interpola_OBJECTS = $(am_interpola_OBJECTS)
-interpola_LDADD = $(LDADD)
+interpola_exe_OBJECTS = $(am_interpola_exe_OBJECTS)
+interpola_exe_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -134,8 +134,8 @@ AM_V_FCLD = $(am__v_FCLD_@AM_V@)
 am__v_FCLD_ = $(am__v_FCLD_@AM_DEFAULT_V@)
 am__v_FCLD_0 = @echo "  FCLD    " $@;
 am__v_FCLD_1 = 
-SOURCES = $(interpola_SOURCES)
-DIST_SOURCES = $(interpola_SOURCES)
+SOURCES = $(interpola_exe_SOURCES)
+DIST_SOURCES = $(interpola_exe_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -277,7 +277,7 @@ AM_FCFLAGS = $(NC_INC) $(am__append_1)
 
 # Additional files to be cleaned with 'make clean'
 CLEANFILES = *.o *.mod *~
-interpola_SOURCES = vars_dat_mod.F90 Interpola.F90 calculos.F90 lee_files.F90 salidas.F90
+interpola_exe_SOURCES = vars_dat_mod.F90 Interpola.F90 calculos.F90 lee_files.F90 salidas.F90
 all: all-am
 
 .SUFFIXES:
@@ -358,9 +358,9 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
-interpola$(EXEEXT): $(interpola_OBJECTS) $(interpola_DEPENDENCIES) $(EXTRA_interpola_DEPENDENCIES) 
-	@rm -f interpola$(EXEEXT)
-	$(AM_V_FCLD)$(FCLINK) $(interpola_OBJECTS) $(interpola_LDADD) $(LIBS)
+interpola.exe$(EXEEXT): $(interpola_exe_OBJECTS) $(interpola_exe_DEPENDENCIES) $(EXTRA_interpola_exe_DEPENDENCIES) 
+	@rm -f interpola.exe$(EXEEXT)
+	$(AM_V_FCLD)$(FCLINK) $(interpola_exe_OBJECTS) $(interpola_exe_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
