@@ -69,4 +69,4 @@ Emissions in cell:
 - **C** fluxes from 2, 3 and 4 (not shown here), 
 - **F** fluxes from 1 and 6, 
 - **G** from 1, 2, 6 and 7 and 
-- u**H** from 2, 3, 7, 8, 4 and 9 (not shown here), and so on.
+- **H** from 2, 3, 7, 8, 4 and 9 (not shown here), and so on.
