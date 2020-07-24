@@ -87,6 +87,7 @@ tpob=.false.
     if(.not.ALLOCATED(elon)) allocate (elon(dim(3)+1,dim(4))) !stagged x
     if(.not.ALLOCATED(ea))   allocate (ea(dim(3),dim(4),dim(6),dim(1)))
 !
+    iTime=current_date
     print *,current_date!,lat_varid,lon_varid
     if (tpob) then
       print *,"* Get Population values"

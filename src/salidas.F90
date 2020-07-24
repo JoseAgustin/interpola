@@ -37,6 +37,7 @@ subroutine File_out
     call date_and_time(date,time)
     write(hoy,'(A8,x,A10)')date,time
     print *,hoy
+    current_date=iTime
     IF(current_date(12:13).EQ.'00') THEN
         print *,'PERIODO 1'
         FILE_NAME='wrfchemi_00z_d01'         !******
