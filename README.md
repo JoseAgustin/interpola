@@ -12,7 +12,7 @@ output file:
 
             wrfchemi_00z_d01 or wrfchemi_12z_d01 ! 00z or 12z based on emissions file. 
                                                  ! d01, d02,... and date based on wrfinput
-                                                 ! for ge_em.d0?.nc the dates are provided from wrfchemin.nc
+                                                 ! for geo_em.d0?.nc the dates are provided from wrfchemin.nc
             
 wrfchemin.nc - file contain emissions starting with "E_" 
 
