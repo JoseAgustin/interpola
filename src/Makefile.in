@@ -180,11 +180,11 @@ ETAGS = etags
 CTAGS = ctags
 CSCOPE = cscope
 DIST_SUBDIRS = $(SUBDIRS)
-am__DIST_COMMON = $(srcdir)/Makefile.in \
+am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/autoconf/compile \
 	$(top_srcdir)/autoconf/install-sh \
 	$(top_srcdir)/autoconf/missing AUTHORS COPYING ChangeLog \
-	INSTALL NEWS README autoconf/install-sh autoconf/missing \
-	depcomp
+	INSTALL NEWS README autoconf/compile autoconf/install-sh \
+	autoconf/missing depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -235,8 +235,14 @@ AUTOHEADER = @AUTOHEADER@
 AUTOM4TE = @AUTOM4TE@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+CC = @CC@
+CCDEPMODE = @CCDEPMODE@
+CFLAGS = @CFLAGS@
+CPP = @CPP@
+CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
+DEPDIR = @DEPDIR@
 ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
@@ -255,6 +261,7 @@ LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
+NC_FC = @NC_FC@
 NC_INC = @NC_INC@
 NC_LIB = @NC_LIB@
 NETCDF_CONFIG = @NETCDF_CONFIG@
@@ -279,8 +286,11 @@ abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
+ac_ct_CC = @ac_ct_CC@
 ac_ct_FC = @ac_ct_FC@
+am__include = @am__include@
 am__leading_dot = @am__leading_dot@
+am__quote = @am__quote@
 am__tar = @am__tar@
 am__untar = @am__untar@
 bindir = @bindir@
@@ -325,7 +335,7 @@ interpola_exe_SOURCES = vars_dat_mod.F90 Interpola.F90 calculos.F90 lee_files.F9
 
 #
 # Compiler flags
-AM_FCFLAGS = $(NC_INC) $(am__append_2)
+AM_FCFLAGS = $(NC_INC) $(NC_LIB) $(am__append_2)
 
 # Additional files to be cleaned with 'make clean'
 CLEANFILES = *.o *.mod *~
