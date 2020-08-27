@@ -1,0 +1,7 @@
+AT_INIT([interpola])
+AT_BANNER([***** Module subroutines and functions Testing Suite  *****])
+
+AT_SETUP([Reading files])
+AT_TESTED( test1 )
+AT_CLEANUP
+

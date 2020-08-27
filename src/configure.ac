@@ -10,11 +10,13 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([interpola], [2.0], [agustin@atmosfera.unam.mx], , [https://github.com/JoseAgustin/interpola])
+AC_INIT([interpola], [2.1], [agustin@atmosfera.unam.mx], , [https://github.com/JoseAgustin/interpola])
 # Define our M4 macro directory
 AC_CONFIG_AUX_DIR([autoconf])
-AM_INIT_AUTOMAKE([1.11 foreign])
-
+AM_INIT_AUTOMAKE([1.11 foreign subdir-objects])
+# Initialize the test suite.
+AC_CONFIG_TESTDIR([testsuite])
+AM_MISSING_PROG([AUTOM4TE], [autom4te])
 
 # Set default prefix (where directory bin is created)
 # This is the default top directory of the installation
@@ -101,13 +103,15 @@ AC_ARG_ENABLE([parallel],
     yes) parallel=true ;;
      no) parallel=false ;;
       *) AC_MSG_ERROR([bad value ${enableval} for --enable-parallel]) ;;
-   esac], [parallel=true])
+   esac], [parallel=false])
    if test "${parallel}" = "true"; then
     FCFLAGS="${FCFLAGS} ${NC_LIB}";
    else
     FCFLAGS="${FCFLAGS} ${NC_LIB}";
     fi
 AM_CONDITIONAL([WITH_OMPI], [test "x$parallel" = "xtrue"])
+AM_CONDITIONAL([GFOR],[test "x$FC" = "xgfortran"])
+AC_MSG_RESULT([GFOR])
 #
 
 AC_MSG_RESULT([FCFLAGS = ${FCFLAGS}])
@@ -121,7 +125,8 @@ AC_ARG_WITH([r4],
 AM_CONDITIONAL([WITH_R4], [test $with_r4 = yes])
 #
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile
+                 testsuite/Makefile])
 AC_OUTPUT
 # Write configuration on the screen
 AC_MSG_NOTICE([---------------------------------------------------------])
@@ -131,6 +136,7 @@ AS_IF([test "x$NC_VERSION" != "x"],AC_MSG_NOTICE([Using $NC_VERSION]))
 #
 AC_MSG_NOTICE([Single precision:           --with-r4=$with_r4])
 AC_MSG_NOTICE([Fortran compiler:           FC=$FC])
+AC_MSG_NOTICE([gfortran compiler:           GFOR=$GFOR])
 #
 AS_IF([test "$parallel" = "true"],
 AC_MSG_NOTICE([Enable parallel version:    --enable-parallel=yes]),
