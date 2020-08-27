@@ -21,9 +21,12 @@ AM_MISSING_PROG([AUTOM4TE], [autom4te])
 # Set default prefix (where directory bin is created)
 # This is the default top directory of the installation
 AC_PREFIX_DEFAULT(`pwd`)
+
 # Checks for programs.
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
+AC_PROG_CPP
+
 # Set language for configuration checks
 AC_LANG(Fortran)
 AC_PROG_FC
@@ -38,7 +41,7 @@ AC_ARG_VAR(NETCDF_LIB,[  Location of netCDF library] (compile-time))
 # Checks for typedefs, structures, and compiler characteristics.
 AC_LANG_PUSH(Fortran)
 AC_FC_FREEFORM
-AC_OPENMP
+
 # Check for newunit option to open()
 AX_F08_NEWUNIT
 
@@ -47,15 +50,17 @@ if test -z "${NETCDF_ROOT}"; then
 	# If not found, check for nc-config
   AS_IF([test -z "${NETCDF_CONFIG}"],
      [AC_CHECK_PROG([NETCDF_CONFIG],[nc-config],[nc-config])])
-        LDFLAGS="`${NETCDF_CONFIG} --flibs` ${LDFLAGS}";
-        FCFLAGS="-I`${NETCDF_CONFIG} --fflags` ${FCFLAGS}";
-				AC_PATH_PROG([NETCDF_ROOT], [ncdump])
-    		NETCDF_ROOT=`dirname $NETCDF_ROOT`   # Strip /ncdump
-    		NETCDF_ROOT=`dirname $NETCDF_ROOT`;  # Strip /bin
+        NC_LIB="`${NETCDF_CONFIG} --flibs` ";
+        NC_INC="-I`${NETCDF_CONFIG} --includedir`";
+        NC_FC="`${NETCDF_CONFIG} --fc` "
+        AC_PATH_PROG([NETCDF_ROOT], [ncdump])
+        NETCDF_ROOT=`dirname $NETCDF_ROOT`   # Strip /ncdump
+        NETCDF_ROOT=`dirname $NETCDF_ROOT`;  # Strip /bin
     else
-	NETCDF_CONFIG="${NETCDF_ROOT}/bin/nf-config"
-        LDFLAGS="`${NETCDF_CONFIG} --flibs` ${LDFLAGS}";
-        FCFLAGS="-I`${NETCDF_CONFIG} --fflags` ${FCFLAGS}";
+        NETCDF_CONFIG="${NETCDF_ROOT}/bin/nf-config"
+        NC_FC="`${NETCDF_CONFIG} --fc` "
+        NC_LIB="`${NETCDF_CONFIG} --flibs` ";
+        NC_INC="-I`${NETCDF_CONFIG} --includedir` ";
     fi
 AC_MSG_NOTICE([setting netcdf root directory NETCDF_ROOT=$NETCDF_ROOT])
 AC_MSG_CHECKING([for the existence of the netcdf root directory])
@@ -78,13 +83,13 @@ AS_IF([ test -z "{$NC_INC}"],[NC_INC=-I$NETCDF_INC])
 
 # Set the netcdf linker flags
 AC_MSG_CHECKING([for netCDF library directory])
-AS_IF([test "X$NETCDF_LIB" = "X"],[NETCDF_LIB=$NETCDF_ROOT/lib])
-AC_MSG_RESULT([$NETCDF_LIB])
-AS_IF([test ! -d $NETCDF_LIB],[AC_MSG_ERROR([No such directory: $NETCDF_LIB])])
-AS_IF([test -z "$NC_LIB" ],[AC_MSG_CHECKING([for -lnetcdff]);
-   AS_IF([test -f $NETCDF_LIB/libnetcdff.a],
-           [NC_LIB="-L$NETCDF_LIB -lnetcdff -lnetcdf";AC_MSG_RESULT([yes])],
-           [NC_LIB="-L$NETCDF_LIB -lnetcdf";AC_MSG_RESULT([no])
+AS_IF([test "X$NC_LIB" = "X"],[NC_LIB=$NETCDF_ROOT/lib])
+AC_MSG_RESULT([$NC_LIB])
+AS_IF([test ! -d $NETCDF_ROOT/lib],[AC_MSG_ERROR([No such directory: $NC_LIB])])
+AS_IF([test -n $NC_LIB ],[AC_MSG_CHECKING([for -lnetcdff]);
+   AS_IF([test -f $NETCDF_ROOT/lib/libnetcdff.a],
+           [NC_LIB="$NC_LIB -lnetcdff -lnetcdf";AC_MSG_RESULT([yes])],
+           [NC_LIB="$NC_LIB -lnetcdf";AC_MSG_RESULT([no])
    ])
 ])
 #
@@ -92,6 +97,7 @@ AS_IF([test -z "$NC_LIB" ],[AC_MSG_CHECKING([for -lnetcdff]);
 # exported to Makefiles
 AC_SUBST(NC_INC)
 AC_SUBST(NC_LIB)
+AC_SUBST(NC_FC)
 #
 ax_netcdf_ok=yes
 
@@ -105,9 +111,10 @@ AC_ARG_ENABLE([parallel],
       *) AC_MSG_ERROR([bad value ${enableval} for --enable-parallel]) ;;
    esac], [parallel=false])
    if test "${parallel}" = "true"; then
-    FCFLAGS="${FCFLAGS} ${NC_LIB}";
+    AC_OPENMP
+    FCFLAGS="${FCFLAGS} -O2";
    else
-    FCFLAGS="${FCFLAGS} ${NC_LIB}";
+    FCFLAGS="${FCFLAGS} -O2";
     fi
 AM_CONDITIONAL([WITH_OMPI], [test "x$parallel" = "xtrue"])
 AM_CONDITIONAL([GFOR],[test "x$FC" = "xgfortran"])
@@ -144,8 +151,8 @@ AC_MSG_NOTICE([Enable parallel version:    --enable-parallel=no]))
 AC_MSG_NOTICE([Fortran flags:              FCFLAGS=$FCFLAGS])
 AC_MSG_NOTICE([Fortran OPENMPI:            OPENMP_FCFLAGS=$OPENMP_FCFLAGS])
 AC_MSG_NOTICE([Root directory of netcdf:   NETCDF=$NETCDF_ROOT])
-AC_MSG_NOTICE([Compiler flags for netcdf:  NC_INC=$NETCDF_INC])
-AC_MSG_NOTICE([Linker flags for netcdf:    NC_LIB=$NETCDF_LIB])
+AC_MSG_NOTICE([Compiler flags for netcdf:  NC_INC=$NC_INC])
+AC_MSG_NOTICE([Linker flags for netcdf:    NC_LIB=$NC_LIB])
 AC_MSG_NOTICE([Install prefix:             --prefix=$prefix])
 AC_MSG_NOTICE([Executables install prefix: --exec_prefix=$exec_prefix])
 AC_MSG_NOTICE([Binary directory:           --bindir=$bindir])

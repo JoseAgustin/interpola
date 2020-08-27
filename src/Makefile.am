@@ -13,7 +13,7 @@ interpola_exe_SOURCES = vars_dat_mod.F90 Interpola.F90 calculos.F90 lee_files.F9
 
 #
 # Compiler flags
-AM_FCFLAGS = $(NC_INC)
+AM_FCFLAGS = $(NC_INC) $(NC_LIB)
 
 # Parallel version
 if WITH_OMPI
