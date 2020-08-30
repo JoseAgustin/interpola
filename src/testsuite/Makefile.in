@@ -91,8 +91,8 @@ POST_UNINSTALL = :
 
 # Parallel version
 @WITH_OMPI_TRUE@am__append_3 = $(OPENMP_FCFLAGS)
-TESTS = test1$(EXEEXT)
-check_PROGRAMS = test1$(EXEEXT)
+TESTS = test1$(EXEEXT) test2$(EXEEXT) test3$(EXEEXT)
+check_PROGRAMS = test1$(EXEEXT) test2$(EXEEXT) test3$(EXEEXT)
 subdir = testsuite
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/autoconf/ax_f08_newunit.m4 \
@@ -104,10 +104,20 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__dirstamp = $(am__leading_dot)dirstamp
-am_test1_OBJECTS = $(top_builddir)/vars_dat_mod.$(OBJEXT) \
-	$(top_builddir)/lee_files.$(OBJEXT) t_lee.$(OBJEXT)
+am_test1_OBJECTS = $(top_builddir)/mod_vars_dat.$(OBJEXT) \
+	$(top_builddir)/s_check.$(OBJEXT) p_check.$(OBJEXT)
 test1_OBJECTS = $(am_test1_OBJECTS)
 test1_LDADD = $(LDADD)
+am_test2_OBJECTS = $(top_builddir)/mod_vars_dat.$(OBJEXT) \
+	$(top_builddir)/lee_emis.$(OBJEXT) \
+	$(top_builddir)/s_check.$(OBJEXT) p_lee_emis.$(OBJEXT)
+test2_OBJECTS = $(am_test2_OBJECTS)
+test2_LDADD = $(LDADD)
+am_test3_OBJECTS = $(top_builddir)/mod_vars_dat.$(OBJEXT) \
+	$(top_builddir)/lee_malla.$(OBJEXT) \
+	$(top_builddir)/s_check.$(OBJEXT) p_lee_grid.$(OBJEXT)
+test3_OBJECTS = $(am_test3_OBJECTS)
+test3_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -134,8 +144,8 @@ AM_V_FCLD = $(am__v_FCLD_@AM_V@)
 am__v_FCLD_ = $(am__v_FCLD_@AM_DEFAULT_V@)
 am__v_FCLD_0 = @echo "  FCLD    " $@;
 am__v_FCLD_1 = 
-SOURCES = $(test1_SOURCES)
-DIST_SOURCES = $(test1_SOURCES)
+SOURCES = $(test1_SOURCES) $(test2_SOURCES) $(test3_SOURCES)
+DIST_SOURCES = $(test1_SOURCES) $(test2_SOURCES) $(test3_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -473,7 +483,9 @@ top_srcdir = @top_srcdir@
 #FC =$(NC_FC)
 AM_FCFLAGS = $(NC_INC) -I$(top_srcdir) $(NC_LIB) $(am__append_3)
 AM_CPPFLAGS = -O2 $(NC_INC) $(am__append_1)
-test1_SOURCES = $(top_builddir)/vars_dat_mod.F90 $(top_builddir)/lee_files.F90 t_lee.F90
+test1_SOURCES = $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/s_check.F90 p_check.F90
+test2_SOURCES = $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/lee_emis.F90 $(top_builddir)/s_check.F90 p_lee_emis.F90
+test3_SOURCES = $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/lee_malla.F90 $(top_builddir)/s_check.F90 p_lee_grid.F90
 
 # Additional files to be cleaned with 'make clean'
 CLEANFILES = *.o *.mod package.m4 testsuite
@@ -523,15 +535,27 @@ $(top_builddir)/$(am__dirstamp):
 $(top_builddir)/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) $(top_builddir)/$(DEPDIR)
 	@: > $(top_builddir)/$(DEPDIR)/$(am__dirstamp)
-$(top_builddir)/vars_dat_mod.$(OBJEXT):  \
+$(top_builddir)/mod_vars_dat.$(OBJEXT):  \
 	$(top_builddir)/$(am__dirstamp) \
 	$(top_builddir)/$(DEPDIR)/$(am__dirstamp)
-$(top_builddir)/lee_files.$(OBJEXT): $(top_builddir)/$(am__dirstamp) \
+$(top_builddir)/s_check.$(OBJEXT): $(top_builddir)/$(am__dirstamp) \
 	$(top_builddir)/$(DEPDIR)/$(am__dirstamp)
 
 test1$(EXEEXT): $(test1_OBJECTS) $(test1_DEPENDENCIES) $(EXTRA_test1_DEPENDENCIES) 
 	@rm -f test1$(EXEEXT)
 	$(AM_V_FCLD)$(FCLINK) $(test1_OBJECTS) $(test1_LDADD) $(LIBS)
+$(top_builddir)/lee_emis.$(OBJEXT): $(top_builddir)/$(am__dirstamp) \
+	$(top_builddir)/$(DEPDIR)/$(am__dirstamp)
+
+test2$(EXEEXT): $(test2_OBJECTS) $(test2_DEPENDENCIES) $(EXTRA_test2_DEPENDENCIES) 
+	@rm -f test2$(EXEEXT)
+	$(AM_V_FCLD)$(FCLINK) $(test2_OBJECTS) $(test2_LDADD) $(LIBS)
+$(top_builddir)/lee_malla.$(OBJEXT): $(top_builddir)/$(am__dirstamp) \
+	$(top_builddir)/$(DEPDIR)/$(am__dirstamp)
+
+test3$(EXEEXT): $(test3_OBJECTS) $(test3_DEPENDENCIES) $(EXTRA_test3_DEPENDENCIES) 
+	@rm -f test3$(EXEEXT)
+	$(AM_V_FCLD)$(FCLINK) $(test3_OBJECTS) $(test3_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -742,6 +766,20 @@ recheck: all $(check_PROGRAMS)
 test1.log: test1$(EXEEXT)
 	@p='test1$(EXEEXT)'; \
 	b='test1'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+test2.log: test2$(EXEEXT)
+	@p='test2$(EXEEXT)'; \
+	b='test2'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+test3.log: test3$(EXEEXT)
+	@p='test3$(EXEEXT)'; \
+	b='test3'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \

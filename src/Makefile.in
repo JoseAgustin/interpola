@@ -106,8 +106,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_interpola_exe_OBJECTS = vars_dat_mod.$(OBJEXT) Interpola.$(OBJEXT) \
-	calculos.$(OBJEXT) lee_files.$(OBJEXT) salidas.$(OBJEXT)
+am_interpola_exe_OBJECTS = mod_vars_dat.$(OBJEXT) Interpola.$(OBJEXT) \
+	calculos.$(OBJEXT) s_check.$(OBJEXT) lee_emis.$(OBJEXT) \
+	lee_malla.$(OBJEXT) salidas.$(OBJEXT)
 interpola_exe_OBJECTS = $(am_interpola_exe_OBJECTS)
 interpola_exe_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -331,7 +332,8 @@ top_srcdir = @top_srcdir@
 #
 ACLOCAL_AMFLAGS = -I autoconf
 AM_CPPFLAGS = -O2 $(am__append_1)
-interpola_exe_SOURCES = vars_dat_mod.F90 Interpola.F90 calculos.F90 lee_files.F90 salidas.F90
+interpola_exe_SOURCES = mod_vars_dat.F90 Interpola.F90 calculos.F90 \
+	s_check.F90 lee_emis.F90 lee_malla.F90 salidas.F90
 
 #
 # Compiler flags

@@ -46,6 +46,8 @@ real,allocatable ::xlons(:,:,:)
 real,allocatable :: xlat(:,:,:)
 !> Latitudes staged in emissions domain @c nx, @c nys
 real,allocatable :: xlats(:,:,:)
+!> Dimensions in emissions domain @c nx, @c nys
+integer,ALLOCATABLE:: dim(:)
 !> Number of values in longitude in new file
 integer :: dix
 !> Number of values in latitude in new file
@@ -73,10 +75,12 @@ integer :: isurban
 !> Value for land use ice
 integer:: isoilwater
 !> ID unlimit variable (time)
-integer:: unlimdimid
-!> Central latitude
+integer :: unlimdimid
+!> number of emissions variables in wrfchemin file
+integer :: nvars
+!> Central latitude new grid
 real :: cenlat
-!> Central longitude
+!> Central longitude new grid
 real :: cenlon
 !> Grid dimension in m output file @a x
 real :: dx

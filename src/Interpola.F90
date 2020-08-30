@@ -32,7 +32,9 @@ program Interpola
 ! all shared variables used are in vars_module
 ! local variables are in each subroutine
 ! Body of Interpola
-    Call file_reading
+    Call reads_emision
+
+    Call reads_grid
 
     Call conversion
 

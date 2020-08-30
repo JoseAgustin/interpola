@@ -9,7 +9,8 @@ endif
 
 bin_PROGRAMS = interpola.exe
 
-interpola_exe_SOURCES = vars_dat_mod.F90 Interpola.F90 calculos.F90 lee_files.F90 salidas.F90
+interpola_exe_SOURCES  = mod_vars_dat.F90 Interpola.F90 calculos.F90 s_check.F90
+interpola_exe_SOURCES += lee_emis.F90 lee_malla.F90 salidas.F90
 
 #
 # Compiler flags
