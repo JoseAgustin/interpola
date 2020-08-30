@@ -1,3 +1,4 @@
+*.status
 *.o
 *.mod
 *.f
@@ -11,7 +12,9 @@
 *.out
 *.toc
 *.sty
+*.trs
 wrfinp*
 interpola.exe
 wrfchemi*
 Makefile
+src/testsuite/package.m4

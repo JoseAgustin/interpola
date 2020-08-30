@@ -19,10 +19,10 @@ subroutine File_out
     use vars_dat
     implicit none
     integer :: i,j,l
-    integer :: ncid,nvars
+    integer :: ncid
     integer :: id_varlong,id_varlat,id_pob
     integer :: periodo,it,ikk,id,iu,iit,eit
-    integer,dimension(NDIMS):: dim,id_dim
+    integer,dimension(NDIMS)::id_dim
     integer,ALLOCATABLE:: id_var(:)
     integer :: dimids2(2),dimids3(3),dimids4(4)
     real,ALLOCATABLE :: ea(:,:,:,:)
@@ -30,7 +30,6 @@ subroutine File_out
     character(8)  :: date
     character(10) :: time
     character(19) :: hoy
-    nvars=size(ename)
     allocate (id_var(nvars))
     print *,"Guarda Archivo"
     ! ******************************************************************

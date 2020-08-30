@@ -78,6 +78,8 @@ integer:: isoilwater
 integer :: unlimdimid
 !> number of emissions variables in wrfchemin file
 integer :: nvars
+!> Index of E_CO emission
+integer :: L_CO
 !> Central latitude new grid
 real :: cenlat
 !> Central longitude new grid
@@ -135,7 +137,7 @@ logical,allocatable :: tvar(:)
 !> true if input emissions files contains density population
 logical :: tpob
 ! Domain Variables
-common /domain/ zlev, dix,djx,eix,ejx,dx,dy,dxe,dye,rama,Title
+common /domain/ L_CO,zlev,dix,djx,eix,ejx,dx,dy,dxe,dye,rama,Title
 common /date/ id_grid,unlimdimid,Times,current_date,cday,mecha,tpob
 common /wrf/ julyr,julday,mapproj,iswater,islake,isice,isurban,isoilwater,&
             cenlat,cenlon,trulat1, trulat2,moadcenlat,stdlon,pollat,pollon,&

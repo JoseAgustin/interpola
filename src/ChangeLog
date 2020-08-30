@@ -1,3 +1,16 @@
+* 89a739c update autotest
+* 95aa79d Update configuration for testsuite
+*   109d82b test
+|\  
+| * e4f1b29 Update typo
+| * a5bc92a update autotools
+* | ceba50c Testsuite
+|/  
+* 0cf111e Documentation update
+* 56cf293 .exe added
+* 35751e2 Update Readme.md
+* 2f544f6 Solves issue about OPENMP
+* 888d5da Documentation update
 * 7d18aed Cleaning code
 * b3283d3 Fix in elon stagged array
 * 88954e2 Documentation update

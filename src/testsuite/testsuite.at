@@ -5,4 +5,7 @@ AT_SETUP([Reading emissions and grid files])
 AT_TESTED( test2 test3 )
 AT_CHECK([test1],[0],[stdout],[],[],[echo pasa check])
 AT_CLEANUP
+AT_SETUP([Interpolation])
+AT_TESTED( test4 )
+AT_CLEANUP
 

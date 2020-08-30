@@ -123,12 +123,12 @@ tpob=.false.
     call check(nf90_inquire_variable(ncid,ikk,name))
     ename(ikk)=trim(name)
     if(name(1:2).eq."E_".or.name(1:2).eq."e_") then
+        if(trim(name).eq."E_CO".or.trim(name).eq."e_co")  L_CO=ikk
         call check( nf90_get_att(ncid, ikk, "description", name))
         cname(ikk)=trim(name)
         call check( nf90_get_att(ncid, ikk, "units", name))
         cunits(ikk)=trim(name)
         tvar(ikk)=.true.
-        !print *,cname(ikk)
     end if
     end do
 !     Get emissions values

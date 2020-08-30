@@ -10,7 +10,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([interpola], [3.0], [agustin@atmosfera.unam.mx], , [https://github.com/JoseAgustin/interpola])
+AC_INIT([interpola], [3.2], [agustin@atmosfera.unam.mx], , [https://github.com/JoseAgustin/interpola])
 # Define our M4 macro directory
 AC_CONFIG_AUX_DIR([autoconf])
 AM_INIT_AUTOMAKE([1.11 foreign subdir-objects])

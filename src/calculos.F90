@@ -31,7 +31,7 @@ real*8   :: elat1,elat2,elon1,elon2
 real*8   :: alat,alon,area,tot
 real*8  ::  xmas,xemis
 
-print *, "*****  Doing interpolations ****"
+print *, "   *******   Doing interpolations   *******"
     do j=1,djx!-1
     do i=1,dix!-1
         ylat1=dlat(i ,j )
@@ -66,21 +66,20 @@ print *, "*****  Doing interpolations ****"
             end do  ! jj
         end do  ! ii
 !$omp end parallel do
-        xmas=xmas+ed(i,j,1,1,8)*dx*dy/1000000
+        xmas=xmas+ed(i,j,1,1,L_CO)*dx*dy/1e6
     end do     ! i
 end do    !  j
 !  Emissions inventory mass computation
     do ii=1,eix
         do jj=1,ejx
-        xemis=xemis+ei(ii,jj,1,1,8) *dxe*dye/1000000
+        xemis=xemis+ei(ii,jj,1,1,L_CO) *dxe*dye/1e6
         end do  ! jj
     end do  ! ii
 !
 print *,'Mass balance'
-print '(A20,F10.0,x,f7.0,x,f7.0)','Emissions Inventory:',xemis, dxe,dye
-print '(A20,F10.0,x,f7.0,x,f7.0)','Emissions Domain:',xmas , dx,dy
+print '(A20,F10.0," dx= ",f5.0,"m dy= ",f5.0,"m")','Emissions Inventory:',xemis, dxe,dye
+print '(A20,F10.0," dx= ",f5.0,"m dy= ",f5.0,"m")','Emissions Domain:',xmas, dx,dy
 print '(A20,x,f10.4,x,f10.4,"%")','Ratio EI/EDx100:', xemis/xmas,(xemis/xmas-1)*100
-print '(A)','******   Done interpolation'
-print *,"      ++++++++++++"
+print '(A)','   ******   Done interpolation   ****** '
 deallocate(elat,elon,dlon,dlat,ei)
 end subroutine conversion
