@@ -1,4 +1,4 @@
-!>   @brief test subroutine reads_emision
+!>   @brief test subroutine check
 !>   @author  Jose Agustin Garcia Reynoso
 !>   @date 08/28/2020
 !>   @version  1.0

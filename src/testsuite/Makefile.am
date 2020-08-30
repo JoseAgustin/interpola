@@ -19,15 +19,15 @@ if WITH_OMPI
   AM_FCFLAGS += $(OPENMP_FCFLAGS)
 endif
 
-TESTS = test1 test2 test3 test4
+TESTS = test1 test2 test3 test4 test5
 
-check_PROGRAMS= test1 test2 test3 test4
+check_PROGRAMS= test1 test2 test3 test4 test5
 
 test1_SOURCES= $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/s_check.F90 p_check.F90
 test2_SOURCES= $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/lee_emis.F90 $(top_builddir)/s_check.F90 p_lee_emis.F90
 test3_SOURCES= $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/lee_malla.F90 $(top_builddir)/s_check.F90 p_lee_grid.F90
 test4_SOURCES= $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/calculos.F90 p_calc.F90
-
+test5_SOURCES= $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/salidas.F90 $(top_builddir)/s_check.F90 p_guarda.F90
 # Additional files to be cleaned with 'make clean'
 CLEANFILES = *.o *.mod package.m4 testsuite
 

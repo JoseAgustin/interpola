@@ -137,7 +137,7 @@ logical,allocatable :: tvar(:)
 !> true if input emissions files contains density population
 logical :: tpob
 ! Domain Variables
-common /domain/ L_CO,zlev,dix,djx,eix,ejx,dx,dy,dxe,dye,rama,Title
+common /domain/ L_CO,NDIMS,nvars,zlev,dix,djx,eix,ejx,dx,dy,dxe,dye,rama,Title
 common /date/ id_grid,unlimdimid,Times,current_date,cday,mecha,tpob
 common /wrf/ julyr,julday,mapproj,iswater,islake,isice,isurban,isoilwater,&
             cenlat,cenlon,trulat1, trulat2,moadcenlat,stdlon,pollat,pollon,&

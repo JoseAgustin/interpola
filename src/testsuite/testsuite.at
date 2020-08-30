@@ -9,3 +9,6 @@ AT_SETUP([Interpolation])
 AT_TESTED( test4 )
 AT_CLEANUP
 
+AT_SETUP([Storing interpolated file])
+AT_TESTED( test5 )
+AT_CLEANUP
