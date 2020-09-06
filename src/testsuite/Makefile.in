@@ -13,6 +13,12 @@
 # PARTICULAR PURPOSE.
 
 @SET_MAKE@
+
+#
+# This file is processed by automake (produces file Makefile.in)
+#
+# Compiler flags 
+#
 VPATH = @srcdir@
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
@@ -85,7 +91,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-@GFOR_TRUE@am__append_1 = -DGFOR -fdec -I/usr/local/include
+@GFOR_TRUE@am__append_1 = -DGFOR -fdec 
 @GFOR_TRUE@am__append_2 = -fdec
 # Compiler flags
 
@@ -488,13 +494,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-
-#
-# This file is processed by automake (produces file Makefile.in)
-#
-# Compiler flags -I$(top_srcdir)
-#FC =$(NC_FC)
-AM_FCFLAGS = $(NC_INC) -I$(top_srcdir) $(NC_LIB) $(am__append_3)
+AM_FCFLAGS = $(NC_LIB) -I$(top_srcdir) $(am__append_3)
 AM_CPPFLAGS = -O2 $(NC_INC) $(am__append_1)
 test1_SOURCES = $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/s_check.F90 p_check.F90
 test2_SOURCES = $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/lee_emis.F90 $(top_builddir)/s_check.F90 p_lee_emis.F90
@@ -504,8 +504,7 @@ test5_SOURCES = $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/salidas.F90 $(t
 # Additional files to be cleaned with 'make clean'
 CLEANFILES = *.o *.mod package.m4 testsuite
 TESTSUITE = $(srcdir)/testsuite
-EXTRA_DIST = testsuite.at $(srcdir)/package.m4 $(TESTSUITE) \
-	est_rama.txt pol_data.csv met_data.csv namelist.nml
+EXTRA_DIST = testsuite.at $(srcdir)/package.m4 $(TESTSUITE)
 AUTOTEST = $(AUTOM4TE) --language=autotest
 all: all-am
 

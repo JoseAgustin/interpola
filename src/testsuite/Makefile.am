@@ -1,15 +1,16 @@
 #
 # This file is processed by automake (produces file Makefile.in)
 #
-# Compiler flags -I$(top_srcdir)
-#FC =$(NC_FC)
-AM_FCFLAGS  = $(NC_INC) -I$(top_srcdir)
-AM_FCFLAGS += $(NC_LIB)
+# Compiler flags 
+#
+
+AM_FCFLAGS  = $(NC_LIB) -I$(top_srcdir)
+
 FCFLAGS = $(AM_FCFLAGS)
 
 AM_CPPFLAGS=-O2 $(NC_INC)
 if GFOR
-AM_CPPFLAGS += -DGFOR -fdec -I/usr/local/include
+AM_CPPFLAGS += -DGFOR -fdec 
 FCFLAGS += -fdec
 endif
 # Compiler flags
@@ -52,7 +53,6 @@ $(srcdir)/package.m4: $(top_srcdir)/configure.ac
 TESTSUITE = $(srcdir)/testsuite
 
 EXTRA_DIST = testsuite.at $(srcdir)/package.m4 $(TESTSUITE)
-EXTRA_DIST += est_rama.txt pol_data.csv met_data.csv namelist.nml
 
 check-local: atconfig  $(TESTSUITE)
 	$(SHELL) '$(TESTSUITE)' $(TESTSUITEFLAGS)

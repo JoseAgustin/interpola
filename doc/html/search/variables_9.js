@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['radm_128',['radm',['../namespacevars__dat.html#a918cb260906248a19d28a0d693edfb06',1,'vars_dat']]]
+  ['pollat_138',['pollat',['../namespacevars__dat.html#a477efcb3bebe3bab01165157cc9547a4',1,'vars_dat']]],
+  ['pollon_139',['pollon',['../namespacevars__dat.html#a1bdc4c05082c069948fa71345a540ae1',1,'vars_dat']]]
 ];
