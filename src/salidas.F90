@@ -6,8 +6,8 @@
 !>
 !>  if geo_em_d0?.nc file is used the date comes from wrfchemin.nc
 !>	  @author Agustin Garcia
-!>   @date 07/01/2020, 08/28/2012.
-!>   @version  3.0
+!>   @date 07/01/2020
+!>   @version  3.1
 !>   @copyright Universidad Nacional Autonoma de Mexico.
 !****************************************************************************
 !  Proposito:
@@ -195,9 +195,11 @@ contains
 ! C     RRRR  EEEE  AAAAA    AAAAA   T     T   RRRR
 ! CC    R  R  E     A   A    A   A   T     T   R  R
 !  CCCC R   R EEEEE A   A____A   A   T     T   R   R
-!> @brief creates attributes for gas variables and aerosol variables
-!>	@author Agustin Garcia
-!> @date 28/08/2012
+!>  @brief creates attributes for gas variables and aerosol variables
+!>  @author Agustin Garcia
+!>  @date 07/01/2020
+!>  @version  3.1
+!>  @copyright Universidad Nacional Autonoma de Mexico.
 subroutine crea_attr(ncid,idm,dimids,svar,cname,cunits,id_var)
     implicit none
     !> netCDF ID, from a previous call to NF90_OPEN or NF90_CREATE

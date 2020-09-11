@@ -14,7 +14,7 @@
 !>      Create output file and write results
 !>   @author  Jose Agustin Garcia Reynoso
 !>   @date  2012/06/20
-!>   @version  3.0
+!>   @version  3.1
 !>   @copyright Universidad Nacional Autonoma de Mexico 2020
 !
 !	Created by Agustin Garcia on
