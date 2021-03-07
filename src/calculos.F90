@@ -79,10 +79,10 @@ end do    !  j
         end do  ! jj
     end do  ! ii
 !
-print *,'Mass balance'
+print *,'     ***** Mass balance *****'
 print '(A20,F10.0," dx= ",f5.0,"m dy= ",f5.0,"m")','Emissions Inventory:',xemis, dxe,dye
-print '(A20,F10.0," dx= ",f5.0,"m dy= ",f5.0,"m")','Emissions Domain:',xmas, dx,dy
+print '(A20,F10.0," dx= ",f5.0,"m dy= ",f5.0,"m")','New Model Domain:',xmas, dx,dy
 print '(A20,x,f10.4,x,f10.4,"%")','Ratio EI/EDx100:', xemis/xmas,(xemis/xmas-1)*100
-print '(A)','   ******   Done interpolation   ****** '
+print '(A)','    ******   Done interpolation   ****** '
 deallocate(elat,elon,dlon,dlat,ei)
 end subroutine conversion

@@ -44,8 +44,6 @@ real :: elmax
     ife=1
     jie=ejx
     jfe=1
-print *,jid,jfd,iid,ifd,jie,jfe,iie,ife
-
 ! searchivg for indexes in latitudes for modeling domain
     elmin=minval(elat)
     elmax =maxval(elat)
@@ -125,6 +123,7 @@ integer function  compara(indice,indx,eval,dval1,dval2,maximo)
     integer indice,indx
     real :: eval,dval1,dval2
     logical :: maximo
+    compara=indx
     if (dval1 .le. eval.and.eval.le.dval2) then
        if(indice.gt.indx.and.maximo) then
             compara=indice
