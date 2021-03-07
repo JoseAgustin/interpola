@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['s_5fcheck_2ef90_61',['s_check.F90',['../s__check_8_f90.html',1,'']]],
-  ['salidas_2ef90_62',['salidas.F90',['../salidas_8_f90.html',1,'']]],
-  ['sdim_63',['sdim',['../namespacevars__dat.html#a395fdca7867542497a63ff1dca6be9b7',1,'vars_dat']]],
-  ['stdlon_64',['stdlon',['../namespacevars__dat.html#ac8a8988c22989337b549e2a7f3efd978',1,'vars_dat']]]
+  ['radm_61',['radm',['../namespacevars__dat.html#a918cb260906248a19d28a0d693edfb06',1,'vars_dat']]],
+  ['readme_2emd_62',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
+  ['reads_5femision_63',['reads_emision',['../lee__emis_8_f90.html#af62e5165e20eab3fed7f77f3942abbb2',1,'lee_emis.F90']]],
+  ['reads_5fgrid_64',['reads_grid',['../lee__malla_8_f90.html#abd9b2e2b2c73e5f3be4439b7f806dbc2',1,'lee_malla.F90']]]
 ];
