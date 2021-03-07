@@ -26,11 +26,14 @@ implicit none
 integer :: i,j,ii,jj,kl,l
 !>  hours in a day
 integer :: ih
+integer ::iid,ifd,jid,jfd,iie,ife,jie,jfe
 real*8   :: ylat1,ylat2,xlon1,xlon2
 real*8   :: elat1,elat2,elon1,elon2
 real*8   :: alat,alon,area,tot
 real*8  ::  xmas,xemis
 
+call indices (iid,ifd,jid,jfd,iie,ife,jie,jfe)
+print *,jid,jfd,iid,ifd,jie,jfe,iie,ife
 print *, "   *******   Doing interpolations   *******"
     do j=1,djx!-1
     do i=1,dix!-1
