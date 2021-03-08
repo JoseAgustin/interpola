@@ -17,7 +17,6 @@
 !>   @author  Jose Agustin Garcia Reynoso
 !>   @date  07/01/2020
 !>   @version  3.1
-
 !****************************************************************************
 subroutine conversion
 !$ use omp_lib
@@ -35,15 +34,17 @@ real*8  ::  xmas,xemis
 call indices (iid,ifd,jid,jfd,iie,ife,jie,jfe)
 print *,jid,jfd,iid,ifd,jie,jfe,iie,ife
 print *, "   *******   Doing interpolations   *******"
-    do j=1,djx!-1
-    do i=1,dix!-1
+!    do j=1,djx!-1
+!    do i=1,dix!-1
+    do j=jid,jfd
+      do i=iid,ifd
         ylat1=dlat(i ,j )
         ylat2=dlat(i,j+1) !staged lat
         xlon1=dlon(i  ,j)
         xlon2=dlon(i+1,j) !staged long
 !$omp parallel do private(area,tot,elat1,elat2,elon1,elon2,jj,ih,l,kl)
-        do ii=1,eix
-            do jj=1,ejx!2,ejx-1
+        do ii=iie,ife!1,eix
+            do jj=jie,jfe!1,ejx
             alat=0.0
             alon=0.0
             elat1= elat(ii,jj)
