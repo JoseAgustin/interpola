@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo2.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Interpola
-   &#160;<span id="projectnumber">v2.o</span>
+   &#160;<span id="projectnumber">v3.0</span>
    </div>
    <div id="projectbrief">Emissions interpolation</div>
   </td>
@@ -68,7 +68,7 @@ $(function() {
 <div class="title">calculos.F90</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">!</span></div>
+<a href="calculos_8_f90.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">!</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">!    calculos.f90</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">!</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">!   Created by Agustin Garcia on 28/08/2012.</span></div>
@@ -77,74 +77,97 @@ $(function() {
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">!</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">!  FUNCTIONS:</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">!****************************************************************************</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">subroutine </span>conversion</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">!$ use omp_lib</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">use </span><a class="code" href="namespacevars__dat.html">vars_dat</a></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">implicit none</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">integer</span> :: i,j,ii,jj,kl,l</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">!****************************************************************************</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="calculos_8_f90.html#a076180a04270862f554411ab57acd1c7">   21</a></span>&#160;<span class="keyword">subroutine </span><a class="code" href="calculos_8_f90.html#a076180a04270862f554411ab57acd1c7">conversion</a></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">!$ use omp_lib</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">use </span><a class="code" href="namespacevars__dat.html">vars_dat</a></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">implicit none</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">integer</span> :: i,j,ii,jj,kl,l</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">integer</span> :: ih</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;real*8   :: ylat1,ylat2,xlon1,xlon2</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;real*8   :: elat1,elat2,elon1,elon2</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;real*8   :: alat,alon,area,tot</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;real*8  ::  xmas,xemis</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;print *, <span class="stringliteral">&quot;*****  Doing interpolations ****&quot;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">do</span> j= 2,djx-1</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">do</span> i=2,dix-1</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        ylat1=.5*(dlat(i,j-1)+dlat(i,j))</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        ylat2=.5*(dlat(i,j+1)+dlat(i,j))</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        xlon1=.5*(dlon(i-1,j)+dlon(i,j))</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        xlon2=.5*(dlon(i+1,j)+dlon(i,j))</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="comment">!$omp parallel do private(jj,area,ih,l,kl)</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordflow">do</span> ii=2,eix-1</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keywordflow">do</span> jj=2,ejx-1</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            alat=0.0</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            alon=0.0</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            elat1= 0.5*(elat(ii,jj)+elat(ii,jj-1))</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            elat2= 0.5*(elat(ii,jj)+elat(ii,jj+1))</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            elon1= 0.5*(elon(ii,jj)+elon(ii-1,jj))</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            elon2= 0.5*(elon(ii,jj)+elon(ii+1,jj))</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            tot=(elat2-elat1)*(elon2-elon1)/((ylat2-ylat1)*(xlon2-xlon1))</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">if</span>(ylat1.le.elat2.and. ylat2.ge.elat1)alat=&amp;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            &amp;(min(ylat2,elat2)-max(ylat1,elat1))/(elat2-elat1)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordflow">if</span>(xlon1.le.elon2.and. xlon2.ge.elon1)  alon=&amp;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            &amp;      (min(xlon2,elon2)-max(xlon1,elon1))/(elon2-elon1)</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            area=max(0.,alat*alon)* tot<span class="comment">!</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">if</span>( area.gt.0.) <span class="keywordflow">then</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">do</span> l=1,<span class="keyword">size</span>(ed,dim=3) <span class="comment">! compuesto</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;              <span class="keywordflow">do</span>  ih=1,<span class="keyword">size</span>(ed,dim=4) <span class="comment">!hora</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keywordflow">do</span>  kl=1,<span class="keyword">size</span>(ed,dim=5) <span class="comment">! altura</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                <span class="keywordflow">if</span> (tvar(kl)) ed(i,j,l,ih,kl)=ed(i,j,l,ih,kl)+ei(ii,jj,l,ih,kl)*area</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keywordflow">                end do</span> <span class="comment">! kl</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keywordflow">              end do</span> <span class="comment">! ih</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordflow">            end do</span>  <span class="comment">! l</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">if</span>(tpob)dpob(i,j)=dpob(i,j)+epob(ii,jj)*area</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keywordflow">            end if</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keywordflow">            end do</span>  <span class="comment">! jj</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keywordflow">        end do</span>  <span class="comment">! ii</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="comment">!$omp end parallel do</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        xmas=xmas+ed(i,j,1,1,8)*dx*dy/1000000</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordflow">    end do</span>     <span class="comment">! i</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keywordflow">end do</span>    <span class="comment">!  j</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordflow">do</span> i=1,eix</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">do</span> j=1,ejx</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            xemis=xemis+ei(i,j,1,1,8) *dxe*dye/1000000</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keywordflow">        end do</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keywordflow">    end do</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">!</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;print *,<span class="stringliteral">&#39;Mass balance&#39;</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;print <span class="stringliteral">&#39;(A20,F10.0,x,f7.0,x,f7.0)&#39;</span>,<span class="stringliteral">&#39;Emissions Inventory:&#39;</span>,xemis, dxe,dye</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;print <span class="stringliteral">&#39;(A20,F10.0,x,f7.0,x,f7.0)&#39;</span>,<span class="stringliteral">&#39;Emissions Domain:&#39;</span>,xmas , dx,dy</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;print <span class="stringliteral">&#39;(A20,x,f10.4,x,f10.4,&quot;%&quot;)&#39;</span>,<span class="stringliteral">&#39;Ratio EI/EDx100:&#39;</span>, xemis/xmas,(xemis/xmas-1)*100</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;print <span class="stringliteral">&#39;(A)&#39;</span>,<span class="stringliteral">&#39;******   Done interpolation&#39;</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;print *,<span class="stringliteral">&quot;      ++++++++++++&quot;</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">deallocate</span>(elat,elon,dlon,dlat,ei)</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">end subroutine </span>conversion</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">integer</span> ::iid,ifd,jid,jfd,iie,ife,jie,jfe</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;real*8   :: ylat1,ylat2,xlon1,xlon2</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;real*8   :: elat1,elat2,elon1,elon2</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;real*8   :: alat,alon,area,tot</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;real*8  ::  xmas,xemis</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">call </span><a class="code" href="indices_8_f90.html#a44c296d298fc2bebd1448b1e87f95637">indices</a> (iid,ifd,jid,jfd,iie,ife,jie,jfe)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;print *,jid,jfd,iid,ifd,jie,jfe,iie,ife</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;print *, <span class="stringliteral">&quot;   *******   Doing interpolations   *******&quot;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">!    do j=1,djx!-1</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">!    do i=1,dix!-1</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">do</span> j=jid,jfd</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;      <span class="keywordflow">do</span> i=iid,ifd</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        ylat1=<a class="code" href="namespacevars__dat.html#a0dd6de731c3c7f00d75b6f1d1a4d9821">dlat</a>(i ,j )</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        ylat2=<a class="code" href="namespacevars__dat.html#a0dd6de731c3c7f00d75b6f1d1a4d9821">dlat</a>(i,j+1) <span class="comment">!staged lat</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        xlon1=<a class="code" href="namespacevars__dat.html#af06b1fffe97e51705a1b9c9d862d740a">dlon</a>(i  ,j)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        xlon2=<a class="code" href="namespacevars__dat.html#af06b1fffe97e51705a1b9c9d862d740a">dlon</a>(i+1,j) <span class="comment">!staged long</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">!$omp parallel do private(area,tot,elat1,elat2,elon1,elon2,jj,ih,l,kl)</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">do</span> ii=iie,ife<span class="comment">!1,eix</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordflow">do</span> jj=jie,jfe<span class="comment">!1,ejx</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            alat=0.0</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            alon=0.0</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            elat1= <a class="code" href="namespacevars__dat.html#a48b730b20719e51305f729e5572fc735">elat</a>(ii,jj)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            elat2= <a class="code" href="namespacevars__dat.html#a48b730b20719e51305f729e5572fc735">elat</a>(ii,jj+1) <span class="comment">!staged lat</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            elon1= <a class="code" href="namespacevars__dat.html#a1a1dc158b6ea51d718c962ce1c4b5353">elon</a>(ii,jj)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            elon2= <a class="code" href="namespacevars__dat.html#a1a1dc158b6ea51d718c962ce1c4b5353">elon</a>(ii+1,jj)<span class="comment">!staged long</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            tot=(elat2-elat1)*(elon2-elon1)/((ylat2-ylat1)*(xlon2-xlon1))</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">if</span>(ylat1.le.elat2.and. ylat2.ge.elat1)alat=&amp;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            &amp; (min(ylat2,elat2)-max(ylat1,elat1))/(elat2-elat1)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            <span class="keywordflow">if</span>(xlon1.le.elon2 .and. xlon2.ge.elon1)  alon=&amp;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            &amp; (min(xlon2,elon2)-max(xlon1,elon1))/(elon2-elon1)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            area=max(0.,alat*alon)* tot<span class="comment">!</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">if</span>( area.gt.0.) <span class="keywordflow">then</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;             <span class="keywordflow">do</span> l=1,<span class="keyword">size</span>(<a class="code" href="namespacevars__dat.html#acf12ecea1f92de822d69c1d28f1044c9">ed</a>,<a class="code" href="namespacevars__dat.html#a1da755bc0e57a7387a74923595dd62c7">dim</a>=3) <span class="comment">! altura</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;               <span class="keywordflow">do</span>  ih=1,<span class="keyword">size</span>(<a class="code" href="namespacevars__dat.html#acf12ecea1f92de822d69c1d28f1044c9">ed</a>,<a class="code" href="namespacevars__dat.html#a1da755bc0e57a7387a74923595dd62c7">dim</a>=4) <span class="comment">!hora</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                 <span class="keywordflow">do</span>  kl=1,<span class="keyword">size</span>(<a class="code" href="namespacevars__dat.html#acf12ecea1f92de822d69c1d28f1044c9">ed</a>,<a class="code" href="namespacevars__dat.html#a1da755bc0e57a7387a74923595dd62c7">dim</a>=5) <span class="comment">! compuesto</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                 <span class="keywordflow">if</span> (<a class="code" href="namespacevars__dat.html#a9a4106b244b3f24e914376933cd2884f">tvar</a>(kl)) <a class="code" href="namespacevars__dat.html#acf12ecea1f92de822d69c1d28f1044c9">ed</a>(i,j,l,ih,kl)=<a class="code" href="namespacevars__dat.html#acf12ecea1f92de822d69c1d28f1044c9">ed</a>(i,j,l,ih,kl)+<a class="code" href="namespacevars__dat.html#ab5160346504b0741e681aefeea1df427">ei</a>(ii,jj,l,ih,kl)*area</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keywordflow">                 end do</span> <span class="comment">! kl</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keywordflow">               end do</span> <span class="comment">! ih</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keywordflow">             end do</span>  <span class="comment">! l</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;             <span class="keywordflow">if</span>(<a class="code" href="namespacevars__dat.html#ad785705aafe67adfa7f023297855f229">tpob</a>)<a class="code" href="namespacevars__dat.html#af2b19b7cca5bed2e180eeac1b2e2d0cc">dpob</a>(i,j)=<a class="code" href="namespacevars__dat.html#af2b19b7cca5bed2e180eeac1b2e2d0cc">dpob</a>(i,j)+<a class="code" href="namespacevars__dat.html#af583173762c51760edc804a72d731f25">epob</a>(ii,jj)*area</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordflow">            end if</span>  <span class="comment">! area</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keywordflow">            end do</span>  <span class="comment">! jj</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keywordflow">        end do</span>  <span class="comment">! ii</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">!$omp end parallel do</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        xmas=xmas+<a class="code" href="namespacevars__dat.html#acf12ecea1f92de822d69c1d28f1044c9">ed</a>(i,j,1,1,<a class="code" href="namespacevars__dat.html#a0d34630788c3a1ea7aeb1346a164f679">l_co</a>)*<a class="code" href="namespacevars__dat.html#a4f6973bb440d4ec3b1dd6a7e65ff7c0d">dx</a>*<a class="code" href="namespacevars__dat.html#a2f7d3b1041c69072d6e7e181f9d6c73a">dy</a>/1e6</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keywordflow">    end do</span>     <span class="comment">! i</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keywordflow">end do</span>    <span class="comment">!  j</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">!  Emissions inventory mass computation</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">do</span> ii=1,<a class="code" href="namespacevars__dat.html#a63146ee8f16ed255ac81578b16c2cc22">eix</a></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordflow">do</span> jj=1,<a class="code" href="namespacevars__dat.html#a006e60d511894ceee2050346497df083">ejx</a></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        xemis=xemis+<a class="code" href="namespacevars__dat.html#ab5160346504b0741e681aefeea1df427">ei</a>(ii,jj,1,1,<a class="code" href="namespacevars__dat.html#a0d34630788c3a1ea7aeb1346a164f679">l_co</a>) *<a class="code" href="namespacevars__dat.html#a1642bd62ec8e081d338292c30b5b388e">dxe</a>*<a class="code" href="namespacevars__dat.html#ad2faaed5b2a0a422fe88b6cb13c307a2">dye</a>/1e6</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keywordflow">        end do</span>  <span class="comment">! jj</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keywordflow">    end do</span>  <span class="comment">! ii</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">!</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;print *,<span class="stringliteral">&#39;     ***** Mass balance *****&#39;</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;print <span class="stringliteral">&#39;(A20,F10.0,&quot; dx= &quot;,f5.0,&quot;m dy= &quot;,f5.0,&quot;m&quot;)&#39;</span>,<span class="stringliteral">&#39;Emissions Inventory:&#39;</span>,xemis, <a class="code" href="namespacevars__dat.html#a1642bd62ec8e081d338292c30b5b388e">dxe</a>,<a class="code" href="namespacevars__dat.html#ad2faaed5b2a0a422fe88b6cb13c307a2">dye</a></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;print <span class="stringliteral">&#39;(A20,F10.0,&quot; dx= &quot;,f5.0,&quot;m dy= &quot;,f5.0,&quot;m&quot;)&#39;</span>,<span class="stringliteral">&#39;New Model Domain:&#39;</span>,xmas, <a class="code" href="namespacevars__dat.html#a4f6973bb440d4ec3b1dd6a7e65ff7c0d">dx</a>,<a class="code" href="namespacevars__dat.html#a2f7d3b1041c69072d6e7e181f9d6c73a">dy</a></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;print <span class="stringliteral">&#39;(A20,x,f10.4,x,f10.4,&quot;%&quot;)&#39;</span>,<span class="stringliteral">&#39;Ratio EI/EDx100:&#39;</span>, xemis/xmas,(xemis/xmas-1)*100</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;print <span class="stringliteral">&#39;(A)&#39;</span>,<span class="stringliteral">&#39;    ******   Done interpolation   ****** &#39;</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">deallocate</span>(<a class="code" href="namespacevars__dat.html#a48b730b20719e51305f729e5572fc735">elat</a>,<a class="code" href="namespacevars__dat.html#a1a1dc158b6ea51d718c962ce1c4b5353">elon</a>,<a class="code" href="namespacevars__dat.html#af06b1fffe97e51705a1b9c9d862d740a">dlon</a>,<a class="code" href="namespacevars__dat.html#a0dd6de731c3c7f00d75b6f1d1a4d9821">dlat</a>,<a class="code" href="namespacevars__dat.html#ab5160346504b0741e681aefeea1df427">ei</a>)</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">end subroutine </span><a class="code" href="calculos_8_f90.html#a076180a04270862f554411ab57acd1c7">conversion</a></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacevars__dat_html"><div class="ttname"><a href="namespacevars__dat.html">vars_dat</a></div><div class="ttdoc">Set up variables used during the process.</div><div class="ttdef"><b>Definition:</b> <a href="vars__dat__mod_8_f90_source.html#l00015">vars_dat_mod.F90:15</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html"><div class="ttname"><a href="namespacevars__dat.html">vars_dat</a></div><div class="ttdoc">Set up variables for the mass conservative interpolation process.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00016">mod_vars_dat.F90:16</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_acf12ecea1f92de822d69c1d28f1044c9"><div class="ttname"><a href="namespacevars__dat.html#acf12ecea1f92de822d69c1d28f1044c9">vars_dat::ed</a></div><div class="ttdeci">real, dimension(:,:,:,:,:), allocatable ed</div><div class="ttdoc">emissions in new DOMAIN file dimensions nx, ny,level, nh, radm</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00028">mod_vars_dat.F90:28</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_a006e60d511894ceee2050346497df083"><div class="ttname"><a href="namespacevars__dat.html#a006e60d511894ceee2050346497df083">vars_dat::ejx</a></div><div class="ttdeci">integer ejx</div><div class="ttdoc">Number of values in latitude in emissions file.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00058">mod_vars_dat.F90:58</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_af2b19b7cca5bed2e180eeac1b2e2d0cc"><div class="ttname"><a href="namespacevars__dat.html#af2b19b7cca5bed2e180eeac1b2e2d0cc">vars_dat::dpob</a></div><div class="ttdeci">real, dimension(:,:), allocatable dpob</div><div class="ttdoc">Density population in new domain nx, ny from new domain ed.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00040">mod_vars_dat.F90:40</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_a4f6973bb440d4ec3b1dd6a7e65ff7c0d"><div class="ttname"><a href="namespacevars__dat.html#a4f6973bb440d4ec3b1dd6a7e65ff7c0d">vars_dat::dx</a></div><div class="ttdeci">real dx</div><div class="ttdoc">Grid dimension in m output file x.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00088">mod_vars_dat.F90:88</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_a1a1dc158b6ea51d718c962ce1c4b5353"><div class="ttname"><a href="namespacevars__dat.html#a1a1dc158b6ea51d718c962ce1c4b5353">vars_dat::elon</a></div><div class="ttdeci">real, dimension(:,:), allocatable elon</div><div class="ttdoc">Longitudes from input file emissions.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00032">mod_vars_dat.F90:32</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_a2f7d3b1041c69072d6e7e181f9d6c73a"><div class="ttname"><a href="namespacevars__dat.html#a2f7d3b1041c69072d6e7e181f9d6c73a">vars_dat::dy</a></div><div class="ttdeci">real dy</div><div class="ttdoc">Grid dimension in m output file y.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00090">mod_vars_dat.F90:90</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_a0dd6de731c3c7f00d75b6f1d1a4d9821"><div class="ttname"><a href="namespacevars__dat.html#a0dd6de731c3c7f00d75b6f1d1a4d9821">vars_dat::dlat</a></div><div class="ttdeci">real, dimension(:,:), allocatable dlat</div><div class="ttdoc">Latitudes in new domain nx, ny from new domain ed.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00036">mod_vars_dat.F90:36</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_a48b730b20719e51305f729e5572fc735"><div class="ttname"><a href="namespacevars__dat.html#a48b730b20719e51305f729e5572fc735">vars_dat::elat</a></div><div class="ttdeci">real, dimension(:,:), allocatable elat</div><div class="ttdoc">Latitudes from input file emissions.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00030">mod_vars_dat.F90:30</a></div></div>
+<div class="ttc" id="acalculos_8_f90_html_a076180a04270862f554411ab57acd1c7"><div class="ttname"><a href="calculos_8_f90.html#a076180a04270862f554411ab57acd1c7">conversion</a></div><div class="ttdeci">subroutine conversion</div><div class="ttdoc">It does the interpolation into the new Mesh.</div><div class="ttdef"><b>Definition:</b> <a href="calculos_8_f90_source.html#l00021">calculos.F90:22</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_a63146ee8f16ed255ac81578b16c2cc22"><div class="ttname"><a href="namespacevars__dat.html#a63146ee8f16ed255ac81578b16c2cc22">vars_dat::eix</a></div><div class="ttdeci">integer eix</div><div class="ttdoc">Number of values in longitude in emissions file.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00056">mod_vars_dat.F90:56</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_ad785705aafe67adfa7f023297855f229"><div class="ttname"><a href="namespacevars__dat.html#ad785705aafe67adfa7f023297855f229">vars_dat::tpob</a></div><div class="ttdeci">logical tpob</div><div class="ttdoc">true if input emissions files contains density population</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00138">mod_vars_dat.F90:138</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_af06b1fffe97e51705a1b9c9d862d740a"><div class="ttname"><a href="namespacevars__dat.html#af06b1fffe97e51705a1b9c9d862d740a">vars_dat::dlon</a></div><div class="ttdeci">real, dimension(:,:), allocatable dlon</div><div class="ttdoc">Longitudes in new domain nx, ny from new domain ed.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00038">mod_vars_dat.F90:38</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_a1642bd62ec8e081d338292c30b5b388e"><div class="ttname"><a href="namespacevars__dat.html#a1642bd62ec8e081d338292c30b5b388e">vars_dat::dxe</a></div><div class="ttdeci">real dxe</div><div class="ttdoc">Grid dimension in m emissions file x.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00092">mod_vars_dat.F90:92</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_af583173762c51760edc804a72d731f25"><div class="ttname"><a href="namespacevars__dat.html#af583173762c51760edc804a72d731f25">vars_dat::epob</a></div><div class="ttdeci">real, dimension(:,:), allocatable epob</div><div class="ttdoc">Density population from input file emissions.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00034">mod_vars_dat.F90:34</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_a1da755bc0e57a7387a74923595dd62c7"><div class="ttname"><a href="namespacevars__dat.html#a1da755bc0e57a7387a74923595dd62c7">vars_dat::dim</a></div><div class="ttdeci">integer, dimension(:), allocatable dim</div><div class="ttdoc">Dimensions in emissions domain nx, nys.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00050">mod_vars_dat.F90:50</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_ab5160346504b0741e681aefeea1df427"><div class="ttname"><a href="namespacevars__dat.html#ab5160346504b0741e681aefeea1df427">vars_dat::ei</a></div><div class="ttdeci">real, dimension(:,:,:,:,:), allocatable ei</div><div class="ttdoc">emissions input file dimensions nx, ny,level, nh, radm</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00026">mod_vars_dat.F90:26</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_a9a4106b244b3f24e914376933cd2884f"><div class="ttname"><a href="namespacevars__dat.html#a9a4106b244b3f24e914376933cd2884f">vars_dat::tvar</a></div><div class="ttdeci">logical, dimension(:), allocatable tvar</div><div class="ttdoc">true if input var is an emissions variable</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00136">mod_vars_dat.F90:136</a></div></div>
+<div class="ttc" id="aindices_8_f90_html_a44c296d298fc2bebd1448b1e87f95637"><div class="ttname"><a href="indices_8_f90.html#a44c296d298fc2bebd1448b1e87f95637">indices</a></div><div class="ttdeci">subroutine indices(iid, ifd, jid, jfd, iie, ife, jie, jfe)</div><div class="ttdoc">finds the start and end of each domain for reducing search items</div><div class="ttdef"><b>Definition:</b> <a href="indices_8_f90_source.html#l00016">indices.F90:17</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_ad2faaed5b2a0a422fe88b6cb13c307a2"><div class="ttname"><a href="namespacevars__dat.html#ad2faaed5b2a0a422fe88b6cb13c307a2">vars_dat::dye</a></div><div class="ttdeci">real dye</div><div class="ttdoc">Grid dimension in m emissions file y.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00094">mod_vars_dat.F90:94</a></div></div>
+<div class="ttc" id="anamespacevars__dat_html_a0d34630788c3a1ea7aeb1346a164f679"><div class="ttname"><a href="namespacevars__dat.html#a0d34630788c3a1ea7aeb1346a164f679">vars_dat::l_co</a></div><div class="ttdeci">integer l_co</div><div class="ttdoc">Index of E_CO emission.</div><div class="ttdef"><b>Definition:</b> <a href="mod__vars__dat_8_f90_source.html#l00082">mod_vars_dat.F90:82</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
