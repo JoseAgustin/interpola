@@ -64,7 +64,4 @@ real :: elmax
     call obtiene(elmin,elmax,elon,1,iie,ife)
     print '(8I4)',jid,jfd,iid,ifd,jie,jfe,iie,ife
     return
-contains
-
-
 end subroutine
