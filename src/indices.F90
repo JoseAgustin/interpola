@@ -57,79 +57,14 @@ real :: elmax
 ! searchivg for indexes in latitudes for emissions domain
     elmin=minval(dlat)
     elmax =maxval(dlat)
-    call obtiene(elmin,elmax,elat,1,jie,jfe)
+    call obtiene(elmin,elmax,elat,2,jie,jfe)
 ! searchivg for indexes in longitudes for modeling domain
     elmin=minval(dlon)
     elmax =maxval(dlon)
-    call obtiene(elmin,elmax,elon,2,iie,ife)
-!print *,jid,jfd,iid,ifd,jie,jfe,iie,ife
+    call obtiene(elmin,elmax,elon,1,iie,ife)
+    print '(8I4)',jid,jfd,iid,ifd,jie,jfe,iie,ife
     return
 contains
-!>   @brief Obtiene los valores de los indices de la coordenada
-!>   @author  Jose Agustin Garcia Reynoso
-!>   @date  03/06/2020
-!>   @version  1.0
-!        _     _   _
-!   ___ | |__ | |_(_) ___ _ __   ___
-!  / _ \| '_ \| __| |/ _ \ '_ \ / _ \
-! | (_) | |_) | |_| |  __/ | | |  __/
-!  \___/|_.__/ \__|_|\___|_| |_|\___|
-!
-subroutine obtiene(vmin,vmax,coordenada,numero,inicio,final)
-implicit none
-!> valor del indice inicial en el arreglo coordenda donde se ubuica vmin
-integer,intent(inout):: inicio
-!> valor del indice final en el arreglo coordenda donde se ubuica vmax
-integer,intent(inout):: final
-!> contador
-integer :: i
-!> indice a emplear en el arreglo coordenada
-integer,intent(IN):: numero
-!> vmin valor minimo del arreglo a buscar
-real,intent(IN)::vmin
-!> vmax valor maximo del arreglo a buscar
-real,intent(IN)::vmax
-!> arreglo de coordenadas donde se busca el valor
-real,intent(IN),dimension(:,:) :: coordenada
-   !print *,vmin,minval(coordenada)
-    do i=1,size(coordenada,numero)-1
-      if(numero.eq.1) then
-        inicio=compara(i,inicio,vmin,coordenada(i,1),coordenada(i+1,1),.false.)
-        final= compara(i,final ,vmax,coordenada(i,1),coordenada(i+1,1),.true.)
-      else
-        inicio=compara(i,inicio,vmin,coordenada(1,i),coordenada(1,i+1),.false.)
-        final =compara(i,final, vmax,coordenada(1,i),coordenada(1,i+1),.true.)
-      end if
-    end do
-if (vmin.lt. minval(coordenada)) inicio=1
-if (vmax.gt. maxval(coordenada)) final=size(coordenada,numero)
-end subroutine
-!>   @brief Compara los valores para los maximos
-!>   @author  Jose Agustin Garcia Reynoso
-!>   @date  03/06/2020
-!>   @version  1.0
-!>   @param indice indice del arreglo se usa si se cumple
-!>   @param indx es el valor inicial del indice y se substituye por indice si se cunple la condicion
-!>   @param  eval  valor a comparar entre dval1 y dval2
-!>   @param  dval1  valor inferior del arreglo
-!>   @param  dval2  valor superior del arreglo
-!>   @param  maximo  verdadero para maximos, falso para minimos
-!   ___ ___  _ __ ___  _ __   __ _ _ __ __ _
-!  / __/ _ \| '_ ` _ \| '_ \ / _` | '__/ _` |
-! | (_| (_) | | | | | | |_) | (_| | | | (_| |
-!  \___\___/|_| |_| |_| .__/ \__,_|_|  \__,_|
-!                     |_|
-integer function  compara(indice,indx,eval,dval1,dval2,maximo)
-    integer indice,indx
-    real :: eval,dval1,dval2
-    logical :: maximo
-    compara=indx
-    if (dval1 .le. eval.and.eval.le.dval2) then
-       if(indice.gt.indx.and.maximo) then
-            compara=indice
-         else
-         if(indice.lt.indx) compara=indice
-        end if
-    end if
-end function
+
+
 end subroutine

@@ -142,4 +142,73 @@ common /date/ id_grid,unlimdimid,Times,current_date,cday,mecha,tpob
 common /wrf/ julyr,julday,mapproj,iswater,islake,isice,isurban,isoilwater,&
             cenlat,cenlon,trulat1, trulat2,moadcenlat,stdlon,pollat,pollon,&
             gmt,mminlu
+contains
+!>   @brief Compara los valores para los maximos
+!>   @author  Jose Agustin Garcia Reynoso
+!>   @date  03/06/2020
+!>   @version  1.0
+!>   @param indice indice del arreglo se usa si se cumple
+!>   @param indx es el valor inicial del indice y se substituye por indice si se cumple la condicion
+!>   @param  eval  valor a comparar entre dval1 y dval2
+!>   @param  dval1  valor inferior del arreglo
+!>   @param  dval2  valor superior del arreglo
+!>   @param  maximo  verdadero para maximos, falso para minimos
+!   ___ ___  _ __ ___  _ __   __ _ _ __ __ _
+!  / __/ _ \| '_ ` _ \| '_ \ / _` | '__/ _` |
+! | (_| (_) | | | | | | |_) | (_| | | | (_| |
+!  \___\___/|_| |_| |_| .__/ \__,_|_|  \__,_|
+!                     |_|
+function compara(indice,indx,eval,dval1,dval2,maximo) result(val)
+    integer           :: val
+    integer,intent(in):: indice,indx
+    real,   intent(in):: eval,dval1,dval2
+    logical,intent(in):: maximo
+    val=indx
+  if (dval1 .le. eval.and.eval.le.dval2) then
+    if (maximo) then
+      val=max(indice,indx)
+    else
+      val=min(indice,indx)
+    end if
+  end if
+end function compara
+!>   @brief Obtiene los valores de los indices de la coordenada
+!>   @author  Jose Agustin Garcia Reynoso
+!>   @date  03/06/2020
+!>   @version  1.0
+!        _     _   _
+!   ___ | |__ | |_(_) ___ _ __   ___
+!  / _ \| '_ \| __| |/ _ \ '_ \ / _ \
+! | (_) | |_) | |_| |  __/ | | |  __/
+!  \___/|_.__/ \__|_|\___|_| |_|\___|
+!
+subroutine obtiene(vmin,vmax,coordenada,numero,inicio,final)
+implicit none
+!> valor del indice inicial en el arreglo coordenda donde se ubuica vmin
+integer,intent(inout):: inicio
+!> valor del indice final en el arreglo coordenda donde se ubuica vmax
+integer,intent(inout):: final
+!> contador
+integer :: i
+!> indice a emplear en el arreglo coordenada
+integer,intent(IN):: numero
+!> vmin valor minimo del arreglo a buscar
+real,intent(IN)::vmin
+!> vmax valor maximo del arreglo a buscar
+real,intent(IN)::vmax
+!> arreglo de coordenadas donde se busca el valor
+real,intent(IN),dimension(:,:) :: coordenada
+    do i=1,size(coordenada,numero)-1
+      if(numero.eq.1) then
+        inicio=compara(i,inicio,vmin,coordenada(i,1),coordenada(i+1,1),.false.)
+        final= compara(i,final ,vmax,coordenada(i,1),coordenada(i+1,1),.true.)
+      else
+        inicio=compara(i,inicio,vmin,coordenada(1,i),coordenada(1,i+1),.false.)
+        final =compara(i,final, vmax,coordenada(1,i),coordenada(1,i+1),.true.)
+      end if
+    end do
+   if (vmin.le.minval(coordenada)) inicio=1
+   if (final.eq.1) final=size(coordenada,numero)-1
+   if (final.lt.inicio) inicio=1
+end subroutine
 end module vars_dat

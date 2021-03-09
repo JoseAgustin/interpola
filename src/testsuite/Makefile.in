@@ -98,9 +98,9 @@ POST_UNINSTALL = :
 # Parallel version
 @WITH_OMPI_TRUE@am__append_3 = $(OPENMP_FCFLAGS)
 TESTS = test1$(EXEEXT) test2$(EXEEXT) test3$(EXEEXT) test4$(EXEEXT) \
-	test5$(EXEEXT)
+	test5$(EXEEXT) test6$(EXEEXT)
 check_PROGRAMS = test1$(EXEEXT) test2$(EXEEXT) test3$(EXEEXT) \
-	test4$(EXEEXT) test5$(EXEEXT)
+	test4$(EXEEXT) test5$(EXEEXT) test6$(EXEEXT) test7$(EXEEXT)
 subdir = testsuite
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/autoconf/ax_f08_newunit.m4 \
@@ -136,6 +136,14 @@ am_test5_OBJECTS = $(top_builddir)/mod_vars_dat.$(OBJEXT) \
 	$(top_builddir)/s_check.$(OBJEXT) p_guarda.$(OBJEXT)
 test5_OBJECTS = $(am_test5_OBJECTS)
 test5_LDADD = $(LDADD)
+am_test6_OBJECTS = $(top_builddir)/mod_vars_dat.$(OBJEXT) \
+	p_compara.$(OBJEXT)
+test6_OBJECTS = $(am_test6_OBJECTS)
+test6_LDADD = $(LDADD)
+am_test7_OBJECTS = $(top_builddir)/mod_vars_dat.$(OBJEXT) \
+	p_obtiene.$(OBJEXT)
+test7_OBJECTS = $(am_test7_OBJECTS)
+test7_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -163,9 +171,11 @@ am__v_FCLD_ = $(am__v_FCLD_@AM_DEFAULT_V@)
 am__v_FCLD_0 = @echo "  FCLD    " $@;
 am__v_FCLD_1 = 
 SOURCES = $(test1_SOURCES) $(test2_SOURCES) $(test3_SOURCES) \
-	$(test4_SOURCES) $(test5_SOURCES)
+	$(test4_SOURCES) $(test5_SOURCES) $(test6_SOURCES) \
+	$(test7_SOURCES)
 DIST_SOURCES = $(test1_SOURCES) $(test2_SOURCES) $(test3_SOURCES) \
-	$(test4_SOURCES) $(test5_SOURCES)
+	$(test4_SOURCES) $(test5_SOURCES) $(test6_SOURCES) \
+	$(test7_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -503,6 +513,9 @@ test2_SOURCES = $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/lee_emis.F90 $(
 test3_SOURCES = $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/lee_malla.F90 $(top_builddir)/s_check.F90 p_lee_grid.F90
 test4_SOURCES = $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/calculos.F90 $(top_builddir)/indices.F90 p_calc.F90
 test5_SOURCES = $(top_builddir)/mod_vars_dat.F90 $(top_builddir)/salidas.F90 $(top_builddir)/s_check.F90 p_guarda.F90
+test6_SOURCES = $(top_builddir)/mod_vars_dat.F90 p_compara.F90
+test7_SOURCES = $(top_builddir)/mod_vars_dat.F90 p_obtiene.F90
+
 # Additional files to be cleaned with 'make clean'
 CLEANFILES = *.o *.mod package.m4 testsuite
 TESTSUITE = $(srcdir)/testsuite
@@ -585,6 +598,14 @@ $(top_builddir)/salidas.$(OBJEXT): $(top_builddir)/$(am__dirstamp) \
 test5$(EXEEXT): $(test5_OBJECTS) $(test5_DEPENDENCIES) $(EXTRA_test5_DEPENDENCIES) 
 	@rm -f test5$(EXEEXT)
 	$(AM_V_FCLD)$(FCLINK) $(test5_OBJECTS) $(test5_LDADD) $(LIBS)
+
+test6$(EXEEXT): $(test6_OBJECTS) $(test6_DEPENDENCIES) $(EXTRA_test6_DEPENDENCIES) 
+	@rm -f test6$(EXEEXT)
+	$(AM_V_FCLD)$(FCLINK) $(test6_OBJECTS) $(test6_LDADD) $(LIBS)
+
+test7$(EXEEXT): $(test7_OBJECTS) $(test7_DEPENDENCIES) $(EXTRA_test7_DEPENDENCIES) 
+	@rm -f test7$(EXEEXT)
+	$(AM_V_FCLD)$(FCLINK) $(test7_OBJECTS) $(test7_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -823,6 +844,13 @@ test4.log: test4$(EXEEXT)
 test5.log: test5$(EXEEXT)
 	@p='test5$(EXEEXT)'; \
 	b='test5'; \
+	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
+	--log-file $$b.log --trs-file $$b.trs \
+	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
+	"$$tst" $(AM_TESTS_FD_REDIRECT)
+test6.log: test6$(EXEEXT)
+	@p='test6$(EXEEXT)'; \
+	b='test6'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \

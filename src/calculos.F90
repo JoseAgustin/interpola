@@ -32,7 +32,7 @@ real*8   :: alat,alon,area,tot
 real*8  ::  xmas,xemis
 
 call indices (iid,ifd,jid,jfd,iie,ife,jie,jfe)
-print *,jid,jfd,iid,ifd,jie,jfe,iie,ife
+print '(8I4)',jid,jfd,iid,ifd,jie,jfe,iie,ife
 print *, "   *******   Doing interpolations   *******"
 !    do j=1,djx!-1
 !    do i=1,dix!-1

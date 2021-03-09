@@ -12,3 +12,7 @@ AT_CLEANUP
 AT_SETUP([Storing interpolated file])
 AT_TESTED( test5 )
 AT_CLEANUP
+
+AT_SETUP([Functions indices ])
+AT_TESTED( test6 test7 )
+AT_CLEANUP
