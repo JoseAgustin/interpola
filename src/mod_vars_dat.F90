@@ -210,7 +210,7 @@ real,intent(IN),dimension(:,:) :: coordenada
         final =compara(i,final, vmax,coordenada(1,i),coordenada(1,i+1),.true.)
       end if
     end do
-   if (vmin.le.minval(coordenada)) inicio=1
+   if (vmin.le.minval(coordenada).or. inicio.ge.size(coordenada,numero)-1) inicio=1
    if (final.eq.1) final=size(coordenada,numero)-1
    if (final.lt.inicio) inicio=1
 end subroutine
