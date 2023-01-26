@@ -188,7 +188,7 @@ integer,intent(inout):: final
 integer :: i
 !> valor medio
 integer :: medio
-!> indice a emplear en el arreglo coordenada
+!> indice a emplear en el arreglo coordenada 1: lon, 2: lat
 integer,intent(IN):: numero
 !> vmin valor minimo del arreglo a buscar
 real,intent(IN)::vmin
@@ -199,11 +199,11 @@ real,intent(IN),dimension(:,:) :: coordenada
     medio=size(coordenada,numero)/2
     do i=1,size(coordenada,numero)-1
       if(numero.eq.1) then
-        inicio=compara(i,inicio,vmin,coordenada(i,medio),coordenada(i+1,1),.false.)
-        final= compara(i,final ,vmax,coordenada(i,1),coordenada(i+1,1),.true.)
+        inicio=compara(i,inicio,vmin,coordenada(i,medio),coordenada(i+1,medio),.false.)
+        final= compara(i,final ,vmax,coordenada(i,medio),coordenada(i+1,medio),.true.)
       else
-        inicio=compara(i,inicio,vmin,coordenada(1,medio),coordenada(1,i+1),.false.)
-        final =compara(i,final, vmax,coordenada(1,i),coordenada(1,i+1),.true.)
+        inicio=compara(i,inicio,vmin,coordenada(medio,i),coordenada(medio,i+1),.false.)
+        final =compara(i,final, vmax,coordenada(medio,i),coordenada(medio,i+1),.true.)
       end if
     end do
    if (vmin.le.minval(coordenada).or. inicio.ge.size(coordenada,numero)-1) inicio=1
