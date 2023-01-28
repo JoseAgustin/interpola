@@ -196,14 +196,16 @@ real,intent(IN)::vmin
 real,intent(IN)::vmax
 !> arreglo de coordenadas donde se busca el valor
 real,intent(IN),dimension(:,:) :: coordenada
+!> Identifica si se requiere calcular maximo=true o el minimo=flase
+logical :: maximo=.true.,minimo=.false.
     medio=size(coordenada,numero)/2
     do i=1,size(coordenada,numero)-1
       if(numero.eq.1) then
-        inicio=compara(i,inicio,vmin,coordenada(i,medio),coordenada(i+1,medio),.false.)
-        final= compara(i,final ,vmax,coordenada(i,medio),coordenada(i+1,medio),.true.)
+        inicio=compara(i,inicio,vmin,coordenada(i,medio),coordenada(i+1,medio),minimo)
+        final= compara(i,final ,vmax,coordenada(i,medio),coordenada(i+1,medio),maximo)
       else
-        inicio=compara(i,inicio,vmin,coordenada(medio,i),coordenada(medio,i+1),.false.)
-        final =compara(i,final, vmax,coordenada(medio,i),coordenada(medio,i+1),.true.)
+        inicio=compara(i,inicio,vmin,coordenada(medio,i),coordenada(medio,i+1),minimo)
+        final =compara(i,final, vmax,coordenada(medio,i),coordenada(medio,i+1),maximo)
       end if
     end do
    if (vmin.le.minval(coordenada).or. inicio.ge.size(coordenada,numero)-1) inicio=1
