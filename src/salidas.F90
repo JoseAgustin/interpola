@@ -75,8 +75,8 @@ write(FILE_NAME(16:16),'(I1)')grid_id
     call check( nf90_put_att(ncid, NF90_GLOBAL, "START_DATE",current_date))
     call check( nf90_put_att(ncid, NF90_GLOBAL, "DAY ",cday))
     call check( nf90_put_att(ncid, NF90_GLOBAL, "SIMULATION_START_DATE",current_date))
-    call check( nf90_put_att(ncid, NF90_GLOBAL, "WEST-EAST_GRID_DIMENSION",dim(3)))
-    call check( nf90_put_att(ncid, NF90_GLOBAL, "SOUTH-NORTH_GRID_DIMENSION",dim(4)))
+    call check( nf90_put_att(ncid, NF90_GLOBAL, "WEST-EAST_GRID_DIMENSION",dim(3)+1))
+    call check( nf90_put_att(ncid, NF90_GLOBAL, "SOUTH-NORTH_GRID_DIMENSION",dim(4)+1))
     call check( nf90_put_att(ncid, NF90_GLOBAL, "BOTTOM-TOP_GRID_DIMENSION",1))
     call check( nf90_put_att(ncid, NF90_GLOBAL, "DX",dx))
     call check( nf90_put_att(ncid, NF90_GLOBAL, "DY",dy))
@@ -151,11 +151,13 @@ tiempo: do it=iit,eit
                     iu = it-10*int((it)/10)+48 ! unidades
                     write(current_date(12:13),'(A1,A1)')char(id),char(iu)
                 end if
+                print *,size(xlon,dim=1),size(xlon,dim=2),size(xlon,dim=3)
+                print *,size(ea,dim=1),size(ea,dim=2),size(ea,dim=3)
                 write(current_date(1:4),'(I4)') julyr
                 Times(1,1)=current_date(1:19)
                 if (periodo.eq. 1) then
                     call check( nf90_put_var(ncid,unlimdimid,Times,start=(/1,it+1/)) )
-                    call check( nf90_put_var(ncid, id_varlong,xlon,start=(/1,1,it+1/)) )
+                    call check( nf90_put_var(ncid, id_varlong,xlon,start=(/1,1,it+1/)))
                     call check( nf90_put_var(ncid, id_varlat,xlat,start=(/1,1,it+1/)) )
                     call check( nf90_put_var(ncid, id_pob,dpob,start=(/1,1,it+1/)) )
                 else
