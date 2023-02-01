@@ -151,8 +151,8 @@ tiempo: do it=iit,eit
                     iu = it-10*int((it)/10)+48 ! unidades
                     write(current_date(12:13),'(A1,A1)')char(id),char(iu)
                 end if
-                print *,size(xlon,dim=1),size(xlon,dim=2),size(xlon,dim=3)
-                print *,size(ea,dim=1),size(ea,dim=2),size(ea,dim=3)
+                !print *,size(xlon,dim=1),size(xlon,dim=2),size(xlon,dim=3)
+                !print *,size(ea,dim=1),size(ea,dim=2),size(ea,dim=3)
                 write(current_date(1:4),'(I4)') julyr
                 Times(1,1)=current_date(1:19)
                 if (periodo.eq. 1) then
