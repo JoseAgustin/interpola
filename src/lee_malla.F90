@@ -20,7 +20,7 @@ subroutine reads_grid
 
 ! This is the name of the data file to read
 character (len = *), parameter :: FILE_NAME = "wrfinput" !GRID
-integer :: i,j
+integer :: i,j,idum
 integer :: ncid,xtype
 integer :: lat_varid,lon_varid,btDimID
 integer :: lat_varid_stag,lon_varid_stag
@@ -28,6 +28,7 @@ integer :: latVarId, lonVarId
 integer :: land_catID
 integer :: dimlon,dimlat
 integer :: dimlos,dimlas !stagged variables
+character (len=19):: chem_current_date
 character (len= NF90_MAX_NAME ) :: name
 character (len = *), parameter :: LAT_STAG = "XLAT_V"
 character (len = *), parameter :: LON_STAG = "XLONG_U"
@@ -122,14 +123,22 @@ character (len = *), parameter :: LON_STAG = "XLONG_U"
     call check( nf90_get_att(ncid, nf90_global, "NUM_LAND_CAT",num_land_cat))
     if (nf90_get_att(ncid, nf90_global, "GMT",gmt).ne.nf90_noerr)&
    &    print *," Using wrfchemin GMT"
-    if (nf90_get_att(ncid, nf90_global, "JULYR",julyr).ne.nf90_noerr)&
-   &    print *," Using wrfchemin JULYR"
-    if (nf90_get_att(ncid, nf90_global, "JULDAY",julday).ne.nf90_noerr)&
-   &    print *," Using wrfchemin JULDAY"
-   if (nf90_get_att(ncid, nf90_global, "START_DATE",current_date).ne.nf90_noerr)&
-  &    print *," Using wrfchemin START_DATE"
+   idum=julyr
+    if (nf90_get_att(ncid, nf90_global, "JULYR",julyr).ne.nf90_noerr) then
+       print *," Using wrfchemin JULYR"
+       julyr=idum
+    end if
+    idum=julday
+    if (nf90_get_att(ncid, nf90_global, "JULDAY",julday).ne.nf90_noerr) then
+       print *," Using wrfchemin JULDAY"
+       julday=idum
+    end if
+    chem_current_date=current_date
+    if (nf90_get_att(ncid, nf90_global, "START_DATE",current_date).ne.nf90_noerr) then
+      print *," Using wrfchemin START_DATE"
+      current_date=chem_current_date
+    end if
     call check( nf90_close(ncid) )
-
     do i=1,dimlon
         do j=1,dimlas
             dlat(i,j)=xlats(i,j,1)
